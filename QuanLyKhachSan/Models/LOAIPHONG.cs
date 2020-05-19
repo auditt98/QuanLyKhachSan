@@ -16,13 +16,29 @@ namespace QuanLyKhachSan
         }
 
         [Key]
-        [StringLength(10)]
-        public string idloaiphong { get; set; }
+       
+        public int ID { get; set; }
 
         [StringLength(50)]
         public string tenloaiphong { get; set; }
 
         public string ghichu { get; set; }
+
+        public string anh { get; set; }
+
+        public string khungnhin { get; set; }
+
+        public int dientich { get; set; }
+
+        public string giuong { get; set; }
+
+        public int nguoilon { get; set; }
+
+        public int trecon { get; set; }
+
+        public string tiennghi { get; set; }
+
+        public string thongtin { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PHONG> PHONGs { get; set; }
