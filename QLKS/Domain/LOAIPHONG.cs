@@ -15,6 +15,11 @@ namespace QLKS.Domain
             PHONGs = new HashSet<PHONG>();
         }
 
+<<<<<<< HEAD:QuanLyKhachSan/Models/LOAIPHONG.cs
+        [Key]
+       
+=======
+>>>>>>> 749f76a4fdc70fed2b65ebfa198eb96eaca954e4:QLKS/Models/LOAIPHONG.cs
         public int ID { get; set; }
 
         [Required]
@@ -23,8 +28,26 @@ namespace QLKS.Domain
 
         public string ghichu { get; set; }
 
+<<<<<<< HEAD:QuanLyKhachSan/Models/LOAIPHONG.cs
+        public string anh { get; set; }
+
+        public string khungnhin { get; set; }
+
+        public int dientich { get; set; }
+
+        public string giuong { get; set; }
+
+        public int nguoilon { get; set; }
+
+        public int trecon { get; set; }
+
+        public string tiennghi { get; set; }
+
+        public string thongtin { get; set; }
+=======
         [StringLength(20)]
         public string ma { get; set; }
+>>>>>>> 749f76a4fdc70fed2b65ebfa198eb96eaca954e4:QLKS/Models/LOAIPHONG.cs
 
         [StringLength(500)]
         public string anh { get; set; }
