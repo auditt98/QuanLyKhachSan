@@ -1,23 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
 namespace QLKS.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
-    [Table("VATTU")]
-    public partial class VATTU
+    public class VatTu
     {
         public int ID { get; set; }
 
-        [StringLength(100)]
         public string ten { get; set; }
 
-        [Column(TypeName = "date")]
         public DateTime? ngaymua { get; set; }
 
-        [Column(TypeName = "date")]
         public DateTime? ngaysudung { get; set; }
 
         public int? soluong { get; set; }
@@ -27,7 +22,5 @@ namespace QLKS.Models
         public int? sotien { get; set; }
 
         public int? PHONG_ID { get; set; }
-
-        public virtual PHONG PHONG { get; set; }
     }
 }
