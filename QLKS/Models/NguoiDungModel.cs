@@ -5,9 +5,9 @@ using System.Web;
 
 namespace QLKS.Models
 {
-    public partial class NguoiDung
+    public partial class NguoiDungModel
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
 
         public string tendangnhap { get; set; }
 
@@ -27,6 +27,6 @@ namespace QLKS.Models
 
         public string malaymatkhau { get; set; }
 
-        public IList<NhomNguoiDung> nhomNguoiDung { get; set; }
+        public IList<NhomNguoiDungModel> nhomNguoiDung { get; set; }
     }
 }

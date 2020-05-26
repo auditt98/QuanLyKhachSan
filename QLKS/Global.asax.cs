@@ -1,4 +1,9 @@
-﻿using System;
+﻿using AutoMapper;
+using FluentValidation.Mvc;
+using QLKS.Domain;
+using QLKS.Extensions;
+using QLKS.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,10 +17,13 @@ namespace QLKS
     {
         protected void Application_Start()
         {
+            FluentValidationModelValidatorProvider.Configure();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AutoMapper.Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
+
         }
     }
 }

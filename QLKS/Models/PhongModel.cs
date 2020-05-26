@@ -5,9 +5,9 @@ using System.Web;
 
 namespace QLKS.Models
 {
-    public class Phong
+    public class PhongModel
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
 
         public string ma { get; set; }
 

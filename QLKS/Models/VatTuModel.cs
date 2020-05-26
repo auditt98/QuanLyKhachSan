@@ -5,9 +5,9 @@ using System.Web;
 
 namespace QLKS.Models
 {
-    public class VatTu
+    public class VatTuModel
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
 
         public string ten { get; set; }
 

@@ -5,16 +5,16 @@ using System.Web;
 
 namespace QLKS.Models
 {
-    public class NhomNguoiDung
+    public class NhomNguoiDungModel
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
 
         public string ten { get; set; }
 
         public string ma { get; set; }
 
-        public virtual IList<NguoiDung> NGUOIDUNGs { get; set; }
+        public virtual IList<NguoiDungModel> NGUOIDUNGs { get; set; }
 
-        public virtual IList<Quyen> QUYENs { get; set; }
+        public virtual IList<QuyenModel> QUYENs { get; set; }
     }
 }

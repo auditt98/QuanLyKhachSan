@@ -13,8 +13,10 @@ namespace QLKS.Domain
 
         public string ten { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime? ngaymua { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime? ngaysudung { get; set; }
 
         public int? soluong { get; set; }

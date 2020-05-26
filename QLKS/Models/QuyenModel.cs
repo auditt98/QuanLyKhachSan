@@ -5,9 +5,9 @@ using System.Web;
 
 namespace QLKS.Models
 {
-    public partial class Quyen
+    public partial class QuyenModel
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
 
         public string ten { get; set; }
 
@@ -21,9 +21,9 @@ namespace QLKS.Models
 
         public DateTime? ngaychinhsua { get; set; }
 
-        public virtual NguoiDung NGUOITAO { get; set; }
+        public virtual NguoiDungModel NGUOITAO { get; set; }
 
-        public virtual NguoiDung NGUOISUA { get; set; }
+        public virtual NguoiDungModel NGUOISUA { get; set; }
 
         //public virtual ICollection<NHOMNGUOIDUNG> NHOMNGUOIDUNGs { get; set; }
 

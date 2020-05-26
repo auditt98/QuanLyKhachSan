@@ -30,9 +30,9 @@ namespace QLKS.Domain
 
         public int? nguoisua { get; set; }
 
-        public virtual NGUOIDUNG NGUOITAO { get; set; }
+        public virtual NGUOIDUNG NGUOIDUNG { get; set; }
 
-        public virtual NGUOIDUNG NGUOISUA { get; set; }
+        public virtual NGUOIDUNG NGUOIDUNG1 { get; set; }
 
         public virtual ICollection<NHOMNGUOIDUNG> NHOMNGUOIDUNGs { get; set; }
     }

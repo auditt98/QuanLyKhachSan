@@ -9,7 +9,6 @@ namespace QLKS.Domain
     [Table("THUEPHONG")]
     public partial class THUEPHONG
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public THUEPHONG()
         {
             CHITIETTHUEPHONGs = new HashSet<CHITIETTHUEPHONG>();

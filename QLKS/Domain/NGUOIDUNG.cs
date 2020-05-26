@@ -13,8 +13,8 @@ namespace QLKS.Domain
         {
             CHITIETTHUEPHONGs = new HashSet<CHITIETTHUEPHONG>();
             LUUTRUs = new HashSet<LUUTRU>();
-            TAOQUYEN = new HashSet<QUYEN>();
-            SUAQUYEN = new HashSet<QUYEN>();
+            QUYENs = new HashSet<QUYEN>();
+            QUYENs1 = new HashSet<QUYEN>();
             SUDUNGDICHVUs = new HashSet<SUDUNGDICHVU>();
             THANHTOANs = new HashSet<THANHTOAN>();
             THUEPHONGs = new HashSet<THUEPHONG>();
@@ -30,6 +30,7 @@ namespace QLKS.Domain
 
         public string sodienthoai { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime? ngaysinh { get; set; }
 
         public string diachi { get; set; }
@@ -48,9 +49,9 @@ namespace QLKS.Domain
 
         public virtual NHOMNGUOIDUNG NHOMNGUOIDUNG { get; set; }
 
-        public virtual ICollection<QUYEN> TAOQUYEN { get; set; }
+        public virtual ICollection<QUYEN> QUYENs { get; set; }
 
-        public virtual ICollection<QUYEN> SUAQUYEN { get; set; }
+        public virtual ICollection<QUYEN> QUYENs1 { get; set; }
 
         public virtual ICollection<SUDUNGDICHVU> SUDUNGDICHVUs { get; set; }
 

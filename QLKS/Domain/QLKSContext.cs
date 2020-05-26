@@ -143,13 +143,13 @@ namespace QLKS.Domain
                 .HasForeignKey(e => e.NGUOIDUNG_ID);
 
             modelBuilder.Entity<NGUOIDUNG>()
-                .HasMany(e => e.TAOQUYEN)
-                .WithOptional(e => e.NGUOITAO)
+                .HasMany(e => e.QUYENs)
+                .WithOptional(e => e.NGUOIDUNG)
                 .HasForeignKey(e => e.nguoitao);
 
             modelBuilder.Entity<NGUOIDUNG>()
-                .HasMany(e => e.SUAQUYEN)
-                .WithOptional(e => e.NGUOISUA)
+                .HasMany(e => e.QUYENs1)
+                .WithOptional(e => e.NGUOIDUNG1)
                 .HasForeignKey(e => e.nguoisua);
 
             modelBuilder.Entity<NGUOIDUNG>()

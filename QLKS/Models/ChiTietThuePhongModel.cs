@@ -5,9 +5,9 @@ using System.Web;
 
 namespace QLKS.Models
 {
-    public class ChiTietThuePhong
+    public class ChiTietThuePhongModel
     {
-        public int THUEPHONG_ID { get; set; }
+        public int? THUEPHONG_ID { get; set; }
 
         public DateTime? ngayvao { get; set; }
 

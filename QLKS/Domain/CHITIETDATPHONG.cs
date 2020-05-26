@@ -19,16 +19,12 @@ namespace QLKS.Domain
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int DATPHONG_ID { get; set; }
 
-        [StringLength(100)]
         public string tenkhachhang { get; set; }
 
-        [StringLength(20)]
         public string socmt { get; set; }
 
-        [StringLength(20)]
         public string sodienthoai { get; set; }
 
-        [StringLength(100)]
         public string email { get; set; }
 
         public DateTime? ngaydukienden { get; set; }

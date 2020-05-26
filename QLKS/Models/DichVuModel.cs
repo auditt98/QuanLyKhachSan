@@ -5,9 +5,9 @@ using System.Web;
 
 namespace QLKS.Models
 {
-    public partial class DichVu
+    public partial class DichVuModel
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
 
         public string tendichvu { get; set; }
 
