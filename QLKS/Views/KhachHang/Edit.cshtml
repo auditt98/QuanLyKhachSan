@@ -1,0 +1,31 @@
+﻿@model KhachHangModel
+@{
+    ViewBag.Title = "Sửa thông tin khách hàng";
+
+}
+<form action="/KhachHang/Edit" method="post">
+    <div class="card mb-4">
+        <h6 class="card-header">
+            Sửa thông tin
+            <small>
+                <i class="fa fa-arrow-circle-left"></i>
+                <a href="/KhachHang/List">Quay lại danh sách</a>
+            </small>
+            <button class="btn btn-danger" style="float:right;margin-right:5px; ">
+                <i class="fas fa-trash" style="margin-right:5px;"></i>
+                Xóa
+            </button>
+            <button type="submit" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
+                <i class="fas fa-save" style="margin-right:5px;"></i>
+                Lưu
+            </button>
+
+        </h6>
+        <div class="card-body">
+            @{
+                @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control d-none" } })
+                Html.RenderPartial("_CreateOrUpdate");
+            }
+        </div>
+    </div>
+</form>

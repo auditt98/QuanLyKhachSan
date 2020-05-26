@@ -24,21 +24,21 @@ namespace QLKS.Controllers
             
             return View();
         }
+        
         [HttpPost]
         public ActionResult PopulateKhachHang()
         {
             var danhSachKhachHang = db.KHACHHANGs.Select(c => new
             {
-                Ma = c.ma.ToString(),
-                Ten = c.tenkhachhang.ToString(),
-                CMT = c.socmt.ToString(),
-                SDT = c.sodienthoai.ToString(),
-                Email = c.email.ToString()
+                ma = c.ma,
+                ten = c.tenkhachhang,
+                cmt = c.socmt,
+                sdt = c.sodienthoai,
+                email = c.email,
+                id = c.ID
             }).ToList();
-
             var result = new { data = danhSachKhachHang };
-            var json = JsonConvert.SerializeObject(result);
-            return Json(json);
+            return Json(result);
         }
 
         public ActionResult Create()
@@ -67,13 +67,32 @@ namespace QLKS.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View();
+            var khachhang = db.KHACHHANGs.Find(id);
+            if(khachhang == null)
+            {
+                return RedirectToAction("List");
+            }
+            //prepare model
+            var khachhangModel = AutoMapper.Mapper.Map<KhachHangModel>(khachhang);
+            return View(khachhangModel);
         }
 
         [HttpPost]
         public ActionResult Edit(KhachHangModel model)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", model);
+            }
+            var item = db.KHACHHANGs.Where(c => c.ID == model.ID).FirstOrDefault();
+            if(item == null)
+            {
+                return RedirectToAction("List");
+            }
+            //map from model to database object
+            Mapper.Map(model, item);
+            db.SaveChangesAsync();
+            return RedirectToAction("List");
         }
 
         [HttpPost]

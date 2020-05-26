@@ -21,7 +21,7 @@
     <div class="form-group row">
         <label class="col-form-label col-sm-2 text-sm-right">Từ khóa:</label>
         <div class="col-sm-8">
-            <input name="Key" class="form-control" id="Key"/>
+            <input name="Key" class="form-control" id="KeySearch"/>
         </div>
         <div class="col-sm-2">
             <button type="button" class="btn btn-sm btn-primary" id="btnSearch">Tìm kiếm</button>
@@ -37,6 +37,7 @@
             <th>Số CMT</th>
             <th>Số điện thoại</th>
             <th>Email</th>
+            <th>Thao tác</th>
         </tr>
     </thead>
     <tbody></tbody>
@@ -48,13 +49,27 @@
             $('#table_dataTable').DataTable({
                 ajax: {
                     "url": "/KhachHang/PopulateKhachHang/",
-                    "type": "POST",
-                    dataSrc: '',
-                    data: function (data) {
-                        console.log(data)
-                    }
-                }
+                    method: "POST"
+                },
+                responsive: true,
+                columns: [
+                    { "data": "ma" },
+                    { "data": "ten" },
+                    { "data": "cmt" },
+                    {"data": "sdt"},
+                    { "data": "email" }
+                    //{
+                    //    "data": "id",
+                    //    "render": function (data) {
+                    //        console.log(data)
+                    //    }
+                    //}
+                ]
             });
+        });
+        $('#KeySearch').on('keyup', function () {
+            console.log(this.value)
+            $('#table_dataTable').DataTable().search(this.value).draw();
         });
     </script>
     

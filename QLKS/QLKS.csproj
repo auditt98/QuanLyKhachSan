@@ -149,7 +149,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\LoaiPhongController.cs" />
-    <Compile Include="Controllers\VATTUsController.cs" />
     <Compile Include="Domain\CHITIETDATPHONG.cs" />
     <Compile Include="Domain\CHITIETTHUEPHONG.cs" />
     <Compile Include="Domain\DATPHONG.cs" />
@@ -332,6 +331,7 @@
     <Content Include="Views\KhachHang\List.cshtml" />
     <Content Include="Views\KhachHang\Create.cshtml" />
     <Content Include="Views\KhachHang\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\KhachHang\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
