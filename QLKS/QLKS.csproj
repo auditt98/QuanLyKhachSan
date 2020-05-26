@@ -330,11 +330,6 @@
     <Content Include="Views\KhachHang\List.cshtml" />
     <Content Include="Views\KhachHang\Create.cshtml" />
     <Content Include="Views\KhachHang\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\VATTUs\Create.cshtml" />
-    <Content Include="Views\VATTUs\Delete.cshtml" />
-    <Content Include="Views\VATTUs\Details.cshtml" />
-    <Content Include="Views\VATTUs\Edit.cshtml" />
-    <Content Include="Views\VATTUs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
