@@ -35,7 +35,7 @@ namespace QLKS.Controllers
                 cmt = c.socmt,
                 sdt = c.sodienthoai,
                 email = c.email,
-                id = c.ID
+                uid = c.ID
             }).ToList();
             var result = new { data = danhSachKhachHang };
             return Json(result);
@@ -90,7 +90,7 @@ namespace QLKS.Controllers
                 return RedirectToAction("List");
             }
             //map from model to database object
-            Mapper.Map(model, item);
+            item = Mapper.Map(model, item);
             db.SaveChangesAsync();
             return RedirectToAction("List");
         }
