@@ -1,6 +1,5 @@
 ﻿@using QLKS.Models
 @using QLKS.Services
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +11,9 @@
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.4/css/responsive.bootstrap4.min.css"/>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.4/css/responsive.bootstrap4.min.css" />
 
 </head>
 <body style="display:flex; flex-direction: column;">
@@ -78,11 +78,11 @@
                         </a>
 
                         <div class="sb-sidenav-menu-heading">Nghiệp vụ</div>
-                        <a class="nav-link" id="NghiepVuDatPhong" href="/NghiepVu/DatPhong">
+                        <a class="nav-link" id="NghiepVuDatPhong" href="/DatPhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
                             Đặt phòng
                         </a>
-                        <a class="nav-link" id="NghiepVuThuePhong" href="/NghiepVu/ThuePhong">
+                        <a class="nav-link" id="NghiepVuThuePhong" href="/ThuePhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
                             Thuê phòng
                         </a>
@@ -118,7 +118,6 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.js"></script>
@@ -126,7 +125,25 @@
     <script src="https://cdn.datatables.net/responsive/2.2.4/js/responsive.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-
+    <script src="@Url.Content("~/Scripts/bootbox.js")"></script>
+    <script src="@Url.Content("~/Scripts/notify.min.js")"></script>
+    @RenderSection("scripts", required: false)
+    @{ 
+        var message = Html.Raw(TempData["Message"]);
+        var type = Html.Raw(TempData["NotiType"]);
+        if(message != null)
+        {
+        <script>
+                console.log("@message.ToString()");
+                $.notify("@message", {
+                    className: "@type",
+                    position: "right bottom",
+                    showDuration: 300,
+                    hideDuration: 200
+                });
+        </script>
+        }
+    }
     <script>
         (function ($) {
             "use strict";

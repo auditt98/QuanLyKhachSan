@@ -146,9 +146,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DatPhongController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\LoaiPhongController.cs" />
+    <Compile Include="Controllers\PhongController.cs" />
     <Compile Include="Domain\CHITIETDATPHONG.cs" />
     <Compile Include="Domain\CHITIETTHUEPHONG.cs" />
     <Compile Include="Domain\DATPHONG.cs" />
@@ -171,11 +173,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChiTietThuePhongModel.cs" />
+    <Compile Include="Models\DatPhongModel.cs" />
     <Compile Include="Models\DichVuModel.cs" />
     <Compile Include="Models\KhachHangModel.cs" />
     <Compile Include="Models\LoaiPhongModel.cs" />
     <Compile Include="Models\NguoiDungModel.cs" />
     <Compile Include="Models\NhomNguoiDungModel.cs" />
+    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\PhongModel.cs" />
     <Compile Include="Models\QuyenModel.cs" />
     <Compile Include="Models\VatTuModel.cs" />
@@ -191,9 +195,13 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DataTable.css" />
+    <Content Include="Content\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\responsive.bootstrap4.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -232,6 +240,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\notify.min.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -331,6 +340,7 @@
     <Content Include="Views\KhachHang\Create.cshtml" />
     <Content Include="Views\KhachHang\_CreateOrUpdate.cshtml" />
     <Content Include="Views\KhachHang\Edit.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\LoaiPhong\List.cshtml" />
     <Content Include="Views\LoaiPhong\Create.cshtml" />
     <Content Include="Views\LoaiPhong\Edit.cshtml" />
@@ -338,6 +348,16 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\imgLoaiPhong\" />
+=======
+    <Content Include="Views\DatPhong\Create.cshtml" />
+    <Content Include="Views\DatPhong\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\DatPhong\Edit.cshtml" />
+    <Content Include="Views\DatPhong\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Phong\" />
+>>>>>>> eaa61b2be019b3411621eb21478af4535f129d8c
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

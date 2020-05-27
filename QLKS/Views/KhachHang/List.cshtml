@@ -56,17 +56,23 @@
                     { "data": "ma" },
                     { "data": "ten" },
                     { "data": "cmt" },
-                    {"data": "sdt"},
-                    { "data": "email" }
-                    //{
-                    //    "data": "id",
-                    //    "render": function (data) {
-                    //        console.log(data)
-                    //    }
-                    //}
-                ]
+                    { "data": "sdt" },
+                    { "data": "email" },
+                    {
+                        "data": "uid",
+                        "render": function (data, type, row) {
+                            return "<a class='text-center' href='/KhachHang/Edit/" + data + "'><i class='fas fa-pencil-alt'></i></a>"
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: [5],
+                        className: "text-center"
+                    }]
             });
         });
+
         $('#KeySearch').on('keyup', function () {
             console.log(this.value)
             $('#table_dataTable').DataTable().search(this.value).draw();
