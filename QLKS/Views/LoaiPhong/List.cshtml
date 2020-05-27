@@ -1,21 +1,40 @@
-﻿@model IEnumerable<QLKS.Models.LoaiPhong>
+﻿@model IEnumerable<QLKS.Domain.LOAIPHONG>
 
 @{
-    ViewBag.Title = "List";
+    ViewBag.Title = "Danh Mục Loại Phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>List</h2>
+<div class="content-header clearfix">
+    <h5 class="float-left">
+        @ViewBag.Title
+    </h5>
+    <div class="float-right" style="margin-bottom:5px;">
+        <a href="/LoaiPhong/Create" class="btn btn-success">
+            <i class="fa fa-plus-square"></i>
+            <span class="text-white">Thêm mới</span>
+        </a>
+    </div>
+</div>
+<div class=" px-4 pt-4 mb-4" style="padding-bottom: 24px;">
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2 text-sm-right">Từ khóa:</label>
+        <div class="col-sm-8">
+            <input name="Key" class="form-control" id="KeySearch" />
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-sm btn-primary" id="btnSearch">Tìm kiếm</button>
+        </div>
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+</div>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.tenloaiphong)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ghichu)
+            @Html.DisplayNameFor(model => model.ma)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.anh)
@@ -36,58 +55,58 @@
             @Html.DisplayNameFor(model => model.trecon)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tiennghi)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.thongtin)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ma)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.tenloaiphong)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ghichu)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.anh)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.khungnhin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dientich)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.giuong)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nguoilon)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.trecon)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tiennghi)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.thongtin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ma)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.tenloaiphong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ma)
+            </td>
+            <td>
+                <img src="~/Content/imgLoaiPhong/@item.anh" style="width:100px;">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.khungnhin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dientich)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.giuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nguoilon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.trecon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.thongtin)
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.ID },new {@class="btn btn-warning" }) 
+                @Html.ActionLink("Xóa", "Delete", new { id = item.ID },new {@onclick = "return DeleteConfirm()", @class="btn btn-danger" })
+            </td>
+        </tr>
+    }
 
 </table>
+<script type="text/javascript">
+    function DeleteConfirm() {
+        if (confirm("Bạn muốn xóa bản ghi này ? Điều này có thể dẫn đến mất dữ liệu liên quan !")) {
+            return true
+        }
+        else {
+            return false
+        }
+        FocusEvent = false;
+        chechked = false;
+    }
+</script>

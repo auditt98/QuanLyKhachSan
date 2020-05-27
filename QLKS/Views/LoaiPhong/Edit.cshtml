@@ -1,0 +1,115 @@
+﻿@model QLKS.Domain.LOAIPHONG
+
+@{
+	ViewBag.Title = "Edit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm("Edit", "LoaiPhong", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<h4>Loại Phòng</h4>
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.ID)
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.tenloaiphong, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.tenloaiphong, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.tenloaiphong, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ghichu, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.ghichu, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.ghichu, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ma, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.ma, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.anh, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				<img src="~/Content/imgLoaiPhong/@Model.anh" style="width:100px;">
+				<input type="file" name="UploadImage" id="UploadImage" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.khungnhin, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.khungnhin, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.khungnhin, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.dientich, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.dientich, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.dientich, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.giuong, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.giuong, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.giuong, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.nguoilon, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.nguoilon, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.nguoilon, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.trecon, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.trecon, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.trecon, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.thongtin, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.thongtin, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.thongtin, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+
+<div>
+	@Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
