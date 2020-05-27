@@ -146,9 +146,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DatPhongController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\LoaiPhongController.cs" />
+    <Compile Include="Controllers\PhongController.cs" />
     <Compile Include="Domain\CHITIETDATPHONG.cs" />
     <Compile Include="Domain\CHITIETTHUEPHONG.cs" />
     <Compile Include="Domain\DATPHONG.cs" />
@@ -171,6 +173,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChiTietThuePhongModel.cs" />
+    <Compile Include="Models\DatPhongModel.cs" />
     <Compile Include="Models\DichVuModel.cs" />
     <Compile Include="Models\KhachHangModel.cs" />
     <Compile Include="Models\LoaiPhongModel.cs" />
@@ -338,9 +341,14 @@
     <Content Include="Views\KhachHang\Create.cshtml" />
     <Content Include="Views\KhachHang\_CreateOrUpdate.cshtml" />
     <Content Include="Views\KhachHang\Edit.cshtml" />
+    <Content Include="Views\DatPhong\Create.cshtml" />
+    <Content Include="Views\DatPhong\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\DatPhong\Edit.cshtml" />
+    <Content Include="Views\DatPhong\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Phong\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

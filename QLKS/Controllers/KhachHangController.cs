@@ -45,7 +45,7 @@ namespace QLKS.Controllers
         {
 
             var khachHangModel = new KhachHangModel();
-            var maxId = db.KHACHHANGs.Max(c => c.ID);
+            var maxId = db.KHACHHANGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
             khachHangModel.ma = "KH" + "-" + newId;
             return View(khachHangModel);
