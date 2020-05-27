@@ -56,12 +56,15 @@ namespace QLKS.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
+                TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
             }
             var khachhang = AutoMapper.Mapper.Map<KHACHHANG>(model);
             db.KHACHHANGs.Add(khachhang);
             db.SaveChangesAsync();
-            TempData["ThongBao"] = "Thêm mới thành công";
+            TempData["Message"] = "Thêm mới thành công";
+            TempData["NotiType"] = "success";
             return RedirectToAction("List");
         }
 
@@ -82,23 +85,35 @@ namespace QLKS.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Edit", model);
             }
             var item = db.KHACHHANGs.Where(c => c.ID == model.ID).FirstOrDefault();
             if(item == null)
             {
+                TempData["Message"] = "Có lỗi xảy ra";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
             //map from model to database object
             item = Mapper.Map(model, item);
             db.SaveChangesAsync();
+            TempData["Message"] = "Cập nhật thành công";
+            TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
         }
 
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            return View();
+            var khachhang = db.KHACHHANGs.Find(id);
+            db.KHACHHANGs.Remove(khachhang);
+            db.SaveChangesAsync();
+            //Thông báo
+            TempData["Message"] = "Xóa khách hàng thành công";
+            TempData["NotiType"] = "success"; //success là class trong bootstrap
+            return Json("ok");
         }
     
     }

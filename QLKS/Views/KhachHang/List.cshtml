@@ -56,7 +56,7 @@
                     { "data": "ma" },
                     { "data": "ten" },
                     { "data": "cmt" },
-                    {"data": "sdt"},
+                    { "data": "sdt" },
                     { "data": "email" },
                     {
                         "data": "uid",
@@ -72,6 +72,7 @@
                     }]
             });
         });
+
         $('#KeySearch').on('keyup', function () {
             console.log(this.value)
             $('#table_dataTable').DataTable().search(this.value).draw();

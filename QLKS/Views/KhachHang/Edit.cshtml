@@ -11,10 +11,10 @@
                 <i class="fa fa-arrow-circle-left"></i>
                 <a href="/KhachHang/List">Quay lại danh sách</a>
             </small>
-            <button class="btn btn-danger" style="float:right;margin-right:5px; ">
+            <div class="btn btn-danger" id="btnDelete" style="float:right;margin-right:5px; ">
                 <i class="fas fa-trash" style="margin-right:5px;"></i>
                 Xóa
-            </button>
+            </div>
             <button type="submit" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
                 <i class="fas fa-save" style="margin-right:5px;"></i>
                 Lưu
@@ -29,3 +29,32 @@
         </div>
     </div>
 </form>
+
+@section scripts{
+    <script>
+        $("#btnDelete").on("click", function () {
+            bootbox.confirm("Bạn có chắc chắn muốn xóa", function (result) {
+                console.log(result)
+                if (result == true) {
+                    var _data = {
+                        id: $("#ID").val()
+                    }
+                    console.log(_data)
+                    $.ajax({
+                        url: "/KhachHang/Delete",
+                        method: "POST",
+                        data: _data,
+                        success: function (data) {
+                            if (data == "ok") {
+                                window.location.href = "/KhachHang/List"
+                            }
+                            //console.log(data);
+                        }
+                    })
+                }
+
+            })
+        })
+    </script>
+    
+}
