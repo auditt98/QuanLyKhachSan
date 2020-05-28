@@ -19,6 +19,8 @@ namespace QLKS.Extensions
             CreateMap<PhongModel, PHONG>();
             CreateMap<KhachHangModel, KHACHHANG>();
             CreateMap<KHACHHANG, KhachHangModel>();
+            CreateMap<DichVuModel, DICHVU>();
+            CreateMap<DICHVU, DichVuModel>();
         }
     }
 }
