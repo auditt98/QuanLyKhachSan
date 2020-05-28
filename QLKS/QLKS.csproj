@@ -337,11 +337,19 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\LoaiPhong\List.cshtml" />
     <Content Include="Views\KhachHang\List.cshtml" />
     <Content Include="Views\KhachHang\Create.cshtml" />
     <Content Include="Views\KhachHang\_CreateOrUpdate.cshtml" />
     <Content Include="Views\KhachHang\Edit.cshtml" />
+<<<<<<< HEAD
+    <Content Include="Views\LoaiPhong\List.cshtml" />
+    <Content Include="Views\LoaiPhong\Create.cshtml" />
+    <Content Include="Views\LoaiPhong\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\imgLoaiPhong\" />
+=======
     <Content Include="Views\DatPhong\Create.cshtml" />
     <Content Include="Views\DatPhong\_CreateOrUpdate.cshtml" />
     <Content Include="Views\DatPhong\Edit.cshtml" />
@@ -351,6 +359,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\DichVu\" />
     <Folder Include="Views\Phong\" />
+>>>>>>> eaa61b2be019b3411621eb21478af4535f129d8c
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
