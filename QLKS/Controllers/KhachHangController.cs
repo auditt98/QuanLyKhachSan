@@ -21,7 +21,6 @@ namespace QLKS.Controllers
         // GET: LoaiPhong/List
         public ActionResult List()
         {
-            
             return View();
         }
         
@@ -48,7 +47,6 @@ namespace QLKS.Controllers
             var maxId = db.KHACHHANGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
             khachHangModel.ma = "KH" + "-" + newId;
-            ViewBag["Route"] = "Khachhang";
             return View(khachHangModel);
         }
 

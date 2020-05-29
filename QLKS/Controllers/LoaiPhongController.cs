@@ -78,13 +78,6 @@ namespace QLKS.Controllers
 
 			}
 			return RedirectToAction("List");
-			//}
-			//catch
-			//{
-			//    ModelState.AddModelError("", "Chỉnh sửa không thành công");
-			//    return RedirectToAction("List");
-			//}
-
 		}
 
 		[HttpGet]

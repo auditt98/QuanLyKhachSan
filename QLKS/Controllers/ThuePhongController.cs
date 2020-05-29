@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace QLKS.Controllers
 {
-    public class DatPhongController : Controller
+    public class ThuePhongController : Controller
     {
         // GET: DatPhong
         public ActionResult List()
