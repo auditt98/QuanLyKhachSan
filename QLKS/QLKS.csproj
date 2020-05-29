@@ -209,6 +209,8 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DataTable.js" />
     <Content Include="Scripts\DataTableBootstrap.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\dataTables.responsive.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -246,6 +248,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\responsive.bootstrap4.min.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
     <Content Include="Scripts\src\methods\destroy.js" />
@@ -348,6 +351,7 @@
     <Content Include="Views\DichVu\List.cshtml" />
     <Content Include="Views\DichVu\Create.cshtml" />
     <Content Include="Views\DichVu\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\DichVu\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />

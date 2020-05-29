@@ -67,8 +67,12 @@ namespace QLKS.Controllers
             return RedirectToAction("List");
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
+            if (id == null)
+            {
+                return RedirectToAction("List");
+            }
             var khachhang = db.KHACHHANGs.Find(id);
             if(khachhang == null)
             {

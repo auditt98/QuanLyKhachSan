@@ -46,11 +46,11 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
                             Thống kê doanh thu
                         </a>
-                        <a class="nav-link" id="ThongKeDatPhong" href="/DoanhThu/DatPhong">
+                        <a class="nav-link" id="ThongKeDatPhong" href="/DoanhThu/DoanhThuDP">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Thống kê số lượng đặt phòng
                         </a>
-                        <a class="nav-link" id="ThongKeDichVu" href="/DoanhThu/DichVu">
+                        <a class="nav-link" id="ThongKeDichVu" href="/DoanhThu/DoanhThuDV">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Thống kê doanh thu dịch vụ
                         </a>
@@ -121,23 +121,24 @@
     <script src="https://cdn.datatables.net/responsive/2.2.4/js/responsive.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    @*normalizing text*@
+    @*<script src="https://unpkg.com/normalize-text"></script>*@
     <script src="@Url.Content("~/Scripts/bootbox.js")"></script>
     <script src="@Url.Content("~/Scripts/notify.min.js")"></script>
     @RenderSection("scripts", required: false)
-    @{ 
+    @{
         var message = Html.Raw(TempData["Message"]);
         var type = Html.Raw(TempData["NotiType"]);
-        if(message != null)
+        if (message != null)
         {
-        <script>
-                console.log("@message.ToString()");
+            <script>
                 $.notify("@message", {
                     className: "@type",
                     position: "right bottom",
                     showDuration: 300,
                     hideDuration: 200
                 });
-        </script>
+            </script>
         }
     }
     <script>
@@ -148,15 +149,10 @@
             var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
             $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
                 if ("@ViewBag.Menu" != null && "@ViewBag.Menu" != "") {
-                    console.log(this.href)
                     if (this.href.toString().search("@ViewBag.Menu") != -1) {
                         $(this).addClass("active");
                     }
                 }
-
-                //if (this.href === path) {
-                //    $(this).addClass("active");
-                //}
             });
 
             // Toggle the side navigation

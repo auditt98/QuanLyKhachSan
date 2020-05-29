@@ -27,7 +27,7 @@ namespace QLKS.Controllers
                 tendichvu = c.tendichvu,
                 dongia = c.dongia,
                 uid = c.ID
-            }).ToList();
+            }).OrderBy(c => c.uid).ToList();
             var result = new { data = danhSachDichVu };
             return Json(result);
         }
@@ -58,8 +58,12 @@ namespace QLKS.Controllers
             return RedirectToAction("List");
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
+            if(id == null)
+            {
+                return RedirectToAction("List");
+            }
             var dichvu = db.DICHVUs.Find(id);
             if (dichvu == null)
             {
