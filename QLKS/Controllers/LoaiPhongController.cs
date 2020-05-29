@@ -25,14 +25,29 @@ namespace QLKS.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Create(LOAIPHONG model)
+		public ActionResult Create(LOAIPHONG model, HttpPostedFileBase UploadImage)
 		{
 			if (!ModelState.IsValid)
 			{
 				return View("Create", model);
 			}
+			if (UploadImage != null)
+			{
+				if (UploadImage.ContentType == "image/jpg" || UploadImage.ContentType == "image/png" || UploadImage.ContentType == "image/jpeg")
+				{
+					string fileName = Path.GetFileName(DateTime.Now.ToString("ddMMyyyy_hhmmss_tt_") + "" + UploadImage.FileName);
+					string path = Path.Combine(Server.MapPath("~/Content/imgLoaiPhong"), fileName);
+					UploadImage.SaveAs(path);
+					//UploadImage.SaveAs(Server.MapPath("/") + "/Content/imgLoaiPhong/" + DateTime.Now.ToString("ddMMyyyy_hhmmss_tt_") + UploadImage.FileName);
+					model.anh = fileName;
+				}
+				else
+				{
+					ModelState.AddModelError("", "lỗi dữ liệu ảnh !");
+				}
+			}
 			db.LOAIPHONGs.Add(model);
-			db.SaveChangesAsync();
+			db.SaveChanges();
 			TempData["ThongBao"] = "Thêm mới thành công";
 			return RedirectToAction("List");
 		}
