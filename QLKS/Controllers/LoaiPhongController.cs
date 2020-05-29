@@ -15,6 +15,7 @@ namespace QLKS.Controllers
 		// GET: LoaiPhong/List
 		public ActionResult List()
 		{
+			ViewBag.Menu = "LoaiPhong";
 			return View(db.LOAIPHONGs.ToList());
 		}
 
