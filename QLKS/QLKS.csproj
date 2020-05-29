@@ -146,7 +146,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\DatPhongController.cs" />
+    <Compile Include="Controllers\ThuePhongController.cs" />
     <Compile Include="Controllers\DichVuController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
@@ -344,18 +344,20 @@
     <Content Include="Views\LoaiPhong\List.cshtml" />
     <Content Include="Views\LoaiPhong\Create.cshtml" />
     <Content Include="Views\LoaiPhong\Edit.cshtml" />
+    <Content Include="Views\LoaiPhong\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\DichVu\List.cshtml" />
+    <Content Include="Views\DichVu\Create.cshtml" />
+    <Content Include="Views\DichVu\_CreateOrUpdate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ThuePhong\Create.cshtml" />
+    <Content Include="Views\ThuePhong\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ThuePhong\Edit.cshtml" />
+    <Content Include="Views\ThuePhong\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\imgLoaiPhong\" />
-    <Content Include="Views\DatPhong\Create.cshtml" />
-    <Content Include="Views\DatPhong\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\DatPhong\Edit.cshtml" />
-    <Content Include="Views\DatPhong\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Views\DichVu\" />
     <Folder Include="Views\Phong\" />
   </ItemGroup>
   <ItemGroup>

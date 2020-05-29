@@ -17,7 +17,7 @@
 
 </head>
 <body style="display:flex; flex-direction: column;">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar sticky-top navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="index.html">Quản lý khách sạn</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
         </button><!-- Navbar Search-->
@@ -78,10 +78,6 @@
                         </a>
 
                         <div class="sb-sidenav-menu-heading">Nghiệp vụ</div>
-                        <a class="nav-link" id="NghiepVuDatPhong" href="/DatPhong/List">
-                            <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
-                            Đặt phòng
-                        </a>
                         <a class="nav-link" id="NghiepVuThuePhong" href="/ThuePhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
                             Thuê phòng
@@ -90,7 +86,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-left"></i></div>
                             Trả phòng
                         </a>
-                        <a class="nav-link" id="DanhSachPhongDatTruoc" href="#">
+                        <a class="nav-link" id="DanhSachPhongDatTruoc" href="/DatPhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                             Danh sách phòng đặt trước
                         </a>
@@ -151,9 +147,16 @@
             // Add active state to sidbar nav links
             var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
             $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
-                if (this.href === path) {
-                    $(this).addClass("active");
+                if ("@ViewBag.Menu" != null && "@ViewBag.Menu" != "") {
+                    console.log(this.href)
+                    if (this.href.toString().search("@ViewBag.Menu") != -1) {
+                        $(this).addClass("active");
+                    }
                 }
+
+                //if (this.href === path) {
+                //    $(this).addClass("active");
+                //}
             });
 
             // Toggle the side navigation
