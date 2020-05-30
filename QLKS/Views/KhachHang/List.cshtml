@@ -1,5 +1,4 @@
 ﻿@using QLKS.Models
-@model KhachHangSearchModel
 
 @{
     ViewBag.Title = "Danh mục khách hàng";
@@ -76,7 +75,23 @@
                     {
                         targets: [5],
                         className: "text-center"
-                    }]
+                    }],
+                ,
+                language: {
+                    emptyTable: "Bảng không có dữ liệu",
+                    info: "Hiển thị từ bản ghi _START_ tới _END_ trong tổng số _TOTAL_ bản ghi",
+                    infoEmpty: "Hiển thị từ bản ghi 0 tới bản ghi 0 trong số 0 bản ghi ",
+                    lengthMenu: "Hiển thị _MENU_ bản ghi",
+                    loadingRecords: "Đang tải dữ liệu...",
+                    zeroRecords: "Không tìm thấy bản ghi nào",
+                    paginate: {
+                        "first": "Trang đầu tiên",
+                        "last": "Trang cuối cùng",
+                        "next": "Trang kế tiếp",
+                        "previous": "Trang trước"
+                    },
+                    infoFiltered: "(lọc từ _MAX_ bản ghi tất cả)",
+                }
             });
         });
 

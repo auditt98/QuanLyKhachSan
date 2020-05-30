@@ -13,42 +13,40 @@ using System.Web.Mvc;
 
 namespace QLKS.Controllers
 {
-    public class KhachHangController : Controller
+    public class LoaiTinhTrangController : Controller
     {
         private QLKSContext db = new QLKSContext();
 
+        // GET: LoaiTinhTrang/List
         public ActionResult List()
         {
             return View();
         }
-        
+
         [HttpPost]
-        public ActionResult PopulateKhachHang()
+        public ActionResult PopulateLoaiTinhTrang()
         {
-            var danhSachKhachHang = db.KHACHHANGs.Select(c => new
+            var danhsachloaitinhtrang = db.LOAITINHTRANGs.Select(c => new
             {
                 ma = c.ma,
-                ten = c.tenkhachhang,
-                cmt = c.socmt,
-                sdt = c.sodienthoai,
-                email = c.email,
+                ten = c.ten,
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
-            var result = new { data = danhSachKhachHang };
+            var result = new { data = danhsachloaitinhtrang };
             return Json(result);
         }
 
         public ActionResult Create()
         {
-            var khachHangModel = new KhachHangModel();
-            var maxId = db.KHACHHANGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
+            var loaiTinhTrangModel = new LoaiTinhTrangModel();
+            var maxId = db.LOAITINHTRANGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
-            khachHangModel.ma = "KH" + "-" + newId;
-            return View(khachHangModel);
+            loaiTinhTrangModel.ma = "TT" + "-" + newId;
+            return View(loaiTinhTrangModel);
         }
 
         [HttpPost]
-        public ActionResult Create(KhachHangModel model)
+        public ActionResult Create(LoaiTinhTrangModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -56,8 +54,8 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            var khachhang = AutoMapper.Mapper.Map<KHACHHANG>(model);
-            db.KHACHHANGs.Add(khachhang);
+            var loaitinhtrang = AutoMapper.Mapper.Map<LOAITINHTRANG>(model);
+            db.LOAITINHTRANGs.Add(loaitinhtrang);
             db.SaveChangesAsync();
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
@@ -70,20 +68,20 @@ namespace QLKS.Controllers
             {
                 return RedirectToAction("List");
             }
-            var khachhang = db.KHACHHANGs.Find(id);
-            if(khachhang == null)
+            var loaitinhtrang = db.LOAITINHTRANGs.Find(id);
+            if (loaitinhtrang == null)
             {
                 TempData["Message"] = "Không tìm thấy khách hàng này";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
             //prepare model
-            var khachhangModel = AutoMapper.Mapper.Map<KhachHangModel>(khachhang);
-            return View(khachhangModel);
+            var loaiTinhTrangModel = AutoMapper.Mapper.Map<LoaiTinhTrangModel>(loaitinhtrang);
+            return View(loaiTinhTrangModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(KhachHangModel model)
+        public ActionResult Edit(LoaiTinhTrangModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -91,8 +89,8 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Edit", model);
             }
-            var item = db.KHACHHANGs.Where(c => c.ID == model.ID).FirstOrDefault();
-            if(item == null)
+            var item = db.LOAITINHTRANGs.Where(c => c.ID == model.ID).FirstOrDefault();
+            if (item == null)
             {
                 TempData["Message"] = "Có lỗi xảy ra";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
@@ -109,10 +107,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var khachhang = db.KHACHHANGs.Find(id);
-            if (khachhang != null)
+            var loaitinhtrang = db.LOAITINHTRANGs.Find(id);
+            if (loaitinhtrang != null)
             {
-                db.KHACHHANGs.Remove(khachhang);
+                db.LOAITINHTRANGs.Remove(loaitinhtrang);
                 db.SaveChangesAsync();
                 //Thông báo
                 TempData["Message"] = "Xóa khách hàng thành công";
@@ -126,6 +124,6 @@ namespace QLKS.Controllers
                 return Json("error");
             }
         }
-    
+
     }
 }

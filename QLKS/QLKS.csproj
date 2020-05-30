@@ -146,6 +146,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\LoaiTinhTrangController.cs" />
     <Compile Include="Controllers\ThuePhongController.cs" />
     <Compile Include="Controllers\DichVuController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Models\DichVuModel.cs" />
     <Compile Include="Models\KhachHangModel.cs" />
     <Compile Include="Models\LoaiPhongModel.cs" />
+    <Compile Include="Models\LoaiTinhTrangModel.cs" />
     <Compile Include="Models\NguoiDungModel.cs" />
     <Compile Include="Models\NhomNguoiDungModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
@@ -188,6 +190,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\KhachHangValidator.cs" />
     <Compile Include="Validators\LoaiPhongValidator.cs" />
+    <Compile Include="Validators\LoaiTinhTrangValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -366,6 +369,10 @@
     <Content Include="Views\DichVu\Create.cshtml" />
     <Content Include="Views\DichVu\_CreateOrUpdate.cshtml" />
     <Content Include="Views\DichVu\Edit.cshtml" />
+    <Content Include="Views\LoaiTinhTrang\List.cshtml" />
+    <Content Include="Views\LoaiTinhTrang\Create.cshtml" />
+    <Content Include="Views\LoaiTinhTrang\Edit.cshtml" />
+    <Content Include="Views\LoaiTinhTrang\_CreateOrUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />
