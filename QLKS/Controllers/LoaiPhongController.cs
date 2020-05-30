@@ -1,4 +1,5 @@
-﻿using QLKS.Domain;
+﻿using AutoMapper;
+using QLKS.Domain;
 using QLKS.Models;
 using System;
 using System.Collections.Generic;
@@ -15,20 +16,42 @@ namespace QLKS.Controllers
 		// GET: LoaiPhong/List
 		public ActionResult List()
 		{
-			ViewBag.Menu = "LoaiPhong";
 			return View(db.LOAIPHONGs.ToList());
 		}
 
+		[HttpPost]
+		public ActionResult PopulateLoaiPhong()
+		{
+			var danhSachLoaiPhong = db.LOAIPHONGs.Select(c => new
+			{
+				ma = c.ma,
+				ten = c.tenloaiphong,
+				anh = c.anh,
+				sogiuong = c.giuong,
+				thongtin = c.thongtin,
+				uid = c.ID
+			}).ToList();
+			var result = new { data = danhSachLoaiPhong };
+			return Json(result);
+		}
+
+
 		public ActionResult Create()
 		{
-			return View();
+			var loaiPhongModel = new LoaiPhongModel();
+			var maxId = db.LOAIPHONGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
+			var newId = (maxId + 1).ToString().PadLeft(7, '0');
+			loaiPhongModel.ma = "LP" + "-" + newId;
+			return View(loaiPhongModel);
 		}
 
 		[HttpPost]
-		public ActionResult Create(LOAIPHONG model, HttpPostedFileBase UploadImage)
+		public ActionResult Create(LoaiPhongModel model, HttpPostedFileBase UploadImage)
 		{
 			if (!ModelState.IsValid)
 			{
+				TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
+				TempData["NotiType"] = "success"; //success là class trong bootstrap
 				return View("Create", model);
 			}
 			if (UploadImage != null)
@@ -46,22 +69,34 @@ namespace QLKS.Controllers
 					ModelState.AddModelError("", "lỗi dữ liệu ảnh !");
 				}
 			}
-			db.LOAIPHONGs.Add(model);
+			var loaiphong = AutoMapper.Mapper.Map<LOAIPHONG>(model);
+			db.LOAIPHONGs.Add(loaiphong);
 			db.SaveChanges();
 			TempData["ThongBao"] = "Thêm mới thành công";
 			return RedirectToAction("List");
 		}
 
-		public ActionResult Edit(int id)
+		public ActionResult Edit(int? id)
 		{
-			return View(db.LOAIPHONGs.FirstOrDefault(i => i.ID == id));
+			if (id == null)
+			{
+				return RedirectToAction("List");
+			}
+			var loaiphong = db.LOAIPHONGs.Find(id);
+			if (loaiphong== null)
+			{
+				TempData["Message"] = "Không thấy loại phòng này";
+				TempData["NotiType"] = "danger"; //success là class trong bootstrap
+				return RedirectToAction("List");
+			}
+			//prepare model
+			var loaiPhongModel = AutoMapper.Mapper.Map<LoaiPhongModel>(loaiphong);
+			return View(loaiPhongModel);
 		}
 
 		[HttpPost]
-		public ActionResult Edit(LOAIPHONG model, HttpPostedFileBase UploadImage)
+		public ActionResult Edit(LoaiPhongModel model, HttpPostedFileBase UploadImage)
 		{
-			//try
-			//{
 			if (ModelState.IsValid)
 			{
 				if (UploadImage != null)
@@ -71,7 +106,6 @@ namespace QLKS.Controllers
 						string fileName = Path.GetFileName(DateTime.Now.ToString("ddMMyyyy_hhmmss_tt_") + "" + UploadImage.FileName);
 						string path = Path.Combine(Server.MapPath("~/Content/imgLoaiPhong"), fileName);
 						UploadImage.SaveAs(path);
-						//UploadImage.SaveAs(Server.MapPath("/") + "/Content/imgLoaiPhong/" + DateTime.Now.ToString("ddMMyyyy_hhmmss_tt_") + UploadImage.FileName);
 						model.anh = fileName;
 					}
 					else
@@ -79,29 +113,46 @@ namespace QLKS.Controllers
 						ModelState.AddModelError("", "lỗi dữ liệu ảnh !");
 					}
 				}
-				var loaiPhong = db.LOAIPHONGs.Find(model.ID);
-				loaiPhong.ma = model.ma;//gia loai phong
-				loaiPhong.anh = model.anh;
-				loaiPhong.dientich = model.dientich;
-				loaiPhong.giuong = model.giuong;
-				loaiPhong.nguoilon = model.nguoilon;
-				loaiPhong.trecon = model.trecon;
-				loaiPhong.khungnhin = model.khungnhin;
-				loaiPhong.tenloaiphong = model.tenloaiphong;
-				loaiPhong.thongtin = model.thongtin;
-				db.SaveChanges();
-
+				var item = db.LOAIPHONGs.Where(c => c.ID == model.ID).FirstOrDefault();
+				if (item == null)
+				{
+					TempData["Message"] = "Có lỗi xảy ra";
+					TempData["NotiType"] = "danger"; //success là class trong bootstrap
+					return RedirectToAction("List");
+				}
+				item = Mapper.Map(model, item);
+				db.SaveChangesAsync();
+				TempData["Message"] = "Cập nhật thành công";
+				TempData["NotiType"] = "success"; //success là class trong bootstrap
+				return RedirectToAction("List");
 			}
-			return RedirectToAction("List");
+			else
+			{
+				TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
+				TempData["NotiType"] = "danger"; //success là class trong bootstrap
+				return View("Edit", model);
+			}
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public ActionResult Delete(int id)
 		{
-			var loaiPhong = db.LOAIPHONGs.Find(id);
-			db.LOAIPHONGs.Remove(loaiPhong);
-			db.SaveChanges();
-			return RedirectToAction("List");
+			var loaiphong = db.LOAIPHONGs.Find(id);
+			if (loaiphong != null)
+			{
+				db.LOAIPHONGs.Remove(loaiphong);
+				db.SaveChangesAsync();
+				//Thông báo
+				TempData["Message"] = "Xóa loại phòng thành công";
+				TempData["NotiType"] = "success";
+				return Json("ok");
+			}
+			else
+			{
+				TempData["Message"] = "Đã có lỗi xảy ra";
+				TempData["NotiType"] = "danger"; 
+				return Json("error");
+			}
 		}
 	}
 }

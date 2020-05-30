@@ -3,7 +3,6 @@ using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using QLKS.Domain;
 using QLKS.Models;
-using QLKS.Services;
 using QLKS.Validators;
 using System;
 using System.Collections.Generic;
@@ -42,7 +41,6 @@ namespace QLKS.Controllers
 
         public ActionResult Create()
         {
-
             var khachHangModel = new KhachHangModel();
             var maxId = db.KHACHHANGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
@@ -76,6 +74,8 @@ namespace QLKS.Controllers
             var khachhang = db.KHACHHANGs.Find(id);
             if(khachhang == null)
             {
+                TempData["Message"] = "Không tìm thấy khách hàng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
             //prepare model
@@ -111,12 +111,21 @@ namespace QLKS.Controllers
         public ActionResult Delete(int id)
         {
             var khachhang = db.KHACHHANGs.Find(id);
-            db.KHACHHANGs.Remove(khachhang);
-            db.SaveChangesAsync();
-            //Thông báo
-            TempData["Message"] = "Xóa khách hàng thành công";
-            TempData["NotiType"] = "success"; //success là class trong bootstrap
-            return Json("ok");
+            if (khachhang != null)
+            {
+                db.KHACHHANGs.Remove(khachhang);
+                db.SaveChangesAsync();
+                //Thông báo
+                TempData["Message"] = "Xóa khách hàng thành công";
+                TempData["NotiType"] = "success";
+                return Json("ok");
+            }
+            else
+            {
+                TempData["Message"] = "Có lỗi xảy ra";
+                TempData["NotiType"] = "danger";
+                return Json("error");
+            }
         }
     
     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Web;
-using FluentValidation;
+﻿using FluentValidation;
 using QLKS.Models;
 
 namespace QLKS.Validators
