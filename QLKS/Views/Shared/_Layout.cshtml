@@ -1,5 +1,4 @@
 ﻿@using QLKS.Models
-@using QLKS.Services
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,16 +10,17 @@
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.4/css/responsive.bootstrap4.min.css" />
+    <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/responsive.bootstrap4.min.css" rel="stylesheet" />
 
 </head>
 <body style="display:flex; flex-direction: column;">
-    <nav class="sb-topnav navbar sticky-top navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.html">Quản lý khách sạn</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
+    <nav id="headroom" class="sb-topnav navbar navbar-expand navbar-dark bg-superdark card-shadow-1">
+        <a class="navbar-brand font-weight-bold" href="index.html">Quản lý khách sạn</a>
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
-        </button><!-- Navbar Search-->
+        </button>
+    <!-- Navbar Search-->
         <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
 
         </div>
@@ -37,8 +37,8 @@
         </ul>
     </nav>
     <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div id="layoutSidenav_nav" class="card-shadow-2">
+            <nav class="sb-sidenav accordion sb-sidenav-dark card-shadow-2" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Thống kê</div>
@@ -115,16 +115,16 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.4/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.4/js/responsive.bootstrap4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-    @*normalizing text*@
-    @*<script src="https://unpkg.com/normalize-text"></script>*@
-    <script src="@Url.Content("~/Scripts/bootbox.js")"></script>
-    <script src="@Url.Content("~/Scripts/notify.min.js")"></script>
+    <script src="~/Scripts/jquery.dataTables.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/responsive.bootstrap4.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/Scripts/notify.min.js"></script>
+    <script src="~/Scripts/bootbox.js"></script>
+    <script src="~/Scripts/headroom.js"></script>
     @RenderSection("scripts", required: false)
     @{
         var message = Html.Raw(TempData["Message"]);
@@ -144,7 +144,6 @@
     <script>
         (function ($) {
             "use strict";
-
             // Add active state to sidbar nav links
             var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
             $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
@@ -157,7 +156,7 @@
 
             // Toggle the side navigation
             $("#sidebarToggle").on("click", function (e) {
-                e.preventDefault();
+                //e.preventDefault();
                 $("body").toggleClass("sb-sidenav-toggled");
             });
         })(jQuery);
