@@ -170,7 +170,6 @@
     <Compile Include="Domain\THUEPHONG.cs" />
     <Compile Include="Domain\VATTU.cs" />
     <Compile Include="Extensions\AutoMapperConfig.cs" />
-    <Compile Include="Extensions\StaticString.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -186,8 +185,8 @@
     <Compile Include="Models\QuyenModel.cs" />
     <Compile Include="Models\VatTuModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\KhachHangServices.cs" />
     <Compile Include="Validators\KhachHangValidator.cs" />
-    <Compile Include="Validators\LoaiPhongValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -198,38 +197,24 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DataTable.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
-    <Content Include="Content\imgLoaiPhong\1237-300x194.jpg" />
-    <Content Include="Content\imgLoaiPhong\1237.jpg" />
-    <Content Include="Content\imgLoaiPhong\1509860313_SGMS1845.jpg" />
-    <Content Include="Content\imgLoaiPhong\1509860315_SGMS1830.jpg" />
-    <Content Include="Content\imgLoaiPhong\1512358933__SM24879.jpg" />
-    <Content Include="Content\imgLoaiPhong\30052020_041556_PM_GettyImages-516450576.jpg" />
-    <Content Include="Content\imgLoaiPhong\30052020_042038_PM_github_universe_thumb800.png" />
-    <Content Include="Content\imgLoaiPhong\30052020_043614_PM_GettyImages-516450576.jpg" />
-    <Content Include="Content\imgLoaiPhong\30052020_044254_PM_GettyImages-516450576.jpg" />
-    <Content Include="Content\imgLoaiPhong\30052020_114938_AM_Untitled-1.png" />
-    <Content Include="Content\imgLoaiPhong\img_4.jpg" />
-    <Content Include="Content\imgLoaiPhong\listroom_1-600x400.jpg" />
-    <Content Include="Content\imgLoaiPhong\room-1-300x300.jpg" />
-    <Content Include="Content\imgLoaiPhong\room-3.jpg" />
-    <Content Include="Content\imgLoaiPhong\thumbnail-600x400.jpg" />
     <Content Include="Content\responsive.bootstrap4.min.css" />
-    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\DataTable.js" />
+    <Content Include="Scripts\DataTableBootstrap.js" />
     <Content Include="Scripts\dataTables.bootstrap4.js" />
     <Content Include="Scripts\dataTables.responsive.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
     <Content Include="Scripts\esm\popper.min.js" />
-    <Content Include="Scripts\headroom.js" />
     <Content Include="Scripts\index.js.flow" />
     <Content Include="Scripts\esm\popper.min.js.map" />
     <Content Include="Scripts\esm\popper.js.map" />
@@ -253,8 +238,9 @@
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.5.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.dataTables.js" />
+    <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\notify.min.js" />
@@ -375,7 +361,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Fonts\" />
+    <Folder Include="Content\imgLoaiPhong\" />
     <Folder Include="Views\Phong\" />
   </ItemGroup>
   <ItemGroup>

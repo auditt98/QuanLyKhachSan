@@ -10773,7 +10773,6 @@ body {
 
 .sb-sidenav-dark {
     background-color: #212529;
-    /*color: white;*/
     color: rgba(255, 255, 255, 0.5);
 }
 
@@ -10798,8 +10797,7 @@ body {
         }
 
         .sb-sidenav-dark .sb-sidenav-menu .nav-link.active {
-            color: white;
-            background-color: #e53935;
+            color: #fff;
         }
 
             .sb-sidenav-dark .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
@@ -10822,10 +10820,6 @@ body {
     .sb-sidenav-light .sb-sidenav-menu .nav-link {
         color: #212529;
     }
-    
-    .sb-sidenav-blue .sb-sidenav-menu .nav-link{
-        color: white;
-    }
 
         .sb-sidenav-light .sb-sidenav-menu .nav-link .sb-nav-link-icon {
             color: #adb5bd;
@@ -10836,35 +10830,20 @@ body {
         }
 
         .sb-sidenav-light .sb-sidenav-menu .nav-link:hover {
-            color: #ff1744;
-            font-weight: bold;
+            color: #007bff;
         }
 
         .sb-sidenav-light .sb-sidenav-menu .nav-link.active {
-            color: #000000;
-            font-weight: bold;
+            color: #007bff;
         }
 
             .sb-sidenav-light .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
-                color: #ff1744;
-                font-weight: bold;
+                color: #007bff;
             }
-
-.sb-sidenav-blue .sb-sidenav-menu .nav-link.active {
-    color: white;
-    background-color: #1565c0;
-}
-
-
 
     .sb-sidenav-light .sb-sidenav-footer {
         background-color: #e9ecef;
     }
-
-.sb-sidenav-blue {
-    background-color: #3949ab !important;
-    color: white !important;
-}
 
 /**/
 
@@ -10875,7 +10854,6 @@ body {
     margin-right: auto;
     padding-top: 20px;
 }
-
-.bg-superdark {
-    background-color: #212529;
+#layoutSidenav_nav {
+    box-shadow: 0 19px 38px rgba(0,0,0,0.3), 0 15px 12px rgba(0,0,0,0.2) !important;
 }
