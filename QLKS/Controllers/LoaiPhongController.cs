@@ -30,7 +30,7 @@ namespace QLKS.Controllers
 				sogiuong = c.giuong,
 				thongtin = c.thongtin,
 				uid = c.ID
-			}).ToList();
+			}).OrderBy(c => c.uid).ToList();
 			var result = new { data = danhSachLoaiPhong };
 			return Json(result);
 		}

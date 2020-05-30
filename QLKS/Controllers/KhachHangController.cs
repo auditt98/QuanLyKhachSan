@@ -34,7 +34,7 @@ namespace QLKS.Controllers
                 sdt = c.sodienthoai,
                 email = c.email,
                 uid = c.ID
-            }).ToList();
+            }).OrderBy(c => c.uid).ToList();
             var result = new { data = danhSachKhachHang };
             return Json(result);
         }
