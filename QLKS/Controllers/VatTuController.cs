@@ -1,21 +1,20 @@
-﻿using AutoMapper;
-using QLKS.Domain;
+﻿using QLKS.Domain;
 using QLKS.Models;
 using QLKS.Services;
+using System.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Web;
-using System.Web.Mvc;
+using AutoMapper;
 
 namespace QLKS.Controllers
 {
-    public class PhongController : Controller
+    public class VatTuController : Controller
     {
-        // GET: Phong
+        // GET: VatTu
         private QLKSContext db = new QLKSContext();
-        private LoaiPhongServices _loaiPhongServices = new LoaiPhongServices();
+        private PhongServices _phongServices = new PhongServices();
 
         public ActionResult List()
         {
@@ -23,34 +22,35 @@ namespace QLKS.Controllers
         }
 
         [HttpPost]
-        public ActionResult PopulatePhong()
+        public ActionResult PopulateVatTu()
         {
-            var allPhong = db.PHONGs.ToList();
-            var danhSachPhong = allPhong.Select(c => new
+            var allVatTu = db.VATTUs.ToList();
+            var danhSachVatTu = allVatTu.Select(c => new
             {
-                ma = c.ma,
-                tenloaiphong = c.LOAIPHONG.tenloaiphong,
-                gia = c.giathue,
-                sotang = c.sotang,
+                ten = c.ten,
+                ngaymua = c.ngaymua,
+                ngaysudung = c.ngaysudung,
+                gia = c.sotien,
+                phong = c.PHONG.ma,
+                soluong = c.soluong,
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
 
-            var result = new { data = danhSachPhong };
+            var result = new { data = danhSachVatTu };
             return Json(result);
         }
 
         public ActionResult Create()
         {
-            var phongModel = new PhongModel();
-            var maxId = db.PHONGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
-            var newId = (maxId + 1).ToString().PadLeft(4, '0');
-            phongModel.ma = "P" + " " + newId;
-            phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(-1);
-            return View(phongModel);
+            var vatTuModel = new VatTuModel();
+            //prepare select list phong
+            vatTuModel.DanhSachPhong = _phongServices.PrepareSelectListPhong(-1);
+            //phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(-1);
+            return View(vatTuModel);
         }
 
         [HttpPost]
-        public ActionResult Create(PhongModel model)
+        public ActionResult Create(VatTuModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -58,8 +58,8 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            var phong = AutoMapper.Mapper.Map<PHONG>(model);
-            db.PHONGs.Add(phong);
+            var vattu = AutoMapper.Mapper.Map<VATTU>(model);
+            db.VATTUs.Add(vattu);
             db.SaveChangesAsync();
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
@@ -72,21 +72,22 @@ namespace QLKS.Controllers
             {
                 return RedirectToAction("List");
             }
-            var phong = db.PHONGs.Find(id);
-            if (phong == null)
+            var vattu = db.VATTUs.Find(id);
+            if (vattu == null)
             {
-                TempData["Message"] = "Không tìm thấy phòng này";
+                TempData["Message"] = "Không tìm thấy vật tư này";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
             //prepare model
-            var phongModel = AutoMapper.Mapper.Map<PhongModel>(phong);
-            phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(phong.ID);
-            return View(phongModel);
+            var vatTuModel = AutoMapper.Mapper.Map<VatTuModel>(vattu);
+            //get danhsachphong
+            vatTuModel.DanhSachPhong = _phongServices.PrepareSelectListPhong(vattu.PHONG_ID);
+            return View(vatTuModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(PhongModel model)
+        public ActionResult Edit(VatTuModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -94,7 +95,7 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Edit", model);
             }
-            var item = db.PHONGs.Where(c => c.ID == model.ID).FirstOrDefault();
+            var item = db.VATTUs.Where(c => c.ID == model.ID).FirstOrDefault();
             if (item == null)
             {
                 TempData["Message"] = "Có lỗi xảy ra";
@@ -108,18 +109,16 @@ namespace QLKS.Controllers
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
         }
-
-
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var phong = db.PHONGs.Find(id);
-            if (phong != null)
+            var vattu = db.VATTUs.Find(id);
+            if (vattu != null)
             {
-                db.PHONGs.Remove(phong);
+                db.VATTUs.Remove(vattu);
                 db.SaveChangesAsync();
                 //Thông báo
-                TempData["Message"] = "Xóa phòng thành công";
+                TempData["Message"] = "Xóa vật tư thành công";
                 TempData["NotiType"] = "success";
                 return Json("ok");
             }

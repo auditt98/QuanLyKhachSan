@@ -2,8 +2,6 @@
 
 @{
     ViewBag.Title = "Danh mục khách hàng";
-    ViewBag.Menu = "KhachHang";
-
 }
 
     <div class="content-header box clearfix">
@@ -76,7 +74,6 @@
                         targets: [5],
                         className: "text-center"
                     }],
-                ,
                 language: {
                     emptyTable: "Bảng không có dữ liệu",
                     info: "Hiển thị từ bản ghi _START_ tới _END_ trong tổng số _TOTAL_ bản ghi",
@@ -96,7 +93,6 @@
         });
 
         $('#KeySearch').on('keyup', function () {
-            console.log(this.value)
             $('#table_dataTable').DataTable().search(this.value).draw();
         });
     </script>

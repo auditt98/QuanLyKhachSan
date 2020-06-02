@@ -1,12 +1,11 @@
 ﻿@model KhachHangModel
 @{
     ViewBag.Title = "Thêm mới khách hàng";
-    ViewBag.Menu = "KhachHang";
 }
     <form action="/KhachHang/Create" method="post">
         <div class="card mb-4">
             <h6 class="card-header">
-                Thêm mới
+                @ViewBag.Title
                 <small>
                     <i class="fa fa-arrow-circle-left"></i>
                     <a href="/KhachHang/List">Quay lại danh sách</a>

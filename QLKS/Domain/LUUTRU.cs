@@ -15,6 +15,7 @@ namespace QLKS.Domain
 
         public int? NGUOIDUNG_ID { get; set; }
 
+        [StringLength(50)]
         public string loaihanhdong { get; set; }
 
         public string ghichu { get; set; }

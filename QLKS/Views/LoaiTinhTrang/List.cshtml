@@ -2,8 +2,6 @@
 
 @{
     ViewBag.Title = "Danh mục loại tình trạng";
-    ViewBag.Menu = "LoaiTinhTrang";
-
 }
 
 <div class="content-header box clearfix">
@@ -89,7 +87,6 @@
         });
 
         $('#KeySearch').on('keyup', function () {
-            console.log(this.value)
             $('#table_dataTable').DataTable().search(this.value).draw();
         });
     </script>

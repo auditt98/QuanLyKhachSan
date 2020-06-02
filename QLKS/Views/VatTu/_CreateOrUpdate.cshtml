@@ -1,0 +1,47 @@
+﻿@model VatTuModel
+
+@Html.AntiForgeryToken()
+
+<div class="form-group row">
+    @Html.LabelFor(model => model.ten, "Tên vật tư:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.ten, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ten, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.sotien, "Số tiền:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.sotien, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.sotien, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row">
+    @Html.LabelFor(model => model.PHONG_ID, "Phòng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        @Html.DropDownListFor(model => model.PHONG_ID, new SelectList(Model.DanhSachPhong, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.PHONG_ID, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.soluong, "Số lượng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.soluong, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.soluong, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
+<div class="form-group row">
+    @Html.LabelFor(model => model.ngaymua, "Ngày mua:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        <input type="text" name="ngaymua" class="datepicker-here form-control" data-languague="vi" />
+        @*@Html.EditorFor(model => model.ngaymua, new { htmlAttributes = new { @class = "form-control datepicker-here", @data-language =  } })*@
+        @Html.ValidationMessageFor(model => model.ngaymua, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.ngaysudung, "Ngày sử dụng:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        <input type="text" name="ngaysudung" class="datepicker-here form-control" data-languague="vi" />
+        @*@Html.EditorFor(model => model.ngaysudung, new { htmlAttributes = new { @class = "form-control" } })*@
+        @Html.ValidationMessageFor(model => model.ngaysudung, "", new { @class = "text-danger" })
+    </div>
+</div>

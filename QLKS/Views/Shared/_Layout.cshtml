@@ -1,4 +1,5 @@
 ﻿@using QLKS.Models
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
-
+    <link href="~/Content/datepicker.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
@@ -20,7 +21,7 @@
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
         </button>
-    <!-- Navbar Search-->
+        <!-- Navbar Search-->
         <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
 
         </div>
@@ -110,6 +111,17 @@
                 </div>
             </nav>
         </div>
+        <div class="position-fixed" style="z-index: 1000; position: sticky; bottom: 20px; right: 20px; width: 300px;">
+            <div class="toast ml-auto" role="alert" data-delay="5000">
+                <div class="toast-header bg-@Html.Raw(TempData["NotiType"])">
+                    <strong class="mr-auto font-weight-bold text-white">Thông báo</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="toast-body"> @Html.Raw(TempData["Message"]) </div>
+            </div>
+        </div>
         <div id="layoutSidenav_content">
             @RenderBody()
         </div>
@@ -128,41 +140,61 @@
     <script src="~/Scripts/notify.min.js"></script>
     <script src="~/Scripts/bootbox.js"></script>
     <script src="~/Scripts/headroom.js"></script>
+    <script src="~/Scripts/datepicker.min.js"></script>
+    <script>
+
+        $.fn.datepicker.language['vi'] = {
+    days: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
+    daysShort: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
+    daysMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+    months: ["Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu", "Tháng bảy", "Tháng tám", "Tháng chín", "Tháng mười", "Tháng mười một", "Tháng mười hai"],
+    monthsShort: ["Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
+    today: 'Hôm nay',
+    clear: 'Xóa',
+    dateFormat: 'dd/mm/yyyy',
+    timeFormat: 'hh:ii aa',
+    firstDay: 1
+};
+        $('.datepicker-here').datepicker({
+    language: 'vi'
+})
+    </script>
     @RenderSection("scripts", required: false)
     @{
-        var message = Html.Raw(TempData["Message"]);
+        var message = String.IsNullOrEmpty(Html.Raw(TempData["Message"]).ToString());
         var type = Html.Raw(TempData["NotiType"]);
-        if (message != null)
+        if (message == false)
         {
             <script>
-                $.notify("@message", {
-                    className: "@type",
-                    position: "right bottom",
-                    showDuration: 300,
-                    hideDuration: 200
-                });
+                $('.toast').toast('show')
             </script>
         }
     }
     <script>
-        (function ($) {
-            "use strict";
-            // Add active state to sidbar nav links
-            var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
-            $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
-                if ("@ViewBag.Menu" != null && "@ViewBag.Menu" != "") {
-                    if (this.href.toString().search("@ViewBag.Menu") != -1) {
-                        $(this).addClass("active");
-                    }
-                }
-            });
+    (function ($) {
+        "use strict";
+        // Add active state to sidbar nav links
+        var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
 
-            // Toggle the side navigation
-            $("#sidebarToggle").on("click", function (e) {
-                //e.preventDefault();
-                $("body").toggleClass("sb-sidenav-toggled");
-            });
-        })(jQuery);
+        $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
+            var url = window.location.pathname.split("/");
+            var controller = url[1];
+            var link = this.href.toString().split('/');
+            var linkController = link[3];
+            if(controller == linkController){
+                $(this).addClass("active");
+            }
+        });
+        $("#sidebarToggle").on("click", function (e) {
+            e.preventDefault();
+            $("body").toggleClass("sb-sidenav-toggled");
+        });
+
+    })(jQuery);
+    
+        function toVND(data){
+             return data.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+        };
     </script>
 </body>
 </html>

@@ -27,7 +27,7 @@ namespace QLKS.Controllers
 				ma = c.ma,
 				ten = c.tenloaiphong,
 				anh = c.anh,
-				sogiuong = c.giuong,
+				giuong = c.giuong,
 				thongtin = c.thongtin,
 				uid = c.ID
 			}).OrderBy(c => c.uid).ToList();
@@ -72,7 +72,8 @@ namespace QLKS.Controllers
 			var loaiphong = AutoMapper.Mapper.Map<LOAIPHONG>(model);
 			db.LOAIPHONGs.Add(loaiphong);
 			db.SaveChanges();
-			TempData["ThongBao"] = "Thêm mới thành công";
+			TempData["Message"] = "Thêm mới thành công";
+			TempData["NotiType"] = "success";
 			return RedirectToAction("List");
 		}
 
@@ -137,11 +138,19 @@ namespace QLKS.Controllers
 		[HttpPost]
 		public ActionResult Delete(int id)
 		{
-			var loaiphong = db.LOAIPHONGs.Find(id);
+			var loaiphong = db.LOAIPHONGs.Where(c => c.ID == id).FirstOrDefault();
 			if (loaiphong != null)
 			{
-				db.LOAIPHONGs.Remove(loaiphong);
-				db.SaveChangesAsync();
+				try
+				{
+					db.LOAIPHONGs.Remove(loaiphong);
+					db.SaveChanges();
+				}
+				catch
+				{
+					throw new Exception();
+				}
+
 				//Thông báo
 				TempData["Message"] = "Xóa loại phòng thành công";
 				TempData["NotiType"] = "success";

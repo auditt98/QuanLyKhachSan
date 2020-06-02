@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace QLKS.Models
 {
@@ -22,5 +23,7 @@ namespace QLKS.Models
         public int? sotien { get; set; }
 
         public int? PHONG_ID { get; set; }
+
+        public IEnumerable<SelectListItem> DanhSachPhong { get; set; }
     }
 }

@@ -1,7 +1,5 @@
-﻿@model IEnumerable<QLKS.Domain.LOAIPHONG>
-
-@{
-    ViewBag.Title = "Danh Mục Loại Phòng";
+﻿@{
+    ViewBag.Title = "Danh mục vật tư";
 }
 
 <div class="content-header box clearfix">
@@ -9,7 +7,7 @@
         @ViewBag.Title
     </h5>
     <div class="float-right" style="margin-bottom:5px;">
-        <a href="/LoaiPhong/Create" class="btn btn-success">
+        <a href="/VatTu/Create" class="btn btn-success">
             <i class="fa fa-plus-square"></i>
             <span class="text-white">Thêm mới</span>
         </a>
@@ -29,51 +27,53 @@
 </div>
 
 <div class="box">
-    <table id="table_dataTable" class="table table-striped table-bordered dt-responsive display nowrap" >
+    <table id="table_dataTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
         <thead>
             <tr>
-                <th class="text-center">Số thứ tự</th>
-                <th class="text-center">Mã loại phòng</th>
-                <th class="text-center">Tên loại phòng</th>
-                <th class="text-center">Ảnh</th>
-                <th class="text-center">Số giường</th>
+                <th class="text-center">Tên</th>
+                <th class="text-center">Ngày mua</th>
+                <th class="text-center">Ngày sử dụng</th>
+                <th class="text-center">Số lượng</th>
+                <th class="text-center">Giá</th>
+                <th class="text-center">Phòng</th>
                 <th class="text-center">Thao tác</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
+
 </div>
+
 @section scripts{
     <script>
         $(document).ready(function () {
             $('#table_dataTable').DataTable({
                 ajax: {
-                    "url": "/LoaiPhong/PopulateLoaiPhong/",
+                    "url": "/VatTu/PopulateVatTu/",
                     method: "POST"
                 },
                 responsive: true,
                 columns: [
-                    { data: "uid"},
-                    { "data": "ma" },
                     { "data": "ten" },
-                    {
-                        "data": "anh",
-                        "render": function (data, type, row) {
-                            console.log(data);
-                            return "<img width='150' height='100' src='../Content/imgLoaiPhong/" + data + "'/>"
-                        }
+                    { "data": "ngaymua" },
+                    { "data": "ngaysudung" },
+                    { "data": "soluong" },
+                    { "data": "gia",
+                      "render" :  function (data, type, row) {
+                                return toVND(data);  
+                            }
                     },
-                    { "data": "giuong" },
+                    { "data": "phong" },
                     {
                         "data": "uid",
                         "render": function (data, type, row) {
-                            return "<a class='text-center' href='/LoaiPhong/Edit/" + data + "'><i class='fas fa-pencil-alt'></i></a>"
+                            return "<a class='text-center' href='/VatTu/Edit/" + data + "'><i class='fas fa-pencil-alt'></i></a>"
                         }
                     }
                 ],
                 columnDefs: [
                     {
-                        targets: [5],
+                        targets: [6],
                         className: "text-center"
                     }],
                 language: {
@@ -100,3 +100,5 @@
     </script>
 
 }
+
+

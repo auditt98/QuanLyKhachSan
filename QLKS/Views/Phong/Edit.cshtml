@@ -1,14 +1,14 @@
-﻿@model LoaiTinhTrangModel
+﻿@model PhongModel
 @{
-    ViewBag.Title = "Sửa thông tin loại tình trạng";
+    ViewBag.Title = "Sửa thông tin phòng";
 }
-<form action="/LoaiTinhTrang/Edit" method="post">
+<form action="/Phong/Edit" method="post">
     <div class="card mb-4">
         <h6 class="card-header">
-            Sửa thông tin
+            @ViewBag.Title
             <small>
                 <i class="fa fa-arrow-circle-left"></i>
-                <a href="/LoaiTinhTrang/List">Quay lại danh sách</a>
+                <a href="/Phong/List">Quay lại danh sách</a>
             </small>
             <div class="btn btn-danger" id="btnDelete" style="float:right;margin-right:5px; ">
                 <i class="fas fa-trash" style="margin-right:5px;"></i>
@@ -40,12 +40,12 @@
                     }
                     console.log(_data)
                     $.ajax({
-                        url: "/LoaiTinhTrang/Delete",
+                        url: "/Phong/Delete",
                         method: "POST",
                         data: _data,
                         success: function (data) {
                             if (data == "ok") {
-                                window.location.href = "/LoaiTinhTrang/List"
+                                window.location.href = "/Phong/List"
                             }
                         }
                     })
@@ -55,4 +55,4 @@
         })
     </script>
 
-}
+} 

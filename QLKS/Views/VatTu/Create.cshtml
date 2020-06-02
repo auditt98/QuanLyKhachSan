@@ -1,16 +1,14 @@
-﻿@model LoaiPhongModel
-
+﻿@model VatTuModel
 @{
-    ViewBag.Title = "Thêm mới loại phòng";
+    ViewBag.Title = "Thêm mới vật tư";
 }
-
-<form action="/LoaiPhong/Create" method="post" enctype="multipart/form-data">
+<form action="/VatTu/Create" method="post">
     <div class="card mb-4">
         <h6 class="card-header">
             @ViewBag.Title
             <small>
                 <i class="fa fa-arrow-circle-left"></i>
-                <a href="/LoaiPhong/List">Quay lại danh sách</a>
+                <a href="/VatTu/List">Quay lại danh sách</a>
             </small>
             <button type="submit" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
                 <i class="fas fa-save" style="margin-right:5px;"></i>

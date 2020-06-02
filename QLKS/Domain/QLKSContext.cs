@@ -11,7 +11,6 @@ namespace QLKS.Domain
             : base("name=QLKSContext")
         {
         }
-
         public virtual DbSet<CHITIETDATPHONG> CHITIETDATPHONGs { get; set; }
         public virtual DbSet<CHITIETTHUEPHONG> CHITIETTHUEPHONGs { get; set; }
         public virtual DbSet<DATPHONG> DATPHONGs { get; set; }
@@ -54,8 +53,7 @@ namespace QLKS.Domain
             modelBuilder.Entity<DATPHONG>()
                 .HasMany(e => e.CHITIETDATPHONGs)
                 .WithRequired(e => e.DATPHONG)
-                .HasForeignKey(e => e.DATPHONG_ID)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.DATPHONG_ID);
 
             modelBuilder.Entity<DICHVU>()
                 .Property(e => e.ma)
@@ -64,8 +62,7 @@ namespace QLKS.Domain
             modelBuilder.Entity<DICHVU>()
                 .HasMany(e => e.SUDUNGDICHVUs)
                 .WithRequired(e => e.DICHVU)
-                .HasForeignKey(e => e.DICHVU_ID)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.DICHVU_ID);
 
             modelBuilder.Entity<KHACHHANG>()
                 .Property(e => e.ma)
@@ -86,12 +83,14 @@ namespace QLKS.Domain
             modelBuilder.Entity<KHACHHANG>()
                 .HasMany(e => e.DATPHONGs)
                 .WithOptional(e => e.KHACHHANG)
-                .HasForeignKey(e => e.KHACHHANG_ID);
+                .HasForeignKey(e => e.KHACHHANG_ID)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<KHACHHANG>()
                 .HasMany(e => e.THUEPHONGs)
                 .WithOptional(e => e.KHACHHANG)
-                .HasForeignKey(e => e.KHACHHANG_ID);
+                .HasForeignKey(e => e.KHACHHANG_ID)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<LOAIPHONG>()
                 .Property(e => e.ma)
@@ -105,7 +104,8 @@ namespace QLKS.Domain
             modelBuilder.Entity<LOAIPHONG>()
                 .HasMany(e => e.PHONGs)
                 .WithOptional(e => e.LOAIPHONG)
-                .HasForeignKey(e => e.LOAIPHONG_ID);
+                .HasForeignKey(e => e.LOAIPHONG_ID)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<LOAITINHTRANG>()
                 .Property(e => e.ma)
@@ -114,7 +114,8 @@ namespace QLKS.Domain
             modelBuilder.Entity<LOAITINHTRANG>()
                 .HasMany(e => e.PHONGs)
                 .WithOptional(e => e.LOAITINHTRANG)
-                .HasForeignKey(e => e.LOAITINHTRANG_ID);
+                .HasForeignKey(e => e.LOAITINHTRANG_ID)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<NGUOIDUNG>()
                 .Property(e => e.tendangnhap)
@@ -145,7 +146,8 @@ namespace QLKS.Domain
             modelBuilder.Entity<NGUOIDUNG>()
                 .HasMany(e => e.QUYENs)
                 .WithOptional(e => e.NGUOIDUNG)
-                .HasForeignKey(e => e.nguoitao);
+                .HasForeignKey(e => e.nguoitao)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<NGUOIDUNG>()
                 .HasMany(e => e.QUYENs1)
@@ -165,7 +167,8 @@ namespace QLKS.Domain
             modelBuilder.Entity<NGUOIDUNG>()
                 .HasMany(e => e.THUEPHONGs)
                 .WithOptional(e => e.NGUOIDUNG)
-                .HasForeignKey(e => e.NGUOIDUNG_ID);
+                .HasForeignKey(e => e.NGUOIDUNG_ID)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<NHOMNGUOIDUNG>()
                 .Property(e => e.ma)
@@ -174,7 +177,8 @@ namespace QLKS.Domain
             modelBuilder.Entity<NHOMNGUOIDUNG>()
                 .HasMany(e => e.NGUOIDUNGs)
                 .WithOptional(e => e.NHOMNGUOIDUNG)
-                .HasForeignKey(e => e.NHOMNGUOIDUNG_ID);
+                .HasForeignKey(e => e.NHOMNGUOIDUNG_ID)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<NHOMNGUOIDUNG>()
                 .HasMany(e => e.QUYENs)
@@ -188,19 +192,18 @@ namespace QLKS.Domain
             modelBuilder.Entity<PHONG>()
                 .HasMany(e => e.CHITIETDATPHONGs)
                 .WithRequired(e => e.PHONG)
-                .HasForeignKey(e => e.PHONG_ID)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.PHONG_ID);
 
             modelBuilder.Entity<PHONG>()
                 .HasMany(e => e.CHITIETTHUEPHONGs)
                 .WithRequired(e => e.PHONG)
-                .HasForeignKey(e => e.PHONG_ID)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.PHONG_ID);
 
             modelBuilder.Entity<PHONG>()
                 .HasMany(e => e.VATTUs)
                 .WithOptional(e => e.PHONG)
-                .HasForeignKey(e => e.PHONG_ID);
+                .HasForeignKey(e => e.PHONG_ID)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<QUYEN>()
                 .Property(e => e.ma)
@@ -221,20 +224,17 @@ namespace QLKS.Domain
             modelBuilder.Entity<THUEPHONG>()
                 .HasMany(e => e.CHITIETTHUEPHONGs)
                 .WithRequired(e => e.THUEPHONG)
-                .HasForeignKey(e => e.THUEPHONG_ID)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.THUEPHONG_ID);
 
             modelBuilder.Entity<THUEPHONG>()
                 .HasMany(e => e.SUDUNGDICHVUs)
                 .WithRequired(e => e.THUEPHONG)
-                .HasForeignKey(e => e.THUEPHONG_ID)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.THUEPHONG_ID);
 
             modelBuilder.Entity<THUEPHONG>()
                 .HasMany(e => e.THANHTOANs)
                 .WithRequired(e => e.THUEPHONG)
-                .HasForeignKey(e => e.THUEPHONG_ID)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.THUEPHONG_ID);
         }
     }
 }

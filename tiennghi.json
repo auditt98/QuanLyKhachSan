@@ -1,0 +1,24 @@
+{
+  "tiennghi":{
+    "phongtam": {
+      "khantam": false,
+      "guong": false,
+      "maysaytoc": false,
+      "xaphong": false
+    },
+    "giaitri": {
+      "wifi": false,
+      "tv": false,
+      "dienthoai": false
+    },
+    "tienich": {
+      "dieuhoa": false,
+      "dep": false,
+      "tulanh": false
+    },
+    "giaikhat":{
+      "mayphacafe": false,
+      "nuocloc": false,
+    }
+  }
+}
