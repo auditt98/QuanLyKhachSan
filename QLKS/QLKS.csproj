@@ -391,7 +391,7 @@
     <Content Include="Views\VatTu\Create.cshtml" />
     <Content Include="Views\VatTu\Edit.cshtml" />
     <Content Include="Views\VatTu\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\ThuePhong\_ChiTietDatPhong.cshtml" />
+    <Content Include="Views\ThuePhong\_AddNewChiTietThue.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />

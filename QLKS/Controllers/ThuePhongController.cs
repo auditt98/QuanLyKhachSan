@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using QLKS.Domain;
+using QLKS.Models;
+using QLKS.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +12,10 @@ namespace QLKS.Controllers
 {
     public class ThuePhongController : Controller
     {
-        // GET: DatPhong
+        // GET: ThuePhong
+        QLKSContext db = new QLKSContext();
+        LoaiPhongServices _loaiPhongServices = new LoaiPhongServices();
+        PhongServices _phongServices = new PhongServices();
         public ActionResult List()
         {
             return View();
@@ -16,7 +23,11 @@ namespace QLKS.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            var model = new ThuePhongModel();
+            var maxId = db.THUEPHONGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
+            var newId = (maxId + 1).ToString().PadLeft(7, '0');
+            model.ma = "TP" + "-" + newId;
+            return View(model);
         }
 
         public ActionResult Edit()
@@ -24,9 +35,12 @@ namespace QLKS.Controllers
             return View();
         }
 
-        //public ActionResult _AddNewChiTietThue()
-        //{
-
-        //}
+        public ActionResult _AddNewChiTietThue(int? loaiphong, int? phong)
+        {
+            var model = new ChiTietThuePhongModel();
+            model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
+            model.DanhSachPhong = _phongServices.PrepareSelectListPhong(0);
+            return PartialView(model);
+        }
     }
 }

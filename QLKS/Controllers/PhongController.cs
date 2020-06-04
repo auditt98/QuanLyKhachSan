@@ -130,6 +130,18 @@ namespace QLKS.Controllers
                 return Json("error");
             }
         }
+        [HttpPost]
+        public ActionResult ThongKePhong()
+        {
+            var phongtrong = db.PHONGs.Where(x => x.LOAITINHTRANG.ma == "TT-0000000").Count();
+            var phongdattruoc = db.PHONGs.Where(x => x.LOAITINHTRANG.ma == "TT-0000002").Count();
+            var phongban = db.PHONGs.Where(x => x.LOAITINHTRANG.ma == "TT-0000003").Count();
+            var phongdangsudung = db.PHONGs.Where(x => x.LOAITINHTRANG.ma == "TT-0000001").Count();
+
+            var result = new { phongtrong = phongtrong, phongban = phongban, phongdattruoc = phongdattruoc, phongdangsudung = phongdangsudung };
+            var r = Json(result);
+            return r;
+        }
 
 
     }

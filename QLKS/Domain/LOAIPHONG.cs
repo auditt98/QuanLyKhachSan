@@ -9,7 +9,6 @@ namespace QLKS.Domain
     [Table("LOAIPHONG")]
     public partial class LOAIPHONG
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LOAIPHONG()
         {
             PHONGs = new HashSet<PHONG>();
@@ -43,7 +42,6 @@ namespace QLKS.Domain
 
         public string thongtin { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PHONG> PHONGs { get; set; }
     }
 }

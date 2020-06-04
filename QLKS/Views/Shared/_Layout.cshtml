@@ -13,7 +13,26 @@
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="~/Content/responsive.bootstrap4.min.css" rel="stylesheet" />
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/datepicker.min.js"></script>
+    <script>
+        $.fn.datepicker.language['vi'] = {
+            days: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
+            daysShort: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
+            daysMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+            months: ["Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu", "Tháng bảy", "Tháng tám", "Tháng chín", "Tháng mười", "Tháng mười một", "Tháng mười hai"],
+            monthsShort: ["Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
+            today: 'Hôm nay',
+            clear: 'Xóa',
+            dateFormat: 'dd/mm/yyyy',
+            timeFormat: 'hh:ii aa',
+            firstDay: 1
+        };
+        $('.datepicker-here').datepicker({
+            language: 'vi'
+        })
+    </script>
 </head>
 <body style="display:flex; flex-direction: column;">
     <nav id="headroom" class="sb-topnav navbar navbar-expand sticky-top navbar-dark bg-superdark card-shadow-1">
@@ -127,8 +146,7 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
     <script src="~/Scripts/jquery.dataTables.js"></script>
     <script src="~/Scripts/dataTables.bootstrap4.js"></script>
@@ -137,28 +155,7 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/sweetalert.min.js"></script>
-    <script src="~/Scripts/notify.min.js"></script>
-    <script src="~/Scripts/bootbox.js"></script>
-    <script src="~/Scripts/headroom.js"></script>
-    <script src="~/Scripts/datepicker.min.js"></script>
-    <script>
 
-        $.fn.datepicker.language['vi'] = {
-    days: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
-    daysShort: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
-    daysMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-    months: ["Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu", "Tháng bảy", "Tháng tám", "Tháng chín", "Tháng mười", "Tháng mười một", "Tháng mười hai"],
-    monthsShort: ["Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
-    today: 'Hôm nay',
-    clear: 'Xóa',
-    dateFormat: 'dd/mm/yyyy',
-    timeFormat: 'hh:ii aa',
-    firstDay: 1
-};
-        $('.datepicker-here').datepicker({
-    language: 'vi'
-})
-    </script>
     @RenderSection("scripts", required: false)
     @{
         var message = String.IsNullOrEmpty(Html.Raw(TempData["Message"]).ToString());

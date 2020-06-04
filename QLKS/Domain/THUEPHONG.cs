@@ -9,7 +9,6 @@ namespace QLKS.Domain
     [Table("THUEPHONG")]
     public partial class THUEPHONG
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public THUEPHONG()
         {
             CHITIETTHUEPHONGs = new HashSet<CHITIETTHUEPHONG>();
@@ -26,17 +25,14 @@ namespace QLKS.Domain
 
         public int? KHACHHANG_ID { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CHITIETTHUEPHONG> CHITIETTHUEPHONGs { get; set; }
 
         public virtual KHACHHANG KHACHHANG { get; set; }
 
         public virtual NGUOIDUNG NGUOIDUNG { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SUDUNGDICHVU> SUDUNGDICHVUs { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<THANHTOAN> THANHTOANs { get; set; }
     }
 }

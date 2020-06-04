@@ -20,7 +20,7 @@ namespace QLKS.Services
                 Selected = c.ID == selected
             }).ToList();
             var firstRow = new SelectListItem { Value = null, Text = "--Chọn loại phòng--" };
-            items.Prepend(firstRow);
+            items = items.Prepend(firstRow).ToList();
             return items;
         }
 

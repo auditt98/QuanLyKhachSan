@@ -1,14 +1,13 @@
-﻿@model KhachHangModel
+﻿@model ThuePhongModel
 
-@*@Html.AntiForgeryToken()*@
+@Html.AntiForgeryToken()
 
 <div class="form-group row">
-    <label class="control-label col-md-2 text-right">Mã phiếu đặt:</label>
-    @*@Html.LabelFor(model => model.ma, "Mã:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })*@
+    @Html.LabelFor(model => model.ma, "Mã phiếu thuê:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
     <div class="col-md-3">
-        <input name="ma" hidden value="" />
-        <input id="ma" class="form-control disabled" disabled value="DP-0000005" />
-        @*@Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })*@
+        @*<input name="ma" hidden value="" />*@
+        <input id="ma" class="form-control disabled" disabled value="@Model.ma" />
+        @Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })
     </div>
 </div>
 <br class="dropdown-divider" />
@@ -18,69 +17,62 @@
 
 <div class="form-group row">
     <label class="control-label col-md-2 text-right">Tên khách hàng:</label>
-
-    @*@Html.LabelFor(model => model.tenkhachhang, "Tên khách hàng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })*@
     <div class="col-md-3">
-        <input class="form-control" />
-        @*@Html.EditorFor(model => model.tenkhachhang, new { htmlAttributes = new { @class = "form-control" } })*@
-        @*@Html.ValidationMessageFor(model => model.tenkhachhang, "", new { @class = "text-danger" })*@
+        <input class="form-control" name="tenkhachhang" id="tenkhachhang" />
+        @Html.ValidationMessageFor(model => model.tenkhachhang, "", new { @class = "text-danger" })
     </div>
     <label class="control-label col-md-1 text-right">Số CMT</label>
     <input class="form-control col-md-3" />
+    @Html.ValidationMessageFor(model => model.socmt, "", new { @class = "text-danger" })
 </div>
-
-
 <div class="form-group row">
     <label class="control-label col-md-2 text-right">Số điện thoại:</label>
     <div class="col-md-3">
-        <input class="form-control" />
+        <input class="form-control" name="sdt" id="sdt" />
+        @Html.ValidationMessageFor(model => model.sdt, "", new { @class = "text-danger" })
     </div>
-    @*@Html.LabelFor(model => model.sodienthoai, "Số điện thoại:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })*@
-    <div class="col-md-3">
-        @*@Html.EditorFor(model => model.sodienthoai, new { htmlAttributes = new { @class = "form-control" } })*@
-        @*@Html.ValidationMessageFor(model => model.sodienthoai, "", new { @class = "text-danger" })*@
-    </div>
+    <div class="col-md-3"></div>
 </div>
-<br class="dropdown-divider" />
+<br />
 <div class="dropdown-divider"></div>
 <h5 style="display: inline-block">Thông tin hệ thống</h5>
-<div class="float-right btn"><i class="fas fa-sync-alt"></i></div>
+<div id="updateStats" class="float-right btn"><i class="fas fa-sync-alt"></i></div>
 <br />
 <br />
 
 <div class="form-group row">
     <div class="col-md-3">
-        <div class="card card-shadow-2 text-white bg-success">
+        <div class="card card-shadow-2 card-hover text-white bg-success">
             <div class="card-header font-weight-bold">Số phòng trống <i class="far fa-check-circle"></i></div>
             <div class="card-body">
-                <h2 class="card-title text-center">30</h2>
+                <h2 id="phongtrong" class="card-title text-center"></h2>
                 <p class="card-text"></p>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card card-shadow-2 text-white bg-warning">
+        <div class="card card-shadow-2 card-hover text-white bg-warning">
             <div class="card-header font-weight-bold">Số phòng đã đặt trước <i class="far fa-calendar-alt"></i></div>
             <div class="card-body">
-                <h2 class="card-title text-center">30</h2>
+                <h2 id="phongdattruoc" class="card-title text-center"></h2>
                 <p class="card-text"></p>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card card-shadow-2 text-white bg-info">
+        <div class="card card-shadow-2 card-hover text-white bg-info">
             <div class="card-header font-weight-bold">Số phòng bẩn <i class="fas fa-exclamation-circle"></i></div>
             <div class="card-body">
-                <h2 class="card-title text-center">30</h2>
+                <h2 id="phongban" class="card-title text-center"></h2>
                 <p class="card-text"></p>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card card-shadow-2 text-white bg-danger">
+        <div class="card card-shadow-2 card-hover text-white bg-danger">
             <div class="card-header font-weight-bold">Số phòng đang sử dụng <i class="far fa-times-circle"></i></div>
             <div class="card-body">
-                <h2 class="card-title text-center">30</h2>
+                <h2 id="phongdangsudung" class="card-title text-center"></h2>
                 <p class="card-text"></p>
             </div>
         </div>
@@ -90,39 +82,65 @@
 <br class="dropdown-divider" />
 <div class="dropdown-divider"></div>
 <h5 style="display: inline-block">Chi tiết đơn đặt phòng</h5>
-<div class="btn btn-outline-info float-right">Thêm mới</div>
+<div id="addNewChiTiet" class="btn btn-outline-info float-right">Thêm mới</div>
 <br />
 
-<div style="padding-top: 10px;">
-    <div class="form-group row" style="padding-top: 2px">
-        <div class="dropdown-divider" style="width:100%"></div>
-        <div class="col-sm-3">
-            <label class="text-sm-left text-required">Chọn loại phòng</label>
-            <select class="form-control">
-                <option>Phòng vip</option>
-                <option>Phòng nhìn ra cửa sổ</option>
-                <option selected>Phòng nhìn ra tường</option>
-            </select>
-        </div>
-        <div class="col-sm-3">
-            <label class="text-sm-left text-required">Chọn phòng trống</label>
-            <select class="form-control">
-                <option>Phòng 101</option>
-                <option>Phòng 102</option>
-                <option selected>Phòng 302</option>
-            </select>
-        </div>
-        <div class="col-sm-1">
-            <label class="text-sm-left text-required">Số lượng</label>
-            <input class="form-control" type="number" value="" />
-        </div>
-        <div class="col-sm-1">
-            <label class="text-sm-left text-required">Số người</label>
-            <input class="form-control" type="number" value="" />
-        </div>
-        <div class="col-sm-4">
-            <label class="text-sm-left text-required">Giá </label>
-            <input class="form-control disabled" disabled value="0đ" />
-        </div>
-    </div>
+<div id="danhsachchitiet" style="padding-top: 10px;">
+
 </div>
+<script>
+    $.ajax({
+            type: "POST",
+            url: "/Phong/ThongKePhong",
+            success: function (data) {
+                console.log(data);
+                $("#phongban").text(data.phongban);
+                $("#phongtrong").text(data.phongtrong);
+                $("#phongdangsudung").text(data.phongdangsudung);
+                $("#phongdattruoc").text(data.phongdattruoc);
+            }
+        })
+    $("#updateStats").on("click", function (){
+        $.ajax({
+            type: "POST",
+            url: "/Phong/ThongKePhong",
+            success: function (data) {
+                console.log(data);
+                $("#phongban").text(data.phongban);
+                $("#phongtrong").text(data.phongtrong);
+                $("#phongdangsudung").text(data.phongdangsudung);
+                $("#phongdattruoc").text(data.phongdattruoc);
+            }
+        })
+    })
+
+    function xoaDivChiTiet(guid, isFromDb){
+        $("#chitiet_" + guid).remove();
+    }
+</script>
+
+<script>
+
+    $("#addNewChiTiet").on("click", function(){
+        $.ajax({
+            type: "GET",
+            url: "/ThuePhong/_AddNewChiTietThue",
+            success: function (data) {
+                $("#danhsachchitiet").append(data);
+            }
+        })
+    })
+</script>
+
+@*remember to prepare chitietthuephong*@
+@if (Model.ChiTietThuePhong == null)
+{
+    <script>
+        $("#addNewChiTiet").click();
+    </script>
+}
+
+
+
+
+

@@ -33,14 +33,13 @@
 <div class="form-group row">
     @Html.LabelFor(model => model.ngaymua, "Ngày mua:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
     <div class="col-md-3">
-        <input type="text" name="ngaymua" class="datepicker-here form-control" data-languague="vi" />
-        @*@Html.EditorFor(model => model.ngaymua, new { htmlAttributes = new { @class = "form-control datepicker-here", @data-language =  } })*@
+        <input type="text" name="ngaymua" class="datepicker-here form-control" data-language="vi" />
         @Html.ValidationMessageFor(model => model.ngaymua, "", new { @class = "text-danger" })
     </div>
 
     @Html.LabelFor(model => model.ngaysudung, "Ngày sử dụng:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
     <div class="col-md-3">
-        <input type="text" name="ngaysudung" class="datepicker-here form-control" data-languague="vi" />
+        <input type="text" name="ngaysudung" class="datepicker-here form-control" data-language="vi" />
         @*@Html.EditorFor(model => model.ngaysudung, new { htmlAttributes = new { @class = "form-control" } })*@
         @Html.ValidationMessageFor(model => model.ngaysudung, "", new { @class = "text-danger" })
     </div>
