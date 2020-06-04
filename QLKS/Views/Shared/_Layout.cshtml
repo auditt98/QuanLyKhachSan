@@ -16,7 +16,7 @@
 
 </head>
 <body style="display:flex; flex-direction: column;">
-    <nav id="headroom" class="sb-topnav navbar navbar-expand navbar-dark bg-superdark card-shadow-1">
+    <nav id="headroom" class="sb-topnav navbar navbar-expand sticky-top navbar-dark bg-superdark card-shadow-1">
         <a class="navbar-brand font-weight-bold" href="index.html">Quản lý khách sạn</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
@@ -136,7 +136,7 @@
     <script src="~/Scripts/responsive.bootstrap4.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
+    <script src="~/Scripts/sweetalert.min.js"></script>
     <script src="~/Scripts/notify.min.js"></script>
     <script src="~/Scripts/bootbox.js"></script>
     <script src="~/Scripts/headroom.js"></script>
@@ -189,7 +189,6 @@
             e.preventDefault();
             $("body").toggleClass("sb-sidenav-toggled");
         });
-
     })(jQuery);
     
         function toVND(data){

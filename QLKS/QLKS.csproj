@@ -177,7 +177,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChiTietThuePhongModel.cs" />
-    <Compile Include="Models\DatPhongModel.cs" />
+    <Compile Include="Models\ThuePhongModel.cs" />
     <Compile Include="Models\DichVuModel.cs" />
     <Compile Include="Models\KhachHangModel.cs" />
     <Compile Include="Models\LoaiPhongModel.cs" />
@@ -338,6 +338,7 @@
     <Content Include="Scripts\src\utils\setAttributes.js" />
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -390,6 +391,7 @@
     <Content Include="Views\VatTu\Create.cshtml" />
     <Content Include="Views\VatTu\Edit.cshtml" />
     <Content Include="Views\VatTu\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ThuePhong\_ChiTietDatPhong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />

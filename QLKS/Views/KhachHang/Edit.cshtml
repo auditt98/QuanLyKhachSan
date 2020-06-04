@@ -32,14 +32,19 @@
 @section scripts{
     <script>
         $("#btnDelete").on("click", function () {
-            bootbox.confirm("Bạn có chắc chắn muốn xóa", function (result) {
-                console.log(result)
-                if (result == true) {
-                    var _data = {
-                        id: $("#ID").val()
-                    }
-                    console.log(_data)
-                    $.ajax({
+        swal({
+              title: "Bạn có chắc chắn muốn xóa?",
+              text: "Mọi dữ liệu liên quan sẽ bị mất!",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                var _data = {
+                    id: $("#ID").val()
+                }
+                $.ajax({
                         url: "/KhachHang/Delete",
                         method: "POST",
                         data: _data,
@@ -48,10 +53,9 @@
                                 window.location.href = "/KhachHang/List"
                             }
                         }
-                    })
-                }
-
-            })
+                })
+              }
+            });//
         })
     </script>
     

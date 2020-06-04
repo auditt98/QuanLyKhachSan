@@ -5,7 +5,7 @@ using System.Web;
 
 namespace QLKS.Models
 {
-    public class DatPhongModel
+    public class ThuePhongModel
     {
 
     }

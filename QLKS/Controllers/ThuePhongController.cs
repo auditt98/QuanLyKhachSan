@@ -23,5 +23,10 @@ namespace QLKS.Controllers
         {
             return View();
         }
+
+        //public ActionResult _AddNewChiTietThue()
+        //{
+
+        //}
     }
 }

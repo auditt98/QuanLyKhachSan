@@ -32,28 +32,30 @@
 @section scripts{
     <script>
         $("#btnDelete").on("click", function () {
-            bootbox.confirm("Bạn có chắc chắn muốn xóa", function (result) {
-                console.log(result)
-                if (result == true) {
+            swal({
+                  title: "Bạn có chắc chắn muốn xóa?",
+                  text: "Mọi dữ liệu liên quan sẽ bị mất!",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  if (willDelete) {
                     var _data = {
                         id: $("#ID").val()
                     }
-                    console.log(_data)
                     $.ajax({
-                        url: "/LoaiPhong/Delete",
-                        method: "POST",
-                        data: _data,
-                        success: function (data) {
-                            if (data == "ok") {
-                                window.location.href = "/LoaiPhong/List"
-                            } else {
-                                window.location.href = "/LoaiPhong/List"
+                            url: "/LoaiPhong/Delete",
+                            method: "POST",
+                            data: _data,
+                            success: function (data) {
+                                if (data == "ok") {
+                                    window.location.href = "/LoaiPhong/List"
+                                }
                             }
-                        }
                     })
-                }
-
-            })
+                  }
+                });
         })
     </script>
 
