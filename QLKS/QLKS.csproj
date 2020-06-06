@@ -147,6 +147,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\LoaiTinhTrangController.cs" />
+    <Compile Include="Controllers\NguoiDungController.cs" />
+    <Compile Include="Controllers\NhomNguoiDungController.cs" />
     <Compile Include="Controllers\ThuePhongController.cs" />
     <Compile Include="Controllers\DichVuController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="Validators\VatTuValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -207,6 +210,7 @@
     <Content Include="Content\DataTable.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="Content\datepicker.min.css" />
+    <Content Include="Content\hamburgers.css" />
     <Content Include="Content\imgLoaiPhong\1237-300x194.jpg" />
     <Content Include="Content\imgLoaiPhong\1237.jpg" />
     <Content Include="Content\imgLoaiPhong\1509860313_SGMS1845.jpg" />
@@ -222,7 +226,11 @@
     <Content Include="Content\imgLoaiPhong\room-1-300x300.jpg" />
     <Content Include="Content\imgLoaiPhong\room-3.jpg" />
     <Content Include="Content\imgLoaiPhong\thumbnail-600x400.jpg" />
+    <Content Include="Content\Login\login.png" />
+    <Content Include="Content\Login\main.css" />
+    <Content Include="Content\Login\util.css" />
     <Content Include="Content\responsive.bootstrap4.min.css" />
+    <Content Include="Content\select2.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -275,6 +283,7 @@
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\responsive.bootstrap4.min.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
     <Content Include="Scripts\src\methods\destroy.js" />
@@ -339,6 +348,7 @@
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
     <Content Include="Scripts\sweetalert.min.js" />
+    <Content Include="Scripts\tilt.jquery.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -392,6 +402,15 @@
     <Content Include="Views\VatTu\Edit.cshtml" />
     <Content Include="Views\VatTu\_CreateOrUpdate.cshtml" />
     <Content Include="Views\ThuePhong\_AddNewChiTietThue.cshtml" />
+    <Content Include="Views\NhomNguoiDung\List.cshtml" />
+    <Content Include="Views\NhomNguoiDung\Edit.cshtml" />
+    <Content Include="Views\NhomNguoiDung\Create.cshtml" />
+    <Content Include="Views\NhomNguoiDung\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\NguoiDung\Login.cshtml" />
+    <Content Include="Views\NguoiDung\Create.cshtml" />
+    <Content Include="Views\NguoiDung\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\NguoiDung\Edit.cshtml" />
+    <Content Include="Views\NguoiDung\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />

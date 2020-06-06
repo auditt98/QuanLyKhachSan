@@ -25,6 +25,8 @@ namespace QLKS.Extensions
             CreateMap<LOAIPHONG, LoaiPhongModel>();
             CreateMap<LoaiTinhTrangModel, LOAITINHTRANG>();
             CreateMap<LOAITINHTRANG, LoaiTinhTrangModel>();
+            CreateMap<NHOMNGUOIDUNG, NhomNguoiDungModel>();
+            CreateMap<NhomNguoiDungModel, NHOMNGUOIDUNG>();
         }
     }
 }

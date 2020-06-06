@@ -3,7 +3,7 @@
 @Html.AntiForgeryToken()
 
 <div class="form-group row">
-    @Html.LabelFor(model => model.ma, "Mã dịch vụ:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    @Html.LabelFor(model => model.ma, "Mã dịch vụ", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
     <div class="col-md-3">
         <input name="ma" hidden value="@Model.ma" />
         <input id="ma" class="form-control disabled" disabled value="@Model.ma" />

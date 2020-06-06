@@ -1,0 +1,65 @@
+﻿@model NguoiDungModel
+
+@{ 
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Đăng nhập</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    <link href="~/Content/hamburgers.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/Login/util.css" rel="stylesheet" />
+    <link href="~/Content/Login/main.css" rel="stylesheet" />
+</head>
+<body>
+
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <form class="login100-form" method="post" action="/NguoiDung/Login">
+                    <span class="login100-form-title">
+                        Đăng nhập
+                    </span>
+
+                    <div class="wrap-input100">
+                        <input class="input100" type="text" name="tendangnhap" placeholder="Tên đăng nhập">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                        @Html.ValidationMessageFor(model => model.tendangnhap, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="wrap-input100" data-validate="Vui lòng nhập mật khẩu">
+                        <input class="input100" type="password" name="matkhau" placeholder="Nhập mật khẩu">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                        @Html.ValidationMessageFor(model => model.matkhau, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+    <script src="~/Scripts/jquery-3.5.1.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+
+</body>
+</html>

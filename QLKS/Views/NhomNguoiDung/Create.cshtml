@@ -1,0 +1,24 @@
+﻿@model NhomNguoiDungModel
+@{
+    ViewBag.Title = "Thêm mới nhóm người dùng";
+}
+<form action="/NhomNguoiDung/Create" method="post">
+    <div class="card mb-4">
+        <h6 class="card-header">
+            Thêm mới
+            <small>
+                <i class="fa fa-arrow-circle-left"></i>
+                <a href="/NhomNguoiDung/List">Quay lại danh sách</a>
+            </small>
+            <button type="submit" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
+                <i class="fas fa-save" style="margin-right:5px;"></i>
+                Lưu
+            </button>
+        </h6>
+        <div class="card-body">
+            @{
+                Html.RenderPartial("_CreateOrUpdate");
+            }
+        </div>
+    </div>
+</form>

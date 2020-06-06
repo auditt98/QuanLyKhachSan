@@ -1,0 +1,61 @@
+﻿@model NguoiDungModel
+
+@Html.AntiForgeryToken()
+
+<h5>Thông tin đăng nhập</h5>
+<br />
+<div class="form-group row">
+    @Html.LabelFor(model => model.tennguoidung, "Họ và tên", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.tennguoidung, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.tennguoidung, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.tendangnhap, "Tên đăng nhập", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.tendangnhap, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.tendangnhap, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row">
+    @Html.LabelFor(model => model.matkhau, "Mật khẩu", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.matkhau, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+        @Html.ValidationMessageFor(model => model.matkhau, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="dropdown-divider" style="width: 100%"></div>
+<h5>Thông tin cá nhân</h5>
+<br />
+<div class="form-group row">
+    @Html.LabelFor(model => model.sodienthoai, "Số điện thoại", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.matkhau, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.sodienthoai, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.ngaysinh, "Ngày sinh", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        <input id="ngaysinh" name="ngaysinh" class="form-control datepicker-here" data-language="vi"
+               @Html.ValidationMessageFor(model => model.ngaysinh, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group row">
+    @Html.LabelFor(model => model.diachi, "Địa chỉ", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-5">
+        @Html.EditorFor(model => model.diachi, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.diachi, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-4">
+        <label class="control-label col-md-1 text-right">Giới tính:</label>
+        <div class="custom-control custom-radio custom-control-inline" style="margin-left: 10px">
+            <input type="radio" class="custom-control-input" id="customRadio" name="gioitinh" value="true" checked="checked">
+            <label class="custom-control-label" for="customRadio">Nam</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" class="custom-control-input" id="customRadio2" name="gioitinh" value="false">
+            <label class="custom-control-label" for="customRadio2">Nữ</label>
+        </div>
+    </div>
+</div>
+

@@ -27,6 +27,10 @@ namespace QLKS.Models
 
         public string malaymatkhau { get; set; }
 
+        public bool isLoggedIn { get; set; }
+
+        public string matkhau { get; set; }
+
         public IList<NhomNguoiDungModel> nhomNguoiDung { get; set; }
     }
 }
