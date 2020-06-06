@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QLKS.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,23 +9,27 @@ namespace QLKS.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-    }
+		private QLKSContext db = new QLKSContext();
+		public ActionResult Index()
+		{
+			return View(db.LOAIPHONGs.ToList());
+		}
+		// GET: LoaiPhong/Details
+		public ActionResult Details(int? id)
+		{
+			if (id == null)
+			{
+				return RedirectToAction("Details");
+			}
+			var loaiphong = db.LOAIPHONGs.Find(id);
+			if (loaiphong == null)
+			{
+				TempData["Message"] = "Không thấy loại phòng này";
+				TempData["NotiType"] = "danger"; //success là class trong bootstrap
+				return RedirectToAction("Details");
+			}
+			//prepare model
+			return View(loaiphong);
+		}
+	}
 }
