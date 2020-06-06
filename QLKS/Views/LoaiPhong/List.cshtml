@@ -54,7 +54,12 @@
                 responsive: true,
                 columns: [
                     { data: "uid"},
-                    { "data": "ma" },
+					{
+                        "data": "ma",
+                        render: function (data, type, row) {
+                            return toVND(data);
+                        }
+                    },
                     { "data": "ten" },
                     {
                         "data": "anh",

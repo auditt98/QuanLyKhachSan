@@ -13,6 +13,7 @@ namespace QLKS.Controllers
 	public class LoaiPhongController : Controller
 	{
 		private QLKSContext db = new QLKSContext();
+
 		// GET: LoaiPhong/List
 		public ActionResult List()
 		{
