@@ -40,7 +40,7 @@ namespace QLKS.Controllers
 		public ActionResult Create()
 		{
 			var loaiPhongModel = new LoaiPhongModel();
-			var maxId = db.LOAIPHONGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
+			var maxId = db.LOAIPHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
 			var newId = (maxId + 1).ToString().PadLeft(7, '0');
 			loaiPhongModel.ma = "LP" + "-" + newId;
 			return View(loaiPhongModel);

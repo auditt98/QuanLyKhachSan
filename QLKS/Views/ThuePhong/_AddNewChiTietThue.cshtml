@@ -3,7 +3,7 @@
 @{ 
     string guid = Guid.NewGuid().ToString().Replace("-","");
 }
-    <div class="chitiet" id="chitiet_@guid">
+    <div class="chitiet" id="chitiet_@guid" data-guid="@guid">
         <div class="btn float-right" data-guid="@guid" style="color:#e53935; margin-top: 10px;" onclick="xoaDivChiTiet('@guid')"><i class="fas fa-minus-circle"></i></div>
         <div class="form-group row" style="padding-top: 2px">
             <div class="dropdown-divider" style="width:100%"></div>
@@ -11,7 +11,7 @@
                 <label class="text-sm-left text-required">Chọn loại phòng</label>
                 @Html.DropDownListFor(model => model.loaiphong_id, new SelectList(Model.DanhSachLoaiPhong, "Value", "Text"), htmlAttributes: new { @class = "form-control", @id = "loaiphong_" + guid })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <label class="text-sm-left text-required">Chọn phòng trống</label>
                 @Html.DropDownListFor(model => model.phong_id, new SelectList(Model.DanhSachPhong, "Value", "Text"), htmlAttributes: new { @class = "form-control", @id = "phong_" + guid })
             </div>
@@ -22,10 +22,6 @@
             <div class="col-sm-2">
                 <label class="text-sm-left text-required">Ngày ra</label>
                 <input id="ngayra_@guid" class="form-control datepicker-here" data-language="vi" placeholder="--Chọn ngày ra--" />
-            </div>
-            <div class="col-sm-1">
-                <label class="text-sm-left">Số người</label>
-                <input class="form-control" id="songuoi_@guid" type="number" placeholder="Số" />
             </div>
             <div class="col-sm-2">
                 <label class="text-sm-left text-required">Giá </label>

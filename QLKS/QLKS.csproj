@@ -149,6 +149,7 @@
     <Compile Include="Controllers\LoaiTinhTrangController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\NhomNguoiDungController.cs" />
+    <Compile Include="Controllers\QLKSController.cs" />
     <Compile Include="Controllers\ThuePhongController.cs" />
     <Compile Include="Controllers\DichVuController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Domain\THUEPHONG.cs" />
     <Compile Include="Domain\VATTU.cs" />
     <Compile Include="Extensions\AutoMapperConfig.cs" />
+    <Compile Include="Extensions\Enum.cs" />
     <Compile Include="Extensions\StaticString.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -575,6 +577,7 @@
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\QLKS\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />
@@ -585,6 +588,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Fonts\" />
+    <Folder Include="Views\NhanVien\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

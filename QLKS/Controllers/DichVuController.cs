@@ -35,7 +35,7 @@ namespace QLKS.Controllers
         public ActionResult Create()
         {
             var dichVuModel = new DichVuModel();
-            var maxId = db.DICHVUs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
+            var maxId = db.DICHVUs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
             dichVuModel.ma = "DV" + "-" + newId;
             return View(dichVuModel);

@@ -30,6 +30,12 @@ namespace QLKS.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult Create(ThuePhongModel model)
+        {
+            return Json(model);
+        }
+
         public ActionResult Edit()
         {
             return View();

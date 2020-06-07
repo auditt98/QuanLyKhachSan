@@ -113,6 +113,13 @@ namespace QLKS.Controllers
         }
 
         [HttpPost]
+        public ActionResult Login(NguoiDungModel model)
+        {
+
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult Logout()
         {
             return Json("");

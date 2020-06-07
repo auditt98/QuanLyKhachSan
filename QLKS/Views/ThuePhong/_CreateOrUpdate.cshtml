@@ -104,7 +104,6 @@
             type: "POST",
             url: "/Phong/ThongKePhong",
             success: function (data) {
-                console.log(data);
                 $("#phongban").text(data.phongban);
                 $("#phongtrong").text(data.phongtrong);
                 $("#phongdangsudung").text(data.phongdangsudung);

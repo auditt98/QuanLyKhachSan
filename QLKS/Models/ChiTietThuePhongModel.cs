@@ -28,6 +28,8 @@ namespace QLKS.Models
 
         public string guid { get; set; }
 
+        public decimal gia { get; set; }
+
         public bool isFromDb { get; set; }
     }
 }

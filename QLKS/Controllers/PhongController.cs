@@ -42,7 +42,7 @@ namespace QLKS.Controllers
         public ActionResult Create()
         {
             var phongModel = new PhongModel();
-            var maxId = db.PHONGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
+            var maxId = db.PHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(4, '0');
             phongModel.ma = "P" + " " + newId;
             phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(-1);

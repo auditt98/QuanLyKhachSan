@@ -3,7 +3,6 @@
 @{ 
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,9 +25,8 @@
                     <span class="login100-form-title">
                         Đăng nhập
                     </span>
-
                     <div class="wrap-input100">
-                        <input class="input100" type="text" name="tendangnhap" placeholder="Tên đăng nhập">
+                        @Html.EditorFor(model => model.tendangnhap, new { htmlAttributes = new { @class = "input100", @placeholder="Nhập tên đăng nhập" } })
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -37,29 +35,24 @@
                     </div>
 
                     <div class="wrap-input100" data-validate="Vui lòng nhập mật khẩu">
-                        <input class="input100" type="password" name="matkhau" placeholder="Nhập mật khẩu">
+                        @Html.EditorFor(model => model.matkhau, new { htmlAttributes = new { @class = "input100", @placeholder = "Nhập mật khẩu", @type="password" } })
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
                         @Html.ValidationMessageFor(model => model.matkhau, "", new { @class = "text-danger" })
                     </div>
-
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn">
-                            Login
+                            Đăng nhập
                         </button>
                     </div>
                 </form>
             </div>
         </div>
-
-
-
     <script src="~/Scripts/jquery-3.5.1.js"></script>
     <script src="~/Scripts/popper.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/select2.min.js"></script>
-
 </body>
 </html>

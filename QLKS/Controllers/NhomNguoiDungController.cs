@@ -34,7 +34,7 @@ namespace QLKS.Controllers
         public ActionResult Create()
         {
             var nhomNguoiDungModel = new NhomNguoiDungModel();
-            var maxId = db.NHOMNGUOIDUNGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
+            var maxId = db.NHOMNGUOIDUNGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
             nhomNguoiDungModel.ma = "NHOM" + "-" + newId;
             return View(nhomNguoiDungModel);

@@ -39,7 +39,7 @@ namespace QLKS.Controllers
         public ActionResult Create()
         {
             var loaiTinhTrangModel = new LoaiTinhTrangModel();
-            var maxId = db.LOAITINHTRANGs.Select(c => c.ID).DefaultIfEmpty(-1).Max();
+            var maxId = db.LOAITINHTRANGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
             loaiTinhTrangModel.ma = "TT" + "-" + newId;
             return View(loaiTinhTrangModel);
