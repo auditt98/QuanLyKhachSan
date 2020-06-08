@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
+using static QLKS.Extensions.Enum;
 
 namespace QLKS.Controllers
 {
@@ -16,6 +17,8 @@ namespace QLKS.Controllers
         // GET: Phong
         private QLKSContext db = new QLKSContext();
         private LoaiPhongServices _loaiPhongServices = new LoaiPhongServices();
+        private PhongServices _phongServices = new PhongServices();
+        private LoaiTinhTrangServices _loaiTinhTrangServices = new LoaiTinhTrangServices();
 
         public ActionResult List()
         {
@@ -39,13 +42,27 @@ namespace QLKS.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public ActionResult GetPhongTrongFromLoaiPhong(int loaiphong)
+        {
+            var items = _phongServices.GetPhongTrongFromLoaiPhong(loaiphong);
+            var result = new List<PhongModel>();
+            foreach(var item in items)
+            {
+                var m = Mapper.Map(item, new PhongModel());
+                result.Add(m);
+            }
+            return Json(result);
+        }
+
         public ActionResult Create()
         {
             var phongModel = new PhongModel();
             var maxId = db.PHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(4, '0');
             phongModel.ma = "P" + " " + newId;
-            phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(-1);
+            phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
+            phongModel.DanhSachTinhTrang = _loaiTinhTrangServices.PrepareLoaiTinhTrangPhong(0);
             return View(phongModel);
         }
 
@@ -82,6 +99,8 @@ namespace QLKS.Controllers
             //prepare model
             var phongModel = AutoMapper.Mapper.Map<PhongModel>(phong);
             phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(phong.ID);
+            phongModel.DanhSachTinhTrang = _loaiTinhTrangServices.PrepareLoaiTinhTrangPhong(phong.LOAITINHTRANG_ID);
+
             return View(phongModel);
         }
 
@@ -130,17 +149,25 @@ namespace QLKS.Controllers
                 return Json("error");
             }
         }
+
         [HttpPost]
         public ActionResult ThongKePhong()
         {
-            var phongtrong = db.PHONGs.Where(x => x.LOAITINHTRANG.ma == "TT-0000000").Count();
-            var phongdattruoc = db.PHONGs.Where(x => x.LOAITINHTRANG.ma == "TT-0000002").Count();
-            var phongban = db.PHONGs.Where(x => x.LOAITINHTRANG.ma == "TT-0000003").Count();
-            var phongdangsudung = db.PHONGs.Where(x => x.LOAITINHTRANG.ma == "TT-0000001").Count();
+            var phongtrong = db.PHONGs.Where(x => x.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.TRONG).Count();
+            var phongdattruoc = db.PHONGs.Where(x => x.LOAITINHTRANG_ID== (int)EnumLoaiTinhTrang.DATTRUOC).Count();
+            var phongban = db.PHONGs.Where(x => x.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.BAN).Count();
+            var phongdangsudung = db.PHONGs.Where(x => x.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.DATHUE).Count();
 
             var result = new { phongtrong = phongtrong, phongban = phongban, phongdattruoc = phongdattruoc, phongdangsudung = phongdangsudung };
             var r = Json(result);
             return r;
+        }
+
+        [HttpPost]
+        public ActionResult GetGiaPhong(int? phong)
+        {
+            var gia = db.PHONGs.Where(c => c.ID == phong).FirstOrDefault().giathue;
+            return Json(gia);
         }
 
 

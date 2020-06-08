@@ -58,7 +58,12 @@
                     {"data": "uid"},
                     { "data": "ma" },
                     { "data": "tenloaiphong" },
-                    { "data": "gia" },
+                    {
+                        "data": "gia",
+                        "render": function (data, type, row) {
+                            return toVND(data) + '/đêm';
+                        }
+                    },
                     { "data": "sotang" },
                     {
                         "data": "uid",

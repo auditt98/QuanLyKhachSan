@@ -11,10 +11,10 @@
                 <i class="fa fa-arrow-circle-left"></i>
                 <a href="/DatPhong/List">Quay lại danh sách</a>
             </small>
-            <div id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
+            <button id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
                 <i class="fas fa-save" style="margin-right:5px;"></i>
                 Lưu
-            </div>
+            </button>
         </h6>
         <div class="card-body">
             @{
@@ -34,19 +34,18 @@
             var sdt = $("#sdt").val();
             $(".chitiet").each(function () {
                 var gid = $(this).data("guid");
-                console.log(gid)
                 loaiphong = $("#loaiphong_" + gid).val();
                 phong = $("#phong_" + gid).val();
                 ngayvao = $("#ngayvao_" + gid).val();
                 ngayra = $("#ngayra_" + gid).val();
-                gia = $("#gia_" + gid).val();
+                //gia = $("#gia_" + gid).val();
 
                 var ChiTiet = {
                     loaiphong_id: loaiphong,
                     phong_id: phong,
                     ngayvao: ngayvao,
-                    ngayra: ngayra,
-                    gia: gia
+                    ngayra: ngayra
+                    //gia: gia
                 }
                 listChiTiet.push(ChiTiet);
             })
@@ -62,15 +61,14 @@
                 method: "POST",
                 url: "/ThuePhong/Create",
                 success: function (data) {
-                    console.log(data);
+                    if (data == "ok") {
+                        window.location.href="/ThuePhong/List"
+                    }
                 }
 
             })
 
         })
-
-       
-
     </script>
 
 }

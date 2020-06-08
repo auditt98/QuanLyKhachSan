@@ -18,7 +18,6 @@ namespace QLKS.Domain
 
         public int ID { get; set; }
 
-        [StringLength(20)]
         public string ma { get; set; }
 
         public int? NGUOIDUNG_ID { get; set; }

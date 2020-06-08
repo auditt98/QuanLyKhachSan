@@ -3,6 +3,7 @@ using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using QLKS.Domain;
 using QLKS.Models;
+using QLKS.Services;
 using QLKS.Validators;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace QLKS.Controllers
     public class KhachHangController : Controller
     {
         private QLKSContext db = new QLKSContext();
+        private KhachHangServices _khachHangServices = new KhachHangServices();
 
         public ActionResult List()
         {
@@ -41,9 +43,7 @@ namespace QLKS.Controllers
         public ActionResult Create()
         {
             var khachHangModel = new KhachHangModel();
-            var maxId = db.KHACHHANGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
-            var newId = (maxId + 1).ToString().PadLeft(7, '0');
-            khachHangModel.ma = "KH" + "-" + newId;
+            khachHangModel.ma = _khachHangServices.GenMaKhachHang();
             return View(khachHangModel);
         }
 

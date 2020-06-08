@@ -193,12 +193,15 @@
     <Compile Include="Models\QuyenModel.cs" />
     <Compile Include="Models\VatTuModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\KhachHangServices.cs" />
+    <Compile Include="Services\LoaiTinhTrangServices.cs" />
     <Compile Include="Services\LoaiPhongServices.cs" />
     <Compile Include="Services\PhongServices.cs" />
     <Compile Include="Validators\KhachHangValidator.cs" />
     <Compile Include="Validators\LoaiPhongValidator.cs" />
     <Compile Include="Validators\LoaiTinhTrangValidator.cs" />
     <Compile Include="Validators\PhongValidator.cs" />
+    <Compile Include="Validators\ThuePhongValidator.cs" />
     <Compile Include="Validators\VatTuValidator.cs" />
   </ItemGroup>
   <ItemGroup>

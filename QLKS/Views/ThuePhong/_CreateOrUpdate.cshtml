@@ -5,7 +5,7 @@
 <div class="form-group row">
     @Html.LabelFor(model => model.ma, "Mã phiếu thuê:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
     <div class="col-md-3">
-        @*<input name="ma" hidden value="" />*@
+        <input name="ma" hidden value="@Model.ma" />
         <input id="ma" class="form-control disabled" disabled value="@Model.ma" />
         @Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })
     </div>
@@ -16,19 +16,19 @@
 <br />
 
 <div class="form-group row">
-    <label class="control-label col-md-2 text-right">Tên khách hàng:</label>
+    <label class="control-label col-md-2 text-right text-required">Tên khách hàng:</label>
     <div class="col-md-3">
-        <input class="form-control" name="tenkhachhang" id="tenkhachhang" />
+        <input class="form-control" name="tenkhachhang" id="tenkhachhang" required title="Tên khách hàng không được để trống" />
         @Html.ValidationMessageFor(model => model.tenkhachhang, "", new { @class = "text-danger" })
     </div>
-    <label class="control-label col-md-1 text-right">Số CMT</label>
-    <input class="form-control col-md-3" />
+    <label class="control-label col-md-1 text-right text-required">Số CMT</label>
+    <input id="socmt" name="socmt" class="form-control col-md-3" required title="Số CMT không được để trống"/>
     @Html.ValidationMessageFor(model => model.socmt, "", new { @class = "text-danger" })
 </div>
 <div class="form-group row">
-    <label class="control-label col-md-2 text-right">Số điện thoại:</label>
+    <label class="control-label col-md-2 text-right text-required">Số điện thoại:</label>
     <div class="col-md-3">
-        <input class="form-control" name="sdt" id="sdt" />
+        <input class="form-control" name="sdt" id="sdt" required title="SDT không được để trống"/>
         @Html.ValidationMessageFor(model => model.sdt, "", new { @class = "text-danger" })
     </div>
     <div class="col-md-3"></div>
@@ -70,7 +70,7 @@
     </div>
     <div class="col-md-3">
         <div class="card card-shadow-2 card-hover text-white bg-danger">
-            <div class="card-header font-weight-bold">Số phòng đang sử dụng <i class="far fa-times-circle"></i></div>
+            <div class="card-header font-weight-bold">Số phòng đã thuê <i class="far fa-times-circle"></i></div>
             <div class="card-body">
                 <h2 id="phongdangsudung" class="card-title text-center"></h2>
                 <p class="card-text"></p>
@@ -81,7 +81,7 @@
 </div>
 <br class="dropdown-divider" />
 <div class="dropdown-divider"></div>
-<h5 style="display: inline-block">Chi tiết đơn đặt phòng</h5>
+<h5 style="display: inline-block">Chi tiết thuê phòng</h5>
 <div id="addNewChiTiet" class="btn btn-outline-info float-right">Thêm mới</div>
 <br />
 
@@ -89,6 +89,7 @@
 
 </div>
 <script>
+    var soPhongTrong;
     $.ajax({
             type: "POST",
             url: "/Phong/ThongKePhong",
@@ -97,6 +98,7 @@
                 $("#phongtrong").text(data.phongtrong);
                 $("#phongdangsudung").text(data.phongdangsudung);
                 $("#phongdattruoc").text(data.phongdattruoc);
+                soPhongTrong = data.phongtrong;
             }
         })
     $("#updateStats").on("click", function (){
@@ -108,8 +110,10 @@
                 $("#phongtrong").text(data.phongtrong);
                 $("#phongdangsudung").text(data.phongdangsudung);
                 $("#phongdattruoc").text(data.phongdattruoc);
+                soPhongTrong = data.phongtrong;
             }
         })
+
     })
 
     function xoaDivChiTiet(guid, isFromDb){
@@ -119,23 +123,53 @@
 
 <script>
 
-    $("#addNewChiTiet").on("click", function(){
-        $.ajax({
-            type: "GET",
-            url: "/ThuePhong/_AddNewChiTietThue",
-            success: function (data) {
-                $("#danhsachchitiet").append(data);
+    $("#addNewChiTiet").on("click", function () {
+        if (soPhongTrong != null) {
+            var soDiv = $(".chitiet").length;
+            if (soPhongTrong != 0) {
+                $.ajax({
+                    type: "GET",
+                    url: "/ThuePhong/_AddNewChiTietThue",
+                    success: function (data) {
+                        $("#danhsachchitiet").append(data);
+                    }
+                });
+            } else {
+                $("#customToastMessage").text("Không còn phòng trống");
+                $('#customToast').toast('show')
             }
-        })
+        }
+        $("#updateStats").click();
     })
 </script>
 
 @*remember to prepare chitietthuephong*@
-@if (Model.ChiTietThuePhong == null)
+@if (Model.ChiTietThuePhong.Count == 0)
 {
     <script>
-        $("#addNewChiTiet").click();
+        $(document).ready(function () {
+            if (soPhongTrong != null) {
+                if (soPhongTrong != 0) {
+                    $("#addNewChiTiet").click();
+                }
+            }
+        })
     </script>
+}
+else
+{
+    foreach(var ct in Model.ChiTietThuePhong)
+    {
+        <script>
+            $.ajax({
+                type: "GET",
+                url: "/ThuePhong/_AddNewChiTietThue?loaiphong=@ct.loaiphong_id&phong=@ct.phong_id",
+                success: function (data) {
+                    $("#danhsachchitiet").append(data);
+                }
+            });
+        </script>
+    }
 }
 
 

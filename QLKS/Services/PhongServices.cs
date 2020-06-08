@@ -1,4 +1,5 @@
 ﻿using QLKS.Domain;
+using QLKS.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,12 @@ namespace QLKS.Services
             }).ToList();
             var firstRow = new SelectListItem { Value = null, Text = "--Chọn phòng--" };
             items = items.Prepend(firstRow).ToList();
+            return items;
+        }
+
+        public List<PHONG> GetPhongTrongFromLoaiPhong(int? loaiphong)
+        {
+            var items = db.PHONGs.Where(c => c.LOAIPHONG.ID == loaiphong).ToList();
             return items;
         }
     }

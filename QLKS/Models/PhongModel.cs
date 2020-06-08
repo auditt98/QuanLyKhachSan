@@ -28,5 +28,7 @@ namespace QLKS.Models
         public int? LOAITINHTRANG_ID { get; set; }
 
         public IEnumerable<SelectListItem> DanhSachLoaiPhong { get; set; }
+
+        public IEnumerable<SelectListItem> DanhSachTinhTrang { get; set; }
     }
 }
