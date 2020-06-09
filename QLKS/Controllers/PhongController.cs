@@ -34,7 +34,7 @@ namespace QLKS.Controllers
                 ma = c.ma,
                 tenloaiphong = c.LOAIPHONG.tenloaiphong,
                 gia = c.giathue,
-                sotang = c.sotang,
+                trangthai = Enum.GetName(typeof(EnumLoaiTinhTrang),c.LOAITINHTRANG_ID).ToString(),
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
 
@@ -166,8 +166,12 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult GetGiaPhong(int? phong)
         {
-            var gia = db.PHONGs.Where(c => c.ID == phong).FirstOrDefault().giathue;
-            return Json(gia);
+            var gia = db.PHONGs.Where(c => c.ID == phong).FirstOrDefault();
+            if(gia == null)
+            {
+                return Json(0);
+            }
+            return Json(gia.giathue) ;
         }
 
 

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AutoMapper;
+using static QLKS.Extensions.Enum;
 
 namespace QLKS.Controllers
 {

@@ -67,6 +67,8 @@ namespace QLKS.Controllers
             var dichvu = db.DICHVUs.Find(id);
             if (dichvu == null)
             {
+                TempData["Message"] = "Không tìm thấy dịch vụ này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
             //prepare model

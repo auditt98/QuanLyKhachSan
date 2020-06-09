@@ -71,7 +71,7 @@ namespace QLKS.Controllers
             var loaitinhtrang = db.LOAITINHTRANGs.Find(id);
             if (loaitinhtrang == null)
             {
-                TempData["Message"] = "Không tìm thấy khách hàng này";
+                TempData["Message"] = "Không tìm thấy tình trạng này";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
