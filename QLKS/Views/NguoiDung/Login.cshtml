@@ -16,40 +16,65 @@
     <link href="~/Content/select2.min.css" rel="stylesheet" />
     <link href="~/Content/Login/util.css" rel="stylesheet" />
     <link href="~/Content/Login/main.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
 </head>
 <body>
 
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <form class="login100-form" method="post" action="/NguoiDung/Login">
-                    <span class="login100-form-title">
-                        Đăng nhập
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form" method="post" action="/NguoiDung/Login">
+                <span class="login100-form-title">
+                    Đăng nhập
+                </span>
+                <div class="wrap-input100">
+                    @Html.EditorFor(model => model.tendangnhap, new { htmlAttributes = new { @class = "input100", @placeholder = "Nhập tên đăng nhập" } })
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
                     </span>
-                    <div class="wrap-input100">
-                        @Html.EditorFor(model => model.tendangnhap, new { htmlAttributes = new { @class = "input100", @placeholder="Nhập tên đăng nhập" } })
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa fa-envelope" aria-hidden="true"></i>
-                        </span>
-                        @Html.ValidationMessageFor(model => model.tendangnhap, "", new { @class = "text-danger" })
-                    </div>
+                    @Html.ValidationMessageFor(model => model.tendangnhap, "", new { @class = "text-danger" })
+                </div>
 
-                    <div class="wrap-input100" data-validate="Vui lòng nhập mật khẩu">
-                        @Html.EditorFor(model => model.matkhau, new { htmlAttributes = new { @class = "input100", @placeholder = "Nhập mật khẩu", @type="password" } })
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                        </span>
-                        @Html.ValidationMessageFor(model => model.matkhau, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="container-login100-form-btn">
-                        <button class="login100-form-btn">
-                            Đăng nhập
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="wrap-input100" data-validate="Vui lòng nhập mật khẩu">
+                    @Html.EditorFor(model => model.matkhau, new { htmlAttributes = new { @class = "input100", @placeholder = "Nhập mật khẩu", @type = "password" } })
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+                    @Html.ValidationMessageFor(model => model.matkhau, "", new { @class = "text-danger" })
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn">
+                        Đăng nhập
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
+    <div class="position-fixed" style="z-index: 1000; position: sticky; bottom: 20px; right: 20px; width: 300px;">
+        <div class="toast toast-default ml-auto" role="alert" data-delay="5000">
+            <div class="toast-header bg-@Html.Raw(TempData["NotiType"])">
+                <strong class="mr-auto font-weight-bold text-white">Thông báo</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div id="toast-body-text" class="toast-body"> @Html.Raw(TempData["Message"]) </div>
+        </div>
+    </div>
+    @{
+        var message = String.IsNullOrEmpty(Html.Raw(TempData["Message"]).ToString());
+        var type = Html.Raw(TempData["NotiType"]);
+        if (message == false)
+        {
+            <script>
+                $('.toast-default').toast('show')
+            </script>
+        }
+    }
     <script src="~/Scripts/jquery-3.5.1.js"></script>
     <script src="~/Scripts/popper.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>

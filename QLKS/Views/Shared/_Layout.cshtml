@@ -52,11 +52,15 @@
         <!-- Navbar-->
         <ul class="navbar-nav ml-auto ml-md-0">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i> <span id="tendangnhap_nav">@Session["tendangnhap"]</span></a>
+               
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="/NguoiDung/DangNhap">Đăng nhập</a>
+                    @if (Session["tendangnhap"] == null)
+                    {
+                        <a class="dropdown-item" href="/NguoiDung/Login">Đăng nhập</a>
+                    }
                     <a class="dropdown-item" href="/NguoiDung/DoiMatKhau">Thay đổi mật khẩu người dùng</a>
-                    <a class="dropdown-item" href="#">Đăng xuất</a>
+                    <a class="dropdown-item" href="/NguoiDung/Logout">Đăng xuất</a>
                 </div>
             </li>
         </ul>
@@ -79,7 +83,19 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Thống kê doanh thu dịch vụ
                         </a>
-
+                        <div class="sb-sidenav-menu-heading">Nghiệp vụ</div>
+                        <a class="nav-link" id="NghiepVuThuePhong" href="/ThuePhong/List">
+                            <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
+                            Thuê phòng
+                        </a>
+                        <a class="nav-link" id="NghiepVuTraPhong" href="/NghiepVu/TraPhong">
+                            <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-left"></i></div>
+                            Trả phòng
+                        </a>
+                        <a class="nav-link" id="DanhSachPhongDatTruoc" href="/DatPhong/List">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Danh sách phòng đặt trước
+                        </a>
                         <div class="sb-sidenav-menu-heading">Danh mục</div>
                         <a class="nav-link" id="DanhMucLoaiPhong" href="/LoaiPhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-archway"></i></div>
@@ -105,19 +121,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>
                             Loại tình trạng
                         </a>
-                        <div class="sb-sidenav-menu-heading">Nghiệp vụ</div>
-                        <a class="nav-link" id="NghiepVuThuePhong" href="/ThuePhong/List">
-                            <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
-                            Thuê phòng
-                        </a>
-                        <a class="nav-link" id="NghiepVuTraPhong" href="/NghiepVu/TraPhong">
-                            <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-left"></i></div>
-                            Trả phòng
-                        </a>
-                        <a class="nav-link" id="DanhSachPhongDatTruoc" href="/DatPhong/List">
-                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
-                            Danh sách phòng đặt trước
-                        </a>
+
                         <div class="sb-sidenav-menu-heading">Hệ thống</div>
                         <a class="nav-link" id="HeThongNguoiDung" href="/NhomNguoiDung/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>

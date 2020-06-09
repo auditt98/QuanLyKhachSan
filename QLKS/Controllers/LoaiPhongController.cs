@@ -7,16 +7,24 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using QLKS.Services;
 
 namespace QLKS.Controllers
 {
 	public class LoaiPhongController : Controller
 	{
 		private QLKSContext db = new QLKSContext();
+		private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
 
 		// GET: LoaiPhong/List
 		public ActionResult List()
 		{
+			if (!_nguoiDungServices.isLoggedIn())
+			{
+				TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+				TempData["NotiType"] = "danger"; //success là class trong bootstrap
+				return RedirectToAction("Login", "NguoiDung");
+			}
 			return View(db.LOAIPHONGs.ToList());
 		}
 
@@ -39,6 +47,12 @@ namespace QLKS.Controllers
 
 		public ActionResult Create()
 		{
+			if (!_nguoiDungServices.isLoggedIn())
+			{
+				TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+				TempData["NotiType"] = "danger"; //success là class trong bootstrap
+				return RedirectToAction("Login", "NguoiDung");
+			}
 			var loaiPhongModel = new LoaiPhongModel();
 			var maxId = db.LOAIPHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
 			var newId = (maxId + 1).ToString().PadLeft(7, '0');
@@ -80,6 +94,12 @@ namespace QLKS.Controllers
 
 		public ActionResult Edit(int? id)
 		{
+			if (!_nguoiDungServices.isLoggedIn())
+			{
+				TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+				TempData["NotiType"] = "danger"; //success là class trong bootstrap
+				return RedirectToAction("Login", "NguoiDung");
+			}
 			if (id == null)
 			{
 				return RedirectToAction("List");

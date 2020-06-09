@@ -35,6 +35,7 @@
                 <th class="text-center">Mã phòng</th>
                 <th class="text-center">Loại phòng</th>
                 <th class="text-center">Giá thuê</th>
+                <th class="text-center">Tầng</th>
                 <th class="text-center">Trạng thái</th>
                 <th class="text-center">Thao tác</th>
             </tr>
@@ -63,6 +64,9 @@
                         }
                     },
                     {
+                        "data": "sotang"
+                    },
+                    {
                         "data": "trangthai",
                         render: function (data, type, row, meta) {
                             console.log(meta)
@@ -78,7 +82,7 @@
                                 $(dtb.cell(meta.row, meta.col).node()).css({ "background-color": "#dc3545" })
                                 return "<h5 class='' style='color: white'>Đã thuê</h5>"
                             }
-                            if (data == "DADATTRUOC") {
+                            if (data == "DATTRUOC") {
                                 $(dtb.cell(meta.row, meta.col).node()).css({ "background-color": "#ffc107" })
                                 return "<h5 class='' style='color: white'>Đã đặt trước</h5>"
                             }
@@ -87,13 +91,13 @@
                     {
                         "data": "uid",
                         "render": function (data, type, row) {
-                            return "<a class='text-center' href='/Phong/Edit/" + data + "'><i class='fas fa-pencil-alt'></i></a>"
+                            return "<a class='text-center' href='/Phong/Edit/" + data + "'><i class='fas fa-pencil-alt' data-toggle='tooltip' data-placement='bottom' title='Sửa'></i></a>"
                         }
                     }
                 ],
                 columnDefs: [
                     {
-                        targets: [4],
+                        targets: [4, 5],
                         className: "text-center"
                     }],
                 language: {
