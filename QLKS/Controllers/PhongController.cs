@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using QLKS.Domain;
 using QLKS.Models;
 using QLKS.Services;
@@ -20,6 +21,7 @@ namespace QLKS.Controllers
         private PhongServices _phongServices = new PhongServices();
         private LoaiTinhTrangServices _loaiTinhTrangServices = new LoaiTinhTrangServices();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+        private LichSuServices _lichSuServices = new LichSuServices();
 
         public ActionResult List()
         {
@@ -89,9 +91,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            var phong = AutoMapper.Mapper.Map<PHONG>(model);
-            db.PHONGs.Add(phong);
-            db.SaveChangesAsync();
+            var item = AutoMapper.Mapper.Map<PHONG>(model);
+            db.PHONGs.Add(item);
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -142,7 +145,8 @@ namespace QLKS.Controllers
             }
             //map from model to database object
             item = Mapper.Map(model, item);
-            db.SaveChangesAsync();
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -152,12 +156,13 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var phong = db.PHONGs.Find(id);
-            if (phong != null)
+            var item = db.PHONGs.Find(id);
+            if (item != null)
             {
-                db.PHONGs.Remove(phong);
-                db.SaveChangesAsync();
+                db.PHONGs.Remove(item);
+                db.SaveChanges();
                 //Thông báo
+                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
                 TempData["Message"] = "Xóa phòng thành công";
                 TempData["NotiType"] = "success";
                 return Json("ok");

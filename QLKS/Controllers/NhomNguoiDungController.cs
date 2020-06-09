@@ -66,7 +66,7 @@ namespace QLKS.Controllers
             }
             var nhomNguoiDung = AutoMapper.Mapper.Map<NHOMNGUOIDUNG>(model);
             db.NHOMNGUOIDUNGs.Add(nhomNguoiDung);
-            db.SaveChangesAsync();
+            db.SaveChanges();
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -114,7 +114,7 @@ namespace QLKS.Controllers
             }
             //map from model to database object
             item = Mapper.Map(model, item);
-            db.SaveChangesAsync();
+            db.SaveChanges();
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -125,7 +125,7 @@ namespace QLKS.Controllers
         {
             var nhomnguoidung = db.NHOMNGUOIDUNGs.Find(id);
             db.NHOMNGUOIDUNGs.Remove(nhomnguoidung);
-            db.SaveChangesAsync();
+            db.SaveChanges();
             //Thông báo
             TempData["Message"] = "Xóa thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap

@@ -8,6 +8,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using QLKS.Services;
+using static QLKS.Extensions.Enum;
+using Newtonsoft.Json;
 
 namespace QLKS.Controllers
 {
@@ -15,6 +17,7 @@ namespace QLKS.Controllers
 	{
 		private QLKSContext db = new QLKSContext();
 		private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+		private LichSuServices _lichSuServices = new LichSuServices();
 
 		// GET: LoaiPhong/List
 		public ActionResult List()
@@ -84,9 +87,10 @@ namespace QLKS.Controllers
 					ModelState.AddModelError("", "lỗi dữ liệu ảnh !");
 				}
 			}
-			var loaiphong = AutoMapper.Mapper.Map<LOAIPHONG>(model);
-			db.LOAIPHONGs.Add(loaiphong);
+			var item = AutoMapper.Mapper.Map<LOAIPHONG>(model);
+			db.LOAIPHONGs.Add(item);
 			db.SaveChanges();
+			_lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
 			TempData["Message"] = "Thêm mới thành công";
 			TempData["NotiType"] = "success";
 			return RedirectToAction("List");
@@ -143,7 +147,8 @@ namespace QLKS.Controllers
 					return RedirectToAction("List");
 				}
 				item = Mapper.Map(model, item);
-				db.SaveChangesAsync();
+				db.SaveChanges();
+				_lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
 				TempData["Message"] = "Cập nhật thành công";
 				TempData["NotiType"] = "success"; //success là class trong bootstrap
 				return RedirectToAction("List");
@@ -159,12 +164,12 @@ namespace QLKS.Controllers
 		[HttpPost]
 		public ActionResult Delete(int id)
 		{
-			var loaiphong = db.LOAIPHONGs.Where(c => c.ID == id).FirstOrDefault();
-			if (loaiphong != null)
+			var item = db.LOAIPHONGs.Where(c => c.ID == id).FirstOrDefault();
+			if (item != null)
 			{
 				try
 				{
-					db.LOAIPHONGs.Remove(loaiphong);
+					db.LOAIPHONGs.Remove(item);
 					db.SaveChanges();
 				}
 				catch
@@ -175,6 +180,7 @@ namespace QLKS.Controllers
 				//Thông báo
 				TempData["Message"] = "Xóa loại phòng thành công";
 				TempData["NotiType"] = "success";
+				_lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
 				return Json("ok");
 			}
 			else

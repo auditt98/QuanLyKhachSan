@@ -27,5 +27,13 @@ namespace QLKS.Extensions
             QUANTRI = 1,
             TAOTHUEPHONG = 2
         }
+
+        public enum EnumLoaiHanhDong
+        {
+            THEM = 1,
+            SUA = 2,
+            XOA = 3,
+            DANGNHAP = 4
+        }
     }
 }

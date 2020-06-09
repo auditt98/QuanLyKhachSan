@@ -9,10 +9,10 @@
         @ViewBag.Title
     </h5>
     <div class="float-right" style="margin-bottom:5px;">
-        <a href="/LoaiTinhTrang/Create" class="btn btn-success">
+        @*<a href="/LoaiTinhTrang/Create" class="btn btn-success">
             <i class="fa fa-plus-square"></i>
             <span class="text-white">Thêm mới</span>
-        </a>
+        </a>*@
     </div>
     <div class=" px-4 pt-4 mb-4" style="margin-top: 40px;">
         <div class="form-group row">
@@ -35,7 +35,7 @@
                 <th class="text-center">Số thứ tự</th>
                 <th class="text-center">Mã loại tình trạng</th>
                 <th class="text-center">Tên loại tình trạng</th>
-                <th class="text-center">Thao tác</th>
+                @*<th class="text-center">Thao tác</th>*@
             </tr>
         </thead>
         <tbody></tbody>
@@ -55,17 +55,17 @@
                 columns: [
                     {"data": "uid"},
                     { "data": "ma" },
-                    { "data": "ten" },
-                    {
-                        "data": "uid",
-                        "render": function (data, type, row) {
-                            return "<a class='text-center' href='/LoaiTinhTrang/Edit/" + data + "'><i class='fas fa-pencil-alt'></i></a>"
-                        }
-                    }
+                    { "data": "ten" }
+                    //,{
+                    //    "data": "uid",
+                    //    "render": function (data, type, row) {
+                    //        return "<a class='text-center' href='/LoaiTinhTrang/Edit/" + data + "'><i class='fas fa-pencil-alt'></i></a>"
+                    //    }
+                    //}
                 ],
                 columnDefs: [
                     {
-                        targets: [3],
+                        targets: [2],
                         className: "text-center"
                     }],
                 language: {

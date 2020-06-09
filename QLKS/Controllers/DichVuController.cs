@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using QLKS.Domain;
 using QLKS.Models;
 using QLKS.Services;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static QLKS.Extensions.Enum;
 
 namespace QLKS.Controllers
 {
@@ -14,6 +16,7 @@ namespace QLKS.Controllers
     {
         private QLKSContext db = new QLKSContext();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+        private LichSuServices _lichSuServices = new LichSuServices();
         // GET: DichVu/List
         public ActionResult List()
         {
@@ -64,9 +67,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            var dichvu = AutoMapper.Mapper.Map<DICHVU>(model);
-            db.DICHVUs.Add(dichvu);
-            db.SaveChangesAsync();
+            var item = AutoMapper.Mapper.Map<DICHVU>(model);
+            db.DICHVUs.Add(item);
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -114,7 +118,8 @@ namespace QLKS.Controllers
             }
             //map from model to database object
             item = Mapper.Map(model, item);
-            db.SaveChangesAsync();
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -129,9 +134,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
-            var dichvu = db.DICHVUs.Find(id);
-            db.DICHVUs.Remove(dichvu);
-            db.SaveChangesAsync();
+            var item = db.DICHVUs.Find(id);
+            db.DICHVUs.Remove(item);
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
             //Thông báo
             TempData["Message"] = "Xóa thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
