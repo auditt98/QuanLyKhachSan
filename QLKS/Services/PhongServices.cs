@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static QLKS.Extensions.Enum;
 
 namespace QLKS.Services
 {
@@ -26,7 +27,7 @@ namespace QLKS.Services
 
         public List<PHONG> GetPhongTrongFromLoaiPhong(int? loaiphong)
         {
-            var items = db.PHONGs.Where(c => c.LOAIPHONG.ID == loaiphong).ToList();
+            var items = db.PHONGs.Where(c => c.LOAIPHONG.ID == loaiphong && c.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.TRONG).ToList();
             return items;
         }
     }

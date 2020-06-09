@@ -32,23 +32,17 @@ namespace QLKS.Controllers
             var a = new List<object>();
             foreach(var thue in allThuePhong)
             {
-                var khachhang = db.KHACHHANGs.Find(thue.KHACHHANG_ID);
-                var tenkhachhang = khachhang.tenkhachhang;
-                var sdt = khachhang.sodienthoai;
-                var sophongthue = db.CHITIETTHUEPHONGs.Where(c => c.THUEPHONG_ID == thue.ID).ToList().Count;
                 var data = new
                 {
-                    tenkhachhang = tenkhachhang,
-                    sdt = sdt,
-                    sophongthue = sophongthue,
+                    tenkhachhang = thue.KHACHHANG.tenkhachhang,
+                    sdt = thue.KHACHHANG.sodienthoai,
+                    sophongthue = thue.CHITIETTHUEPHONGs.Count,
                     uid = thue.ID,
                     ma = thue.ma
                 };
                 a.Add(data);
             }
-
             var result = new { data = a };
-
             return Json(result);
         }
 
@@ -76,13 +70,14 @@ namespace QLKS.Controllers
             newKhachHang.socmt = model.socmt;
             newKhachHang.sodienthoai = model.sdt;
             newKhachHang.tenkhachhang = model.tenkhachhang;
-
+            
             //insert new thuephong
             var newThuePhong = new THUEPHONG();
             newThuePhong.KHACHHANG = newKhachHang;
             newThuePhong.KHACHHANG_ID = newKhachHang.ID;
             newThuePhong.ma = model.ma;
             db.THUEPHONGs.Add(newThuePhong);
+            newThuePhong.KHACHHANG = newKhachHang;
             foreach(var chitiet in model.ChiTietThuePhong)
             {
                 var newChiTiet = new CHITIETTHUEPHONG();
@@ -95,7 +90,8 @@ namespace QLKS.Controllers
                 phong.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DATHUE;
             }
             db.SaveChanges();
-
+            TempData["Message"] = "Thêm mới thành công";
+            TempData["NotiType"] = "success";
             return Json("ok");
         }
 

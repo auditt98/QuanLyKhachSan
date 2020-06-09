@@ -3,18 +3,18 @@
     ViewBag.Title = "Tạo mới đơn đặt phòng";
 
 }
-<form action="/ThuePhong/Create" method="post">
+<form method="post">
     <div class="card mb-4">
         <h6 class="card-header">
             Thêm mới đơn đặt phòng
             <small>
                 <i class="fa fa-arrow-circle-left"></i>
-                <a href="/DatPhong/List">Quay lại danh sách</a>
+                <a href="/ThuePhong/List">Quay lại danh sách</a>
             </small>
-            <button id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
+            <div id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
                 <i class="fas fa-save" style="margin-right:5px;"></i>
                 Lưu
-            </button>
+            </div>
         </h6>
         <div class="card-body">
             @{
