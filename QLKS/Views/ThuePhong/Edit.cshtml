@@ -1,59 +1,112 @@
-﻿@model KhachHangModel
-@{
-    ViewBag.Title = "Sửa thông tin khách hàng";
+﻿@model ThuePhongModel
+    @{
+        ViewBag.Title = "Sửa thông tin khách hàng";
 
-}
-<form action="/KhachHang/Edit" method="post">
-    <div class="card mb-4">
-        <h6 class="card-header">
-            Sửa thông tin
-            <small>
-                <i class="fa fa-arrow-circle-left"></i>
-                <a href="/KhachHang/List">Quay lại danh sách</a>
-            </small>
-            <div class="btn btn-danger" id="btnDelete" style="float:right;margin-right:5px; ">
-                <i class="fas fa-trash" style="margin-right:5px;"></i>
-                Xóa
-            </div>
-            <button type="submit" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
-                <i class="fas fa-save" style="margin-right:5px;"></i>
-                Lưu
-            </button>
+    }
+    <form method="post">
+        <div class="card mb-4">
+            <h6 class="card-header">
+                Sửa thông tin
+                <small>
+                    <i class="fa fa-arrow-circle-left"></i>
+                    <a href="/ThuePhong/List">Quay lại danh sách</a>
+                </small>
+                <div class="btn btn-danger" id="btnDelete" style="float:right;margin-right:5px; ">
+                    <i class="fas fa-trash" style="margin-right:5px;"></i>
+                    Xóa
+                </div>
+                <div id="btnSave" class="btn btn-success" style="float:right;margin-right:5px; ">
+                    <i class="fas fa-save" style="margin-right:5px;"></i>
+                    Lưu
+                </div>
 
-        </h6>
-        <div class="card-body">
-            @{
-                @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control d-none" } })
-                Html.RenderPartial("_CreateOrUpdate");
-            }
-        </div>
-    </div>
-</form>
-
-@section scripts{
-    <script>
-        $("#btnDelete").on("click", function () {
-            bootbox.confirm("Bạn có chắc chắn muốn xóa", function (result) {
-                console.log(result)
-                if (result == true) {
-                    var _data = {
-                        id: $("#ID").val()
-                    }
-                    console.log(_data)
-                    $.ajax({
-                        url: "/KhachHang/Delete",
-                        method: "POST",
-                        data: _data,
-                        success: function (data) {
-                            if (data == "ok") {
-                                window.location.href = "/KhachHang/List"
-                            }
-                        }
-                    })
+            </h6>
+            <div class="card-body">
+                @{
+                    @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control d-none" } })
+                    Html.RenderPartial("_CreateOrUpdate");
                 }
+            </div>
+        </div>
+    </form>
+
+    @section scripts{
+        <script>
+            $("#btnSave").on("click", function () {
+                var listChiTiet = [];
+                var ID = $("#ID").val();
+                var ma = $("#ma").val();
+                var tenkhachhang = $("#tenkhachhang").val();
+                var khachhang_id = $("#khachhang_id").val();
+                var socmt = $("#socmt").val();
+                var sdt = $("#sdt").val();
+                $(".chitiet").each(function () {
+                    var gid = $(this).data("guid");
+                    loaiphong = $("#loaiphong_" + gid).val();
+                    phong = $("#phong_" + gid).val();
+                    ngayvao = $("#ngayvao_" + gid).val();
+                    ngayra = $("#ngayra_" + gid).val();
+                    //gia = $("#gia_" + gid).val();
+                    var ChiTiet = {
+                        loaiphong_id: loaiphong,
+                        phong_id: phong,
+                        ngayvao: ngayvao,
+                        ngayra: ngayra
+                        //gia: gia
+                    }
+                    listChiTiet.push(ChiTiet);
+                })
+                var _data = {
+                    ChiTietThuePhong: listChiTiet,
+                    ma: ma,
+                    tenkhachhang: tenkhachhang,
+                    socmt: socmt,
+                    sdt: sdt,
+                    KHACHHANG_ID: khachhang_id,
+                    ID: ID
+                }
+                $.ajax({
+                    data: _data,
+                    method: "POST",
+                    url: "/ThuePhong/Edit",
+                    success: function (data) {
+                        if (data == "ok") {
+                            window.location.href = "/ThuePhong/List"
+                        }
+                    }
+
+                })
 
             })
-        })
-    </script>
+        </script>
+        <script>
+            $("#btnDelete").on("click", function () {
+                swal({
+                    title: "Bạn có chắc chắn muốn xóa?",
+                    text: "Mọi dữ liệu liên quan sẽ bị mất!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            var _data = {
+                                id: $("#ID").val()
+                            }
+                            console.log(_data)
+                            $.ajax({
+                                url: "/ThuePhong/Delete",
+                                method: "POST",
+                                data: _data,
+                                success: function (data) {
+                                    if (data == "ok") {
+                                        window.location.href = "/ThuePhong/List"
+                                    }
+                                }
+                            })
+                        }
+                    });
+            })
+        </script>
 
-}
+    }

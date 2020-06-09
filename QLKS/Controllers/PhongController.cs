@@ -166,8 +166,12 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult GetGiaPhong(int? phong)
         {
-            var gia = db.PHONGs.Where(c => c.ID == phong).FirstOrDefault().giathue;
-            return Json(gia);
+            var gia = db.PHONGs.Where(c => c.ID == phong).FirstOrDefault();
+            if(gia == null)
+            {
+                return Json(0);
+            }
+            return Json(gia.giathue) ;
         }
 
 

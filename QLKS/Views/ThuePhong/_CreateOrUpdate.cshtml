@@ -14,21 +14,25 @@
 <div class="dropdown-divider"></div>
 <h5>Thông tin khách đặt phòng</h5>
 <br />
+<input id="khachhang_id" type="hidden" value="@Model.KHACHHANG_ID"/>
+
 
 <div class="form-group row">
     <label class="control-label col-md-2 text-right text-required">Tên khách hàng:</label>
     <div class="col-md-3">
-        <input class="form-control" name="tenkhachhang" id="tenkhachhang" required title="Tên khách hàng không được để trống" />
+        @Html.EditorFor(model => model.tenkhachhang, new { htmlAttributes = new { @class = "form-control", @required = true, @title = "Tên khách hàng không được để trống" } })
+        @*<input class="form-control" name="tenkhachhang" id="tenkhachhang" required title="Tên khách hàng không được để trống" />*@
         @Html.ValidationMessageFor(model => model.tenkhachhang, "", new { @class = "text-danger" })
     </div>
     <label class="control-label col-md-1 text-right text-required">Số CMT</label>
-    <input id="socmt" name="socmt" class="form-control col-md-3" required title="Số CMT không được để trống"/>
+    @Html.EditorFor(model => model.socmt, new { htmlAttributes = new { @class = "form-control col-md-3", @required = true, @title = "Số CMT không được để trống" } })
     @Html.ValidationMessageFor(model => model.socmt, "", new { @class = "text-danger" })
 </div>
 <div class="form-group row">
     <label class="control-label col-md-2 text-right text-required">Số điện thoại:</label>
     <div class="col-md-3">
-        <input class="form-control" name="sdt" id="sdt" required title="SDT không được để trống"/>
+        @Html.EditorFor(model => model.sdt, new { htmlAttributes = new { @class = "form-control", @required = true, @title = "SDT không được để trống" } })
+        @*<input class="form-control" name="sdt" id="sdt" required title="SDT không được để trống" />*@
         @Html.ValidationMessageFor(model => model.sdt, "", new { @class = "text-danger" })
     </div>
     <div class="col-md-3"></div>
@@ -91,7 +95,7 @@
 <script>
     var soPhongTrong;
     $.ajax({
-            type: "POST",
+        type: "POST",
             url: "/Phong/ThongKePhong",
             success: function (data) {
                 $("#phongban").text(data.phongban);
@@ -110,37 +114,37 @@
                 $("#phongtrong").text(data.phongtrong);
                 $("#phongdangsudung").text(data.phongdangsudung);
                 $("#phongdattruoc").text(data.phongdattruoc);
-                soPhongTrong = data.phongtrong;
-            }
-        })
+                    soPhongTrong = data.phongtrong;
+                }
+            })
 
     })
 
     function xoaDivChiTiet(guid, isFromDb){
         $("#chitiet_" + guid).remove();
-    }
+        }
 </script>
 
 <script>
 
     $("#addNewChiTiet").on("click", function () {
-        if (soPhongTrong != null) {
-            var soDiv = $(".chitiet").length;
-            if (soPhongTrong != 0) {
+            if (soPhongTrong != null) {
+                var soDiv = $(".chitiet").length;
+                if (soPhongTrong != 0) {
                 $.ajax({
                     type: "GET",
                     url: "/ThuePhong/_AddNewChiTietThue",
                     success: function (data) {
                         $("#danhsachchitiet").append(data);
-                    }
-                });
-            } else {
+                        }
+                    });
+                } else {
                 $("#customToastMessage").text("Không còn phòng trống");
                 $('#customToast').toast('show')
+                }
             }
-        }
         $("#updateStats").click();
-    })
+        })
 </script>
 
 @*remember to prepare chitietthuephong*@
@@ -163,7 +167,7 @@ else
         <script>
             $.ajax({
                 type: "GET",
-                url: "/ThuePhong/_AddNewChiTietThue?loaiphong=@ct.loaiphong_id&phong=@ct.phong_id",
+                url: "/ThuePhong/_AddNewChiTietThue?phong=@ct.phong_id&thuephong=@ct.THUEPHONG_ID",
                 success: function (data) {
                     $("#danhsachchitiet").append(data);
                 }

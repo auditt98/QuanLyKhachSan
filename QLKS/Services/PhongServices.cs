@@ -20,8 +20,11 @@ namespace QLKS.Services
                 Value = c.ID.ToString(),
                 Selected = c.ID == selected
             }).ToList();
-            var firstRow = new SelectListItem { Value = null, Text = "--Chọn phòng--" };
-            items = items.Prepend(firstRow).ToList();
+            if (selected == 0)
+            {
+                var firstRow = new SelectListItem { Value = null, Text = "--Chọn phòng--" };
+                items = items.Prepend(firstRow).ToList();
+            }
             return items;
         }
 

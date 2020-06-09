@@ -64,6 +64,8 @@ namespace QLKS.Controllers
             var nguoiDung = db.NGUOIDUNGs.Find(id);
             if (nguoiDung == null)
             {
+                TempData["Message"] = "Không tìm thấy người dùng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
             //prepare model

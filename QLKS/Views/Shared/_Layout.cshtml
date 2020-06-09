@@ -34,6 +34,9 @@
         $('.datepicker-here').datepicker({
             language: 'vi'
         })
+        function toVND(data) {
+            return data.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+        };
     </script>
 </head>
 <body style="display:flex; flex-direction: column;">
@@ -205,9 +208,7 @@
         });
     })(jQuery);
     
-        function toVND(data){
-             return data.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-        };
+
     </script>
 </body>
 </html>

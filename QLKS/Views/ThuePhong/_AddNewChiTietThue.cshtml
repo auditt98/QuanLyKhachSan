@@ -9,12 +9,35 @@
         <div class="dropdown-divider" style="width:100%"></div>
         <div class="col-sm-3">
             <label class="text-sm-left text-required">Chọn loại phòng</label>
-            @Html.DropDownListFor(model => model.loaiphong_id, new SelectList(Model.DanhSachLoaiPhong, "Value", "Text"), htmlAttributes: new { @class = "form-control", @id = "loaiphong_" + guid, @required = "true", @title = "Chọn loại phòng" })
-            </div>
+            <select id="loaiphong_@guid" name="loaiphong_id" class="form-control" required title="Vui lòng chọn loại phòng">
+                @foreach (var lp in Model.DanhSachLoaiPhong)
+                {
+                    if (lp.Selected == true)
+                    {
+                        <option value="@lp.Value" selected>@lp.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@lp.Value">@lp.Text</option>
+                    }
+                }
+            </select>
+        </div>
         <div class="col-sm-3">
             <label class="text-sm-left text-required">Chọn phòng trống</label>
-            <select id="phong_@guid" name="phong_id" class="form-control" required title="Vui lòng chọn phòng"></select>
-
+            <select id="phong_@guid" name="phong_id" class="form-control" required title="Vui lòng chọn phòng">
+                @foreach (var p in Model.DanhSachPhong)
+                {
+                    if (p.Selected == true)
+                    {
+                        <option value="@p.Value" selected>@p.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@p.Value">@p.Text</option>
+                    }
+                }
+            </select>
         </div>
         <div class="col-sm-2">
             <label class="text-sm-left text-required">Ngày vào</label>
@@ -30,6 +53,7 @@
         </div>
     </div>
 </div>
+
 <script>
 
     $("#loaiphong_" + '@guid').on('change', function () {
@@ -49,8 +73,9 @@
             }
         });
     });
-        $("#phong_@guid").on('change', function () {
-            $("#gia_@guid").val(0);
+
+    $("#phong_@guid").change(function () {
+        $("#gia_@guid").val(0);
             var _data = {
                 phong: $(this).find('option:selected').val()
             }
@@ -62,9 +87,25 @@
                     $("#gia_@guid").val(toVND(data));
                 }
             });
-         });
+
+    })
+        @*$("#phong_@guid").on('change', function () {
+
+        });*@
+
 
     $('.datepicker-here').datepicker({
         language: 'vi'
     })
 </script>
+
+
+@if (Model.ngayra != null)
+{
+    <script>
+        var ngayVao = $("#ngayvao_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayvao.Value.Year, @Model.ngayvao.Value.Month, @Model.ngayvao.Value.Day));
+        var ngayRa = $("#ngayra_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayra.Value.Year, @Model.ngayra.Value.Month, @Model.ngayra.Value.Day));
+        var gia = toVND(@Model.gia);
+        $("#gia_@guid").val(gia);
+    </script>
+}
