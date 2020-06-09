@@ -31,5 +31,26 @@ namespace QLKS.Controllers
 			//prepare model
 			return View(loaiphong);
 		}
+		public ActionResult DatPhong(DateTime? check_in, DateTime? check_out, int? adults, int? children)
+		{
+			//var data = from lp in db.LOAIPHONGs
+			//		   select new
+			//		   {
+			//			   lp.ID,
+			//			   lpCount = db.PHONGs.Where(c => c.LOAIPHONG_ID == 1 && c.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.TRONG).ToList().Count
+			//		   };
+			//var a = data.ToList();
+			//var sophongtrong = db.PHONGs.Where(c => c.LOAIPHONG_ID == 1 && c.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.TRONG).ToList().Count;
+			//if (adults != null)
+			//{
+			//	data = data.Where(d => d.nguoilon >= adults);
+			//}
+			//if (children != null)
+			//{
+			//	data = data.Where(d => d.trecon >= children);
+			//}
+			return View();
+			
+		}
 	}
 }

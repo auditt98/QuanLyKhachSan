@@ -1,0 +1,408 @@
+﻿@model IEnumerable<QLKS.Domain.LOAIPHONG>
+
+@{
+    ViewBag.Title = "DatPhong";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+
+<div id="gembooking-container" class="container">
+    <div id="gembooking-main" class="gembooking-main" role="main">
+        <div class="gembooking-block gembooking-page gembooking-page--search">
+            <div class="search-rooms">
+
+                <div class="search-rooms__form">
+                    <form action="DatPhong" method="GET" role="search" novalidate>
+
+                        <div class="searchbox searchbox--horizontal searchbox--align-left">
+                            <div class="searchbox__wrap">
+                                <div class="searchbox__box searchbox__box--checkin">
+                                    <div class="searchbox__box-wrap">
+                                        <div class="searchbox__box-line">
+                                            <label class="searchbox__box-label"><span>Ngày đến</span></label>
+
+                                            <div class="searchbox__box-input">
+                                                <input type="text" readonly data-bind="value: checkInFormatted()" class="searchbox__input searchbox__input--checkin input-transparent" placeholder="2020-06-10" autocomplete="off" aria-haspopup="true">
+                                                <input type="hidden" data-bind="value: checkInDate" name="check_in" value="2020-06-10">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="searchbox__box searchbox__box--checkout">
+                                    <div class="searchbox__box-wrap">
+                                        <div class="searchbox__box-line">
+                                            <label class="searchbox__box-label"><span>Ngày đi</span></label>
+
+                                            <div class="searchbox__box-input">
+                                                <input type="text" readonly data-bind="value: checkOutFormatted()" class="searchbox__input searchbox__input--checkout input-transparent" placeholder="2020-06-19" autocomplete="off" aria-haspopup="true">
+                                                <input type="hidden" data-bind="value: checkOutDate" name="check_out" value="2020-06-19">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="searchbox__box searchbox__box--occupancy">
+                                    <div class="searchbox__box-wrap">
+                                        <div class="searchbox__box-line">
+                                            <label class="searchbox__box-label">
+                                                <span>Khách hàng</span>
+                                            </label>
+
+                                            <div class="searchbox__box-input searchbox-occupancy-info">
+                                                <span class="searchbox-occupancy-info__item">
+                                                    <span class="searchbox-occupancy-info__number" data-bind="text: adults">1</span>
+                                                    người lớn
+                                                </span>
+
+                                                <span class="searchbox-occupancy-info__item">
+                                                    <span class="searchbox-occupancy-info__number" data-bind="text: children">0</span>
+                                                    trẻ em
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="searchbox__popup">
+                                        <div class="searchbox__popup-item searchbox__popup-item--adults">
+                                            <label>
+                                                <span>Người lớn</span>
+                                                <input type="number" name="adults" data-bind="value: adults" min="1" max="6" value="1" class="searchbox__input form-input-transparent" />
+                                            </label>
+                                        </div>
+
+                                        <div class="searchbox__popup-item searchbox__popup-item--children">
+                                            <label>
+                                                <span>Trẻ em</span>
+                                                <input type="number" name="children" data-bind="value: children" min="0" max="6" value="0" class="searchbox__input form-input-transparent" />
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="searchbox__box searchbox__box--button">
+                                    <div class="searchbox__box-wrap">
+                                        <button type="submit" class="button button--primary searchbox__submit">Sẵn sàng kiểm tra</button>
+                                    </div>
+                                </div>
+                            </div><!-- /.searchbox__wrapper-->
+
+                        </div><!-- /.searchbox-->
+                    </form>
+                </div>
+                <div class="filterbox">
+                    <div class="filterbox__wrap">
+                        <div class="filterbox__box">
+                            <div class="filterbox__box-wrap">
+                                <label class="filterbox__label">Sắp xếp theo:</label>
+                                <select name="sortby" class="input-transparent filterbox__sortby" onChange="window.document.location.href=this.options[this.selectedIndex].value;">
+                                    <option value="https://hotel.sonqb.com/he-thong-phong/?sortby=cheapest&#038;hotel=0&#038;check_in=2020-06-10&#038;check_out=2020-06-19&#038;adults=1&#038;children=0&#038;infants=0&#038;number_rooms=1&#038;promo_code">
+                                        Giá rẻ nhất
+                                    </option>
+
+                                    <option value="https://hotel.sonqb.com/he-thong-phong/?sortby=highest&#038;hotel=0&#038;check_in=2020-06-10&#038;check_out=2020-06-19&#038;adults=1&#038;children=0&#038;infants=0&#038;number_rooms=1&#038;promo_code">
+                                        Giá cao nhất
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex-space"></div>
+
+                        <div class="filterbox__box">
+                            <div class="filterbox__box-wrap">
+                                <label class="filterbox__label">Hiển thị giá:</label>
+                                <ul class="filterbox__showprice">
+                                    <li class="filterbox__showprice-item ">
+                                        <a href="https://hotel.sonqb.com/he-thong-phong/?showprice=average&#038;hotel=0&#038;check_in=2020-06-10&#038;check_out=2020-06-19&#038;adults=1&#038;children=0&#038;infants=0&#038;number_rooms=1&#038;promo_code">Mỗi phòng mỗi đêm</a>
+                                    </li>
+
+                                    <li class="filterbox__showprice-item ">
+                                        <a href="https://hotel.sonqb.com/he-thong-phong/?showprice=total&#038;hotel=0&#038;check_in=2020-06-10&#038;check_out=2020-06-19&#038;adults=1&#038;children=0&#038;infants=0&#038;number_rooms=1&#038;promo_code">Giá cho cả kỳ nghỉ</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hotel-content">
+                    <div class="hotel-content__main">
+
+                        <div id="search-rooms-results" class="rooms rooms--search">
+                            @foreach (var item in Model)
+                            {
+                                <div class="roommaster">
+                                    <div class="roommaster-header">
+                                        <h3 class="roommaster-header__title">
+                                            <a href="~/Home/Details?id=@item.ID" rel="bookmark" target="_blank">
+                                                @item.tenloaiphong
+                                            </a>
+                                        </h3>
+
+                                        <!-- <button class="button button--secondary button--circle-icon">
+                                            <span class="aficon aficon-arrow-down"></span>
+                                        </button> -->
+                                    </div>
+
+                                    <div class="roommaster-wrapper">
+                                        <div class="roommaster-content">
+
+                                            <div class="columns">
+                                                <div class="column-lg-3">
+                                                    <div class="roommaster-info">
+                                                        <div class="roommaster-info__image">
+                                                            <img width="600" height="400" src="~/Content/imgLoaiPhong/@item.anh" class="attachment-gembooking_archive size-gembooking_archive wp-post-image" alt="" />
+                                                        </div>
+
+                                                        <ul class="roommaster-info__list">
+                                                            <li class="info-item">
+                                                                <span class="info-icon">
+                                                                    <i class="aficon aficon-business"></i>
+                                                                    <span class="screen-reader-text">Room view</span>
+                                                                </span>
+                                                                @item.khungnhin
+                                                            </li>
+
+                                                            <li class="info-item">
+                                                                <span class="info-icon">
+                                                                    <i class="aficon aficon-sqm"></i>
+                                                                    <span class="screen-reader-text">Area size</span>
+                                                                </span>
+                                                                @item.dientich m<sup>2</sup>
+                                                            </li>
+
+                                                            <li class="info-item">
+                                                                <span class="info-icon">
+                                                                    <i class="aficon aficon-bed"></i>
+                                                                    <span class="screen-reader-text">Giường</span>
+                                                                </span>
+                                                                <span>@item.giuong</span>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <div class="column-lg-9">
+                                                    <div class="roommaster-list">
+                                                        <div class="columns no-gutters roommaster-list__header">
+                                                            <div class="column-lg-4">
+                                                                <h4 class="roommaster-content__title">Thông tin khác</h4>
+                                                            </div>
+
+                                                            <div class="column-lg-2">
+                                                                <h4 class="roommaster-content__title">Sức chứa</h4>
+                                                            </div>
+
+                                                            <div class="column-lg-3">
+                                                                <h4 class="roommaster-content__title">Giá</h4>
+                                                            </div>
+
+                                                            <div class="column-lg-3"></div>
+                                                        </div>
+
+                                                        <div class="columns no-gutters roommaster-list__content">
+                                                            <div class="column-lg-4">
+                                                                <div class="roommaster-deal roommaster-box">
+                                                                    <h4 class="roommaster-content__title">Thông tin khác</h4>
+
+                                                                    <div class="roommaster-deal__item">
+                                                                        <span class="roommaster-deal__bucketspan">Gồm có</span>
+                                                                        <div class="roommaster-deal__info">
+                                                                            <span class="info-icon">
+                                                                                <i class="aficon aficon-checkmark"></i>
+                                                                            </span>
+                                                                            <span class="info-text">Ăn sáng</span>
+                                                                        </div>
+                                                                        <div class="roommaster-deal__info">
+                                                                            <span class="info-icon">
+                                                                                <i class="aficon aficon-checkmark"></i>
+                                                                            </span>
+                                                                            <span class="info-text">Đưa đón sân bay</span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="roommaster-deal__item">
+                                                                        <span class="roommaster-deal__bucketspan">Chính sách</span>
+                                                                        <div class="roommaster-deal__info">
+                                                                            <span class="info-icon">
+                                                                                <i class="aficon aficon-checkmark"></i>
+                                                                            </span>
+                                                                            <span>Không hoàn lại 30% tiền phòng</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="column-lg-2">
+                                                                <div class="roommaster-occupancy roommaster-box">
+                                                                    <h4 class="roommaster-content__title">Sức chứa</h4>
+
+                                                                    <ul id="roommaster-occupancy-316" class="roommaster-occupancy-list" data-gembooking="tooltip" data-tippy-html="#occupancy-description-316">
+                                                                        <li class="roommaster-occupancy__item">
+                                                                            @item.nguoilon x <i class="aficon aficon-man"></i><span class="screen-reader-text">Adult</span>
+                                                                        </li>
+
+                                                                        <li class="roommaster-occupancy__item">
+                                                                            @item.trecon x <i class="aficon aficon-body"></i><span class="screen-reader-text">Child</span>
+                                                                        </li>
+
+                                                                    </ul><!-- #roommaster-occupancy-249 -->
+
+                                                                </div><!-- .roommaster-occupancy -->
+                                                            </div>
+
+                                                            <div class="column-lg-3">
+                                                                <div class="roommaster-inventory roommaster-box">
+                                                                    <h4 class="roommaster-content__title">Giá</h4>
+
+                                                                    <span class="gembooking-price "><span class="gembooking-price__amount">@item.ma</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span>Chi phí trung bình mỗi đêm
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="column-lg-3">
+                                                                <div class="roommaster-button roommaster-box">
+                                                                    <form method="POST" action="https://hotel.sonqb.com/gembooking-route/reservation/book-room">
+                                                                        <input type="hidden" id="_wpnonce" name="_wpnonce" value="ec812729ed" /><input type="hidden" name="_wp_http_referer" value="/he-thong-phong/?check_in=2020-06-10&amp;check_out=2020-06-19&amp;adults=1&amp;children=0&amp;infants=0&amp;number_rooms=1&amp;promo_code&amp;hotel=0&amp;res=d5b3c23c0698a8dc82da8c998853206b3d2bb75e" />
+
+
+                                                                        <input type="hidden" name="check_in" value="2020-06-10">
+                                                                        <input type="hidden" name="check_out" value="2020-06-19">
+                                                                        <input type="hidden" name="adults" value="1">
+
+
+
+                                                                        <input type="hidden" name="room_type" value="316">
+
+                                                                        <button class="booknow button is-primary">Đặt Ngay</button>
+                                                                    </form>
+                                                                    <span class="roommaster-button__remaining-rooms">
+                                                                        Còn lại @item.PHONGs.Count() phòng
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            }
+                        </div><!-- /.rooms -->
+
+
+                    </div>
+
+                    <aside class="hotel-content__aside">
+                        <div class="reservation">
+                            <h2 class="reservation__title">Tóm tắt đặt phòng</h2>
+
+
+                            <div class="reservation__section reservation__section--dates">
+                                <div class="reservation-dates">
+                                    <div class="reservation-date reservation-date--checkin">
+                                        <span class="reservation-date__title">Ngày đến</span>
+
+                                        <div class="reservation-date__date">
+                                            <span class="reservation-date__day" data-date-format="d">10</span>
+                                            <span class="reservation-date__week" data-date-format="l">Thứ Tư</span>
+                                            <span class="reservation-date__year" data-date-format="M Y">Th6 2020</span>
+                                        </div>
+
+                                        <span class="reservation-date__time">
+                                            từ 13:00
+                                        </span>
+                                    </div><!-- /.reservation-date-->
+
+                                    <div class="reservation-date__arrow">
+                                        <i class="aficon aficon-arrow-forward"></i>
+                                    </div>
+
+                                    <div class="reservation-date reservation-date--checkout">
+                                        <span class="reservation-date__title">Ngày đi</span>
+
+                                        <div class="reservation-date__date">
+                                            <span class="reservation-date__day" data-date-format="d">19</span>
+                                            <span class="reservation-date__week" data-date-format="l">Thứ Sáu</span>
+                                            <span class="reservation-date__year" data-date-format="M Y">Th6 2020</span>
+                                        </div>
+
+                                        <span class="reservation-date__time">
+                                            đến 12:00
+                                        </span>
+
+                                    </div><!-- /.reservation-date-->
+                                </div><!-- /.reservation-dates -->
+                            </div><!-- /.reservation__section -->
+
+
+                            <div class="reservation__section reservation__section--room">
+                                <div class="roomdetails-room">
+                                    <dl class="roomdetails-room__list">
+                                        <dt>Phòng</dt>
+                                        <dd>Phòng đôi</dd>
+
+                                        <dt>Ở lại</dt>
+                                        <dd>
+                                            9 đêm, <span class="gembooking_guest__adults">1 người lớn</span>
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="roomdetails-room__list--price">
+                                        <dt>
+                                            Giá         <small>
+                                                (9 đêm x 1 phòng)
+                                            </small>
+                                        </dt>
+                                        <dd>
+                                            <span class="gembooking-price "><span class="gembooking-price__amount">2.250.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span>
+                                        </dd>
+
+                                    </dl>
+
+                                    <div class="roomdetails-room__actions">
+                                        <a href="https://hotel.sonqb.com/gembooking-route/reservation/remove/7e6e673622193b07b22da8ea89355c3587fc696b" class="remove-selected-room">Xóa</a>
+                                    </div>
+                                </div><!-- /.roomdetails-room -->
+                            </div><!-- /.reservation__section -->
+
+
+
+
+                            <div class="reservation__section reservation__section--totals">
+                                <dl>
+                                    <dt>Tổng phụ</dt>
+                                    <dd><span class="gembooking-price "><span class="gembooking-price__amount">2.250.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span></dd>
+                                </dl>
+
+
+
+                                <dl>
+                                    <dt><strong>Tổng</strong></dt>
+                                    <dd><span class="gembooking-price "><span class="gembooking-price__amount">2.250.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span></dd>
+                                </dl>
+
+                            </div>
+
+
+                        </div><!-- /.reservation -->
+
+
+                        <div class="reservation-goto-checkout">
+                            <a href="https://hotel.sonqb.com/thanh-toan/" class="button button--primary button--block">Checkout</a>
+                        </div>
+
+
+                    </aside>
+                </div><!-- /.hotel-content -->
+
+            </div><!-- /.search-rooms -->
+        </div><!-- /.gembooking-page--search -->
+
+    </div>
+</div><!-- /#gembooking-container -->
