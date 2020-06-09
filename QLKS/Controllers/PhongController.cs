@@ -34,7 +34,7 @@ namespace QLKS.Controllers
                 ma = c.ma,
                 tenloaiphong = c.LOAIPHONG.tenloaiphong,
                 gia = c.giathue,
-                sotang = c.sotang,
+                trangthai = Enum.GetName(typeof(EnumLoaiTinhTrang),c.LOAITINHTRANG_ID).ToString(),
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
 
