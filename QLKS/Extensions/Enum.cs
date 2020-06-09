@@ -19,13 +19,25 @@ namespace QLKS.Extensions
 
         public enum EnumNhomNguoiDung
         {
-
+            ADMIN = 1,
+            LETAN = 2,
+            KETOAN = 3,
+            PHONG = 4
         } 
         
         public enum EnumQuyen
         {
-            QUANTRI = 1,
-            TAOTHUEPHONG = 2
+            CAPQUYEN = 1,
+            THONGKEDOANHTHU = 2,
+            THONGKEDATPHONG = 3,
+            THONGKEDOANHTHUDICHVU = 4,
+            THUEPHONG = 5,
+            TRAPHONG = 6,
+            DM_LOAIPHONG = 7,
+            DM_PHONG = 8,
+            DM_DICHVU = 9,
+            DM_VATTU = 10,
+            DM_KHACHHANG = 11,
         }
 
         public enum EnumLoaiHanhDong

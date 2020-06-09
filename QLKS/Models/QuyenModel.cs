@@ -21,11 +21,7 @@ namespace QLKS.Models
 
         public DateTime? ngaychinhsua { get; set; }
 
-        public virtual NguoiDungModel NGUOITAO { get; set; }
-
-        public virtual NguoiDungModel NGUOISUA { get; set; }
-
-        //public virtual ICollection<NHOMNGUOIDUNG> NHOMNGUOIDUNGs { get; set; }
+        public string tentiengviet { get; set; }
 
     }
 }

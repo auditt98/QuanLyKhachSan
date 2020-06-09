@@ -464,22 +464,24 @@ INSERT [dbo].[LOAITINHTRANG] ([ID], [ma], [ten]) VALUES (6, N'TT-0000006', N'DAT
 SET IDENTITY_INSERT [dbo].[LOAITINHTRANG] OFF
 SET IDENTITY_INSERT [dbo].[NHOMNGUOIDUNG] ON 
 
-INSERT [dbo].[NHOMNGUOIDUNG] ([ID], [ten], [ma]) VALUES (1, N'admin', NULL)
-INSERT [dbo].[NHOMNGUOIDUNG] ([ID], [ten], [ma]) VALUES (2, N'nhanvien_letan', NULL)
-INSERT [dbo].[NHOMNGUOIDUNG] ([ID], [ten], [ma]) VALUES (3, N'nhanvien_dichvu', NULL)
-INSERT [dbo].[NHOMNGUOIDUNG] ([ID], [ten], [ma]) VALUES (4, N'nhanvien_phong', NULL)
+INSERT [dbo].[NHOMNGUOIDUNG] ([ID], [ten], [ma]) VALUES (1, N'admin', 'NHOM-0000001')
+INSERT [dbo].[NHOMNGUOIDUNG] ([ID], [ten], [ma]) VALUES (2, N'nhanvien_letan', 'NHOM-0000002')
+INSERT [dbo].[NHOMNGUOIDUNG] ([ID], [ten], [ma]) VALUES (3, N'nhanvien_ketoan', 'NHOM-0000003')
+INSERT [dbo].[NHOMNGUOIDUNG] ([ID], [ten], [ma]) VALUES (4, N'nhanvien_phong', 'NHOM-0000004')
 SET IDENTITY_INSERT [dbo].[NHOMNGUOIDUNG] OFF
 SET IDENTITY_INSERT [dbo].[QUYEN] ON 
 
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (1, N'admin', N'Q-0000001', NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (2, N'sua_danhmuc', N'Q-0000002', NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (3, N'sua_hethong', N'Q-0000003', NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (4, N'lap_baocao', N'Q-0000004', NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (5, N'lap_thanhtoan', N'Q-0000005', NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (6, N'lap_thuephong', N'Q-0000006', NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (7, N'lap_datphong', N'Q-0000007', NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (8, N'lap_traphong', N'Q-0000008', NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (9, N'lap_thanhtoan', N'Q-0000009', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (1, N'CAPQUYEN', N'Q-0000001', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (2, N'THONGKEDOANHTHU', N'Q-0000002', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (3, N'THONGKEDATPHONG', N'Q-0000003', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (4, N'THONGKEDOANHTHUDICHVU', N'Q-0000004', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (5, N'THUEPHONG', N'Q-0000005', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (6, N'TRAPHONG', N'Q-0000006', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (7, N'DM_LOAIPHONG', N'Q-0000007', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (8, N'DM_PHONG', N'Q-0000008', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (9, N'DM_DICHVU', N'Q-0000009', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (10, N'DM_VATTU', N'Q-0000010', NULL, NULL, NULL, NULL, NULL)
+INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (11, N'DM_KHACHHANG', N'Q-0000011', NULL, NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[QUYEN] OFF
 
 insert into NGUOIDUNG(tendangnhap, hash, tennguoidung) values ('admin', '$2a$11$TNCWZrg1BV2/KiqvQPSIxuDgM.g0tZkdVr6KwKHKbHA/5a/FljTWm', 'admin') 

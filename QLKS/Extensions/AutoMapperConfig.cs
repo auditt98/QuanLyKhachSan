@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData;
 using AutoMapper;
 using AutoMapper.Mappers;
 using QLKS.Domain;
@@ -33,7 +34,11 @@ namespace QLKS.Extensions
             CreateMap<ChiTietThuePhongModel, CHITIETTHUEPHONG>();
             CreateMap<NguoiDungModel, NGUOIDUNG>();
             CreateMap<NGUOIDUNG, NguoiDungModel>();
+            CreateMap<QUYEN, QuyenModel>();
+            CreateMap<QuyenModel, QUYEN>();
 
+
+            //Phần dưới này đang lỗiii đừng dùng map nhá :)
             //ThuePhongModel -> KHACHHANG
             var ThuePhongKHACHHANGMap = CreateMap<ThuePhongModel, KHACHHANG>();
             ThuePhongKHACHHANGMap.ForAllMembers(opt => opt.Ignore());
