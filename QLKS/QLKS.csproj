@@ -603,6 +603,7 @@
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\QLKS\Index.cshtml" />
     <Content Include="Views\QLKS\ViewDenied.cshtml" />
+    <Content Include="Views\Home\DatPhong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />
