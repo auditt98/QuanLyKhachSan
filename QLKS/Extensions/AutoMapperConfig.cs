@@ -31,6 +31,8 @@ namespace QLKS.Extensions
             CreateMap<THUEPHONG, ThuePhongModel>();
             CreateMap<CHITIETTHUEPHONG, ChiTietThuePhongModel>();
             CreateMap<ChiTietThuePhongModel, CHITIETTHUEPHONG>();
+            CreateMap<NguoiDungModel, NGUOIDUNG>();
+            CreateMap<NGUOIDUNG, NguoiDungModel>();
 
             //ThuePhongModel -> KHACHHANG
             var ThuePhongKHACHHANGMap = CreateMap<ThuePhongModel, KHACHHANG>();

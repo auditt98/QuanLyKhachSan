@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using QLKS.Domain;
 using QLKS.Models;
+using QLKS.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,16 @@ namespace QLKS.Controllers
     public class DichVuController : Controller
     {
         private QLKSContext db = new QLKSContext();
+        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         // GET: DichVu/List
         public ActionResult List()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             return View();
         }
 
@@ -34,6 +42,12 @@ namespace QLKS.Controllers
 
         public ActionResult Create()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             var dichVuModel = new DichVuModel();
             var maxId = db.DICHVUs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
@@ -60,7 +74,13 @@ namespace QLKS.Controllers
 
         public ActionResult Edit(int? id)
         {
-            if(id == null)
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
+            if (id == null)
             {
                 return RedirectToAction("List");
             }
@@ -103,6 +123,12 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             var dichvu = db.DICHVUs.Find(id);
             db.DICHVUs.Remove(dichvu);
             db.SaveChangesAsync();

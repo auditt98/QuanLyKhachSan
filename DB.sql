@@ -481,3 +481,5 @@ INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [n
 INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (8, N'lap_traphong', N'Q-0000008', NULL, NULL, NULL, NULL, NULL)
 INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (9, N'lap_thanhtoan', N'Q-0000009', NULL, NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[QUYEN] OFF
+
+insert into NGUOIDUNG(tendangnhap, hash, tennguoidung) values ('admin', '$2a$11$TNCWZrg1BV2/KiqvQPSIxuDgM.g0tZkdVr6KwKHKbHA/5a/FljTWm', 'admin') 

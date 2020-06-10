@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BCrypt.Net;
+using Microsoft.Ajax.Utilities;
+using QLKS.Services;
 
 namespace QLKS.Controllers
 {
@@ -13,8 +16,16 @@ namespace QLKS.Controllers
     {
         // GET: NguoiDung
         private QLKSContext db = new QLKSContext();
+        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+
         public ActionResult List()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             return View();
         }
 
@@ -34,6 +45,12 @@ namespace QLKS.Controllers
 
         public ActionResult Create()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             var nguoiDungModel = new NguoiDungModel();
             return View(nguoiDungModel);
         }
@@ -44,11 +61,18 @@ namespace QLKS.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
-                TempData["NotiType"] = "success"; //success là class trong bootstrap
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            var nguoiDung = AutoMapper.Mapper.Map<NGUOIDUNG>(model);
-            db.NGUOIDUNGs.Add(nguoiDung);
+            var item = new NGUOIDUNG();
+            item.tendangnhap = model.tendangnhap;
+            item.tennguoidung = model.tennguoidung;
+            item.sodienthoai = model.sodienthoai;
+            item.gioitinh = model.gioitinh;
+            item.diachi = model.diachi;
+            item.ngaysinh = model.ngaysinh;
+            item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
+            db.NGUOIDUNGs.Add(item);
             db.SaveChangesAsync();
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
@@ -57,20 +81,32 @@ namespace QLKS.Controllers
 
         public ActionResult Edit(int? id)
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             if (id == null)
             {
                 return RedirectToAction("List");
             }
-            var nguoiDung = db.NGUOIDUNGs.Find(id);
-            if (nguoiDung == null)
+            var item = db.NGUOIDUNGs.Find(id);
+            if (item == null)
             {
                 TempData["Message"] = "Không tìm thấy người dùng này";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
             //prepare model
-            var nguoiDungModel = AutoMapper.Mapper.Map<NguoiDungModel>(nguoiDung);
-            return View(nguoiDungModel);
+            var model = new NguoiDungModel();
+            model.tendangnhap = item.tendangnhap;
+            model.tennguoidung = item.tennguoidung;
+            model.sodienthoai = item.sodienthoai;
+            model.gioitinh = item.gioitinh;
+            model.diachi = item.diachi;
+            model.ngaysinh = item.ngaysinh;
+            return View(model);
         }
 
         [HttpPost]
@@ -91,6 +127,7 @@ namespace QLKS.Controllers
             }
             //map from model to database object
             item = Mapper.Map(model, item);
+            item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
             db.SaveChangesAsync();
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
@@ -117,14 +154,48 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Login(NguoiDungModel model)
         {
-
+            var item = db.NGUOIDUNGs.Where(c => c.tendangnhap == model.tendangnhap).FirstOrDefault();
+            if (item == null)
+            {
+                TempData["Message"] = "Sai mật khẩu hoặc tên đăng nhập, vui lòng thử lại";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return View(model);
+            }
+            else
+            {
+                var dungMatKhau = BCrypt.Net.BCrypt.Verify(model.matkhau, item.hash);
+                if (dungMatKhau)
+                {
+                    Session["tendangnhap"] = item.tendangnhap;
+                    Session["tennguoidung"] = item.tennguoidung;
+                    TempData["Message"] = "Đăng nhập thành công";
+                    TempData["NotiType"] = "success"; //success là class trong bootstrap
+                    return RedirectToAction("Index", "QLKS");
+                }
+                else
+                {
+                    TempData["Message"] = "Sai mật khẩu hoặc tên đăng nhập, vui lòng thử lại";
+                    TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                }
+            }
             return View();
         }
 
-        [HttpPost]
         public ActionResult Logout()
         {
-            return Json("");
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
+            else
+            {
+                Session.Abandon();
+                TempData["Message"] = "Đăng xuất thành công";
+                TempData["NotiType"] = "success"; //success là class trong bootstrap
+                return RedirectToAction("Login");
+            }
         }
 
     }

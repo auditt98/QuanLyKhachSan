@@ -18,9 +18,15 @@ namespace QLKS.Controllers
     {
         private QLKSContext db = new QLKSContext();
         private KhachHangServices _khachHangServices = new KhachHangServices();
-
+        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         public ActionResult List()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             return View();
         }
         
@@ -42,6 +48,12 @@ namespace QLKS.Controllers
 
         public ActionResult Create()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             var khachHangModel = new KhachHangModel();
             khachHangModel.ma = _khachHangServices.GenMaKhachHang();
             return View(khachHangModel);
@@ -66,6 +78,12 @@ namespace QLKS.Controllers
 
         public ActionResult Edit(int? id)
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             if (id == null)
             {
                 return RedirectToAction("List");

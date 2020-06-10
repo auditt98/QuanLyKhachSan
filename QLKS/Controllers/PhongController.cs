@@ -19,9 +19,16 @@ namespace QLKS.Controllers
         private LoaiPhongServices _loaiPhongServices = new LoaiPhongServices();
         private PhongServices _phongServices = new PhongServices();
         private LoaiTinhTrangServices _loaiTinhTrangServices = new LoaiTinhTrangServices();
+        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
 
         public ActionResult List()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             return View();
         }
 
@@ -34,6 +41,7 @@ namespace QLKS.Controllers
                 ma = c.ma,
                 tenloaiphong = c.LOAIPHONG.tenloaiphong,
                 gia = c.giathue,
+                sotang = c.sotang,
                 trangthai = Enum.GetName(typeof(EnumLoaiTinhTrang),c.LOAITINHTRANG_ID).ToString(),
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
@@ -57,6 +65,12 @@ namespace QLKS.Controllers
 
         public ActionResult Create()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             var phongModel = new PhongModel();
             var maxId = db.PHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(4, '0');
@@ -85,6 +99,12 @@ namespace QLKS.Controllers
 
         public ActionResult Edit(int? id)
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
             if (id == null)
             {
                 return RedirectToAction("List");

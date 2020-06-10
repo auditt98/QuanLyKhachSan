@@ -1,12 +1,19 @@
-﻿using System;
+﻿using FluentValidation.Attributes;
+using QLKS.Validators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace QLKS.Models
 {
+    [Validator(typeof(NguoiDungValidator))]
     public partial class NguoiDungModel
     {
+        public NguoiDungModel()
+        {
+            nhomNguoiDung = new List<NhomNguoiDungModel>();
+        }
         public int? ID { get; set; }
 
         public string tendangnhap { get; set; }
@@ -31,6 +38,6 @@ namespace QLKS.Models
 
         public string matkhau { get; set; }
 
-        public IList<NhomNguoiDungModel> nhomNguoiDung { get; set; }
+        public IEnumerable<NhomNguoiDungModel> nhomNguoiDung { get; set; }
     }
 }

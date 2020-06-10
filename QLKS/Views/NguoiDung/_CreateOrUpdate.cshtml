@@ -23,6 +23,7 @@
         @Html.EditorFor(model => model.matkhau, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
         @Html.ValidationMessageFor(model => model.matkhau, "", new { @class = "text-danger" })
     </div>
+    <div id="passwordReveal" class="d-inline-block btn float-right"><i class="fas fa-eye"></i></div>
 </div>
 <div class="dropdown-divider" style="width: 100%"></div>
 <h5>Thông tin cá nhân</h5>
@@ -34,20 +35,21 @@
         @Html.ValidationMessageFor(model => model.sodienthoai, "", new { @class = "text-danger" })
     </div>
 
+
     @Html.LabelFor(model => model.ngaysinh, "Ngày sinh", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
     <div class="col-md-3">
-        <input id="ngaysinh" name="ngaysinh" class="form-control datepicker-here" data-language="vi"
-               @Html.ValidationMessageFor(model => model.ngaysinh, "", new { @class = "text-danger" })
+        <input id="ngaysinh" name="ngaysinh" class="form-control datepicker-here" data-language="vi" />@Html.ValidationMessageFor(model => model.ngaysinh, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group row">
     @Html.LabelFor(model => model.diachi, "Địa chỉ", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-    <div class="col-md-5">
+    <div class="col-md-3">
         @Html.EditorFor(model => model.diachi, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.diachi, "", new { @class = "text-danger" })
     </div>
-    <div class="col-md-4">
-        <label class="control-label col-md-1 text-right">Giới tính:</label>
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+        <label class="control-label col-md-2 text-right">Giới tính:</label>
         <div class="custom-control custom-radio custom-control-inline" style="margin-left: 10px">
             <input type="radio" class="custom-control-input" id="customRadio" name="gioitinh" value="true" checked="checked">
             <label class="custom-control-label" for="customRadio">Nam</label>
@@ -58,4 +60,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    $("#passwordReveal").mousedown(function () {
+        var passwordField = document.getElementById("matkhau");
+        passwordField.type = "text";
+    })
+
+    $("#passwordReveal").mouseup(function () {
+        var passwordField = document.getElementById("matkhau");
+        passwordField.type = "password";
+    })
+</script>
 
