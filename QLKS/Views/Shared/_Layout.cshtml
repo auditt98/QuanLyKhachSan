@@ -41,6 +41,8 @@
 
     </script>
 </head>
+
+
 <body style="display:flex; flex-direction: column;">
     <nav id="headroom" class="sb-topnav navbar navbar-expand sticky-top navbar-dark bg-superdark card-shadow-1">
         <a class="navbar-brand font-weight-bold" href="index.html">Quản lý khách sạn</a>
@@ -68,73 +70,73 @@
         </ul>
     </nav>
     <div id="layoutSidenav">
-        <div id="layoutSidenav_nav" class="card-shadow-2">
+        <div id="layoutSidenav_nav" class="card-shadow-2 d-none">
             <nav class="sb-sidenav accordion sb-sidenav-dark card-shadow-2" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Thống kê</div>
-                        <a class="nav-link" href="/DoanhThu" id="ThongKeDoanhThu">
+                        <a class="nav-link checkperm" href="/DoanhThu/Chung" id="ThongKeDoanhThu">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
                             Thống kê doanh thu
                         </a>
-                        <a class="nav-link" id="ThongKeDatPhong" href="/DoanhThu/DoanhThuDP">
+                        <a class="nav-link checkperm" id="ThongKeDatPhong" href="/DoanhThu/DoanhThuDP">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Thống kê số lượng đặt phòng
                         </a>
-                        <a class="nav-link" id="ThongKeDichVu" href="/DoanhThu/DoanhThuDV">
+                        <a class="nav-link checkperm" id="ThongKeDichVu" href="/DoanhThu/DoanhThuDV">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Thống kê doanh thu dịch vụ
                         </a>
                         <div class="sb-sidenav-menu-heading">Nghiệp vụ</div>
-                        <a class="nav-link" id="NghiepVuThuePhong" href="/ThuePhong/List">
+                        <a class="nav-link checkperm" id="NghiepVuThuePhong" href="/ThuePhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
                             Thuê phòng
                         </a>
-                        <a class="nav-link" id="NghiepVuTraPhong" href="/NghiepVu/TraPhong">
+                        <a class="nav-link checkperm" id="NghiepVuTraPhong" href="/NghiepVu/TraPhong">
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-left"></i></div>
                             Trả phòng
                         </a>
-                        <a class="nav-link" id="DanhSachPhongDatTruoc" href="/DatPhong/List">
+                        <a class="nav-link checkperm" id="DanhSachPhongDatTruoc" href="/DatPhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                             Danh sách phòng đặt trước
                         </a>
                         <div class="sb-sidenav-menu-heading">Danh mục</div>
-                        <a class="nav-link" id="DanhMucLoaiPhong" href="/LoaiPhong/List">
+                        <a class="nav-link checkperm" id="DanhMucLoaiPhong" href="/LoaiPhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-archway"></i></div>
                             Loại phòng
                         </a>
-                        <a class="nav-link" id="DanhMucPhong" href="/Phong/List">
+                        <a class="nav-link checkperm" id="DanhMucPhong" href="/Phong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-person-booth"></i></div>
                             Phòng
                         </a>
-                        <a class="nav-link" id="DanhMucDichVu" href="/DichVu/List">
+                        <a class="nav-link checkperm" id="DanhMucDichVu" href="/DichVu/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-cocktail"></i></div>
                             Dịch vụ
                         </a>
-                        <a class="nav-link" id="DanhMucVatTu" href="/VatTu/List">
+                        <a class="nav-link checkperm" id="DanhMucVatTu" href="/VatTu/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-couch"></i></div>
                             Vật tư
                         </a>
-                        <a class="nav-link" id="DanhMucKhachHang" href="/KhachHang/List">
+                        <a class="nav-link checkperm" id="DanhMucKhachHang" href="/KhachHang/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-id-card"></i></div>
                             Khách hàng
                         </a>
 
 
                         <div class="sb-sidenav-menu-heading">Hệ thống</div>
-                        <a class="nav-link" id="HeThongNguoiDung" href="/NhomNguoiDung/List">
+                        <a class="nav-link checkperm" id="HeThongNguoiDung" href="/NhomNguoiDung/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Quản lý nhóm người dùng
                         </a>
-                        <a class="nav-link" id="HeThongNguoiDung" href="/NguoiDung/List">
+                        <a class="nav-link checkperm" id="HeThongNguoiDung" href="/NguoiDung/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Quản lý người dùng
                         </a>
-                        <a class="nav-link" id="HeThongLichSu" href="/LichSu/List">
+                        <a class="nav-link checkperm" id="HeThongLichSu" href="/LichSu/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
                             Lịch sử hệ thống
                         </a>
-                        <a class="nav-link" id="DanhMucTinhTrang" href="/LoaiTinhTrang/List">
+                        <a class="nav-link checkperm" id="DanhMucTinhTrang" href="/LoaiTinhTrang/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>
                             Loại tình trạng
                         </a>
@@ -199,16 +201,30 @@
         "use strict";
         // Add active state to sidbar nav links
         var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
-
+        $(document).ajaxStop(function () {
+            $("#layoutSidenav_nav").removeClass("d-none");
+        });
         $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
             var url = window.location.pathname.split("/");
+            var obj = this;
             var controller = url[1];
             var link = this.href.toString().split('/');
             var linkController = link[3];
+            $.ajax({
+                url: "/" + linkController + "/CheckQuyen",
+                method: "POST",
+                data: null,
+                success: function (data) {
+                    if (data == "no") {
+                        $(obj).remove();
+                    }
+                }
+            })
             if(controller == linkController){
                 $(this).addClass("active");
             }
         });
+
         $("#sidebarToggle").on("click", function (e) {
             e.preventDefault();
             $("body").toggleClass("sb-sidenav-toggled");

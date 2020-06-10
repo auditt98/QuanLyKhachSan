@@ -160,5 +160,14 @@ namespace QLKS.Controllers
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return Json("ok");
         }
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.DICHVU_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
+        }
     }
 }

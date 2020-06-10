@@ -172,6 +172,14 @@ namespace QLKS.Controllers
             }
         }
 
-
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.VATTU_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
+        }
     }
 }

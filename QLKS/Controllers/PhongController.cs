@@ -223,6 +223,14 @@ namespace QLKS.Controllers
             return Json(gia.giathue) ;
         }
 
-
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.PHONG_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
+        }
     }
 }

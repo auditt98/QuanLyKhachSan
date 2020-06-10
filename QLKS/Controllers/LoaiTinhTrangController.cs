@@ -171,5 +171,15 @@ namespace QLKS.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.LOAITINHTRANG_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
+        }
+
     }
 }

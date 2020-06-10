@@ -179,6 +179,16 @@ namespace QLKS.Controllers
                 return Json("error");
             }
         }
-    
+
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
+        }
+
     }
 }
