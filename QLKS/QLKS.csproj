@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Extensions\CommonConstants.cs" />
     <Compile Include="Controllers\LoaiTinhTrangController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\NhomNguoiDungController.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Domain\THUEPHONG.cs" />
     <Compile Include="Domain\VATTU.cs" />
     <Compile Include="Extensions\AutoMapperConfig.cs" />
+    <Compile Include="Extensions\DatPhongItem.cs" />
     <Compile Include="Extensions\Enum.cs" />
     <Compile Include="Extensions\StaticString.cs" />
     <Compile Include="Global.asax.cs">
@@ -395,6 +397,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\controller\DatPhong.js" />
     <Content Include="Scripts\dataTables.bootstrap4.js" />
     <Content Include="Scripts\dataTables.responsive.min.js" />
     <Content Include="Scripts\datepicker.en.js" />

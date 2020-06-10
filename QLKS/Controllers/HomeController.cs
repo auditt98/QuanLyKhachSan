@@ -1,4 +1,5 @@
 ﻿using QLKS.Domain;
+using QLKS.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,13 @@ namespace QLKS.Controllers
 		private QLKSContext db = new QLKSContext();
 		public ActionResult Index()
 		{
+			var cart = Session[CommonConstants.DatPhongSession];
+			var list = new List<DatPhongItem>();
+			if (cart != null)
+			{
+				list = (List<DatPhongItem>)cart;
+			}
+
 			return View(db.LOAIPHONGs.ToList());
 		}
 		// GET: LoaiPhong/Details
@@ -31,9 +39,17 @@ namespace QLKS.Controllers
 			//prepare model
 			return View(loaiphong);
 		}
-		public ActionResult DatPhong(DateTime? check_in, DateTime? check_out, int? adults, int? children)
+		public ActionResult DatPhong(DateTime? check_in, DateTime? check_out, int? adults, int? children , int? loaiphongId)
 		{
-			//var data = from lp in db.LOAIPHONGs
+			string dateIn = check_in.ToString();
+			ViewBag.check_in = check_in;
+			ViewBag.check_out = check_out;
+			ViewBag.adults = adults;
+			ViewBag.children = children;
+
+
+
+			var data = from lp in db.LOAIPHONGs select lp;
 			//		   select new
 			//		   {
 			//			   lp.ID,
@@ -49,8 +65,25 @@ namespace QLKS.Controllers
 			//{
 			//	data = data.Where(d => d.trecon >= children);
 			//}
-			return View();
+			return View(data.ToList());
 			
+		}
+
+		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out)
+		{
+			var sessionCart = (List<DatPhongItem>)Session[CommonConstants.DatPhongSession];
+			// tạo mới đổi tượng cart item
+			var item = new DatPhongItem();
+			item.loaiphongId = id;
+			item.ngaydukienden = check_in;
+			item.ngaydukiendi = check_out;
+			var list = new List<DatPhongItem>();
+			sessionCart.Add(item);
+			//gán vào session 	
+			return Json(new
+			{
+				status = true
+			});
 		}
 	}
 }
