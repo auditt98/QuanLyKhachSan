@@ -19,18 +19,20 @@ namespace QLKS.Controllers
     {
         private QLKSContext db = new QLKSContext();
         private KhachHangServices _khachHangServices = new KhachHangServices();
-        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();// dòng này để check login
         private LichSuServices _lichSuServices = new LichSuServices();
-        private QuyenServices _quyenServices = new QuyenServices();
+        private QuyenServices _quyenServices = new QuyenServices(); //check quyền
         public ActionResult List()
         {
+            //check login
             if (!_nguoiDungServices.isLoggedIn())
             {
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
-            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_XEM))
+            //check quyền
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_XEM)) //quyền đặt trong EnumQuyen
             {
                 return RedirectToAction("ViewDenied", "QLKS");
             }

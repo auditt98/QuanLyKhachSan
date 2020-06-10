@@ -15,6 +15,7 @@
     <link href="~/Content/responsive.bootstrap4.min.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/moment.js"></script>
     <script src="~/Scripts/datepicker.min.js"></script>
     <script>
         var toastType;
@@ -37,6 +38,7 @@
         function toVND(data) {
             return data.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
         };
+
     </script>
 </head>
 <body style="display:flex; flex-direction: column;">
