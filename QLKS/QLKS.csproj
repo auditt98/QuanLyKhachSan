@@ -214,6 +214,7 @@
     <Compile Include="Services\LoaiPhongServices.cs" />
     <Compile Include="Services\LichSuServices.cs" />
     <Compile Include="Services\NguoiDungServices.cs" />
+    <Compile Include="Services\NhomNguoiDungServices.cs" />
     <Compile Include="Services\PhongServices.cs" />
     <Compile Include="Services\QuyenServices.cs" />
     <Compile Include="Validators\KhachHangValidator.cs" />
@@ -601,6 +602,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\QLKS\Index.cshtml" />
+    <Content Include="Views\QLKS\ViewDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />

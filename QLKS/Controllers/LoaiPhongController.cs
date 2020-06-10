@@ -18,7 +18,7 @@ namespace QLKS.Controllers
 		private QLKSContext db = new QLKSContext();
 		private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
 		private LichSuServices _lichSuServices = new LichSuServices();
-
+		private QuyenServices _quyenServices = new QuyenServices();
 		// GET: LoaiPhong/List
 		public ActionResult List()
 		{
@@ -27,6 +27,10 @@ namespace QLKS.Controllers
 				TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
 				TempData["NotiType"] = "danger"; //success là class trong bootstrap
 				return RedirectToAction("Login", "NguoiDung");
+			}
+			if (!_quyenServices.Authorize((int)EnumQuyen.LOAIPHONG_XEM))
+			{
+				return RedirectToAction("ViewDenied", "QLKS");
 			}
 			return View(db.LOAIPHONGs.ToList());
 		}
@@ -56,6 +60,10 @@ namespace QLKS.Controllers
 				TempData["NotiType"] = "danger"; //success là class trong bootstrap
 				return RedirectToAction("Login", "NguoiDung");
 			}
+			if (!_quyenServices.Authorize((int)EnumQuyen.LOAIPHONG_THEM))
+			{
+				return RedirectToAction("ViewDenied", "QLKS");
+			}
 			var loaiPhongModel = new LoaiPhongModel();
 			var maxId = db.LOAIPHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
 			var newId = (maxId + 1).ToString().PadLeft(7, '0');
@@ -66,6 +74,10 @@ namespace QLKS.Controllers
 		[HttpPost]
 		public ActionResult Create(LoaiPhongModel model, HttpPostedFileBase UploadImage)
 		{
+			if (!_quyenServices.Authorize((int)EnumQuyen.LOAIPHONG_THEM))
+			{
+				return RedirectToAction("ViewDenied", "QLKS");
+			}
 			if (!ModelState.IsValid)
 			{
 				TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
@@ -104,6 +116,10 @@ namespace QLKS.Controllers
 				TempData["NotiType"] = "danger"; //success là class trong bootstrap
 				return RedirectToAction("Login", "NguoiDung");
 			}
+			if (!_quyenServices.Authorize((int)EnumQuyen.LOAIPHONG_SUA))
+			{
+				return RedirectToAction("ViewDenied", "QLKS");
+			}
 			if (id == null)
 			{
 				return RedirectToAction("List");
@@ -123,6 +139,10 @@ namespace QLKS.Controllers
 		[HttpPost]
 		public ActionResult Edit(LoaiPhongModel model, HttpPostedFileBase UploadImage)
 		{
+			if (!_quyenServices.Authorize((int)EnumQuyen.LOAIPHONG_SUA))
+			{
+				return RedirectToAction("ViewDenied", "QLKS");
+			}
 			if (ModelState.IsValid)
 			{
 				if (UploadImage != null)
@@ -164,6 +184,10 @@ namespace QLKS.Controllers
 		[HttpPost]
 		public ActionResult Delete(int id)
 		{
+			if (!_quyenServices.Authorize((int)EnumQuyen.LOAIPHONG_XOA))
+			{
+				return RedirectToAction("ViewDenied", "QLKS");
+			}
 			var item = db.LOAIPHONGs.Where(c => c.ID == id).FirstOrDefault();
 			if (item != null)
 			{

@@ -25,6 +25,11 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
+            if (!_quyenServices.Authorize1(db,(int)EnumQuyen.NHOMNGUOIDUNG_XEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
+
             return View();
         }
 
@@ -41,6 +46,7 @@ namespace QLKS.Controllers
             return Json(result);
         }
 
+
         public ActionResult Create()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -49,54 +55,16 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var model = new NhomNguoiDungModel();
             var maxId = db.NHOMNGUOIDUNGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
             model.ma = "NHOM" + "-" + newId;
             var allQuyen = _quyenServices.GetAllQuyen(new List<int>()).ToList();
-            foreach(var quyen in allQuyen)
-            {
-                var quyenModel = new QuyenModel();
-                switch (Convert.ToInt32(quyen.Value))
-                {
-                    case (int)EnumQuyen.CAPQUYEN:
-                        quyen.Text = "Cấp quyền";
-                        break;
-                    case (int)EnumQuyen.DM_DICHVU:
-                        quyen.Text = "Quản lý danh mục dịch vụ";
-                        break;
-                    case (int)EnumQuyen.DM_KHACHHANG:
-                        quyen.Text = "Quản lý danh mục khách hàng";
-                        break;
-                    case (int)EnumQuyen.DM_LOAIPHONG:
-                        quyen.Text = "Quản lý danh mục loại phòng";
-                        break;
-                    case (int)EnumQuyen.DM_PHONG:
-                        quyen.Text = "Quản lý danh mục phòng";
-                        break;
-                    case (int)EnumQuyen.DM_VATTU:
-                        quyen.Text = "Quản lý danh mục vật tư";
-                        break;
-                    case (int)EnumQuyen.THONGKEDATPHONG:
-                        quyen.Text = "Thống kê đặt phòng";
-                        break;
-                    case (int)EnumQuyen.THONGKEDOANHTHU:
-                        quyen.Text = "Thống kê doanh thu";
-                        break;
-                    case (int)EnumQuyen.THONGKEDOANHTHUDICHVU:
-                        quyen.Text = "Thống kê doanh thu dịch vụ";
-                        break;
-                    case (int)EnumQuyen.THUEPHONG:
-                        quyen.Text = "Nghiệp vụ thuê phòng";
-                        break;
-                    case (int)EnumQuyen.TRAPHONG:
-                        quyen.Text = "Nghiệp vụ trả phòng";
-                        break;
-                    default:
-                        break;
-                }
-                model.DanhSachQuyen.Add(quyen);
-            }
+            model.DanhSachQuyen = allQuyen;
             return View(model);
         }
 
@@ -108,6 +76,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             var nhomNguoiDung = AutoMapper.Mapper.Map<NHOMNGUOIDUNG>(model);
             db.NHOMNGUOIDUNGs.Add(nhomNguoiDung);
@@ -136,6 +108,11 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
+
+            if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             if (id == null)
             {
                 return RedirectToAction("List");
@@ -149,53 +126,15 @@ namespace QLKS.Controllers
             }
             var listQuyen = nhomNguoiDung.QUYENs.Select(c => c.ID).ToList();
             //prepare model
-            var nhomNguoiDungModel = AutoMapper.Mapper.Map<NhomNguoiDungModel>(nhomNguoiDung);
+            var model = new NhomNguoiDungModel();
+            model.ID = nhomNguoiDung.ID;
+            model.ma = nhomNguoiDung.ma;
+            model.SelectedQuyens = nhomNguoiDung.QUYENs.Select(c => c.ID).ToList();
+            model.ten = nhomNguoiDung.ten;
+            //var nhomNguoiDungModel = AutoMapper.Mapper.Map<NhomNguoiDungModel>(nhomNguoiDung);
             var allQuyen = _quyenServices.GetAllQuyen(listQuyen).ToList();
-            foreach (var quyen in allQuyen)
-            {
-                var quyenModel = new QuyenModel();
-                switch (Convert.ToInt32(quyen.Value))
-                {
-                    case (int)EnumQuyen.CAPQUYEN:
-                        quyen.Text = "Cấp quyền";
-                        break;
-                    case (int)EnumQuyen.DM_DICHVU:
-                        quyen.Text = "Quản lý danh mục dịch vụ";
-                        break;
-                    case (int)EnumQuyen.DM_KHACHHANG:
-                        quyen.Text = "Quản lý danh mục khách hàng";
-                        break;
-                    case (int)EnumQuyen.DM_LOAIPHONG:
-                        quyen.Text = "Quản lý danh mục loại phòng";
-                        break;
-                    case (int)EnumQuyen.DM_PHONG:
-                        quyen.Text = "Quản lý danh mục phòng";
-                        break;
-                    case (int)EnumQuyen.DM_VATTU:
-                        quyen.Text = "Quản lý danh mục vật tư";
-                        break;
-                    case (int)EnumQuyen.THONGKEDATPHONG:
-                        quyen.Text = "Thống kê đặt phòng";
-                        break;
-                    case (int)EnumQuyen.THONGKEDOANHTHU:
-                        quyen.Text = "Thống kê doanh thu";
-                        break;
-                    case (int)EnumQuyen.THONGKEDOANHTHUDICHVU:
-                        quyen.Text = "Thống kê doanh thu dịch vụ";
-                        break;
-                    case (int)EnumQuyen.THUEPHONG:
-                        quyen.Text = "Nghiệp vụ thuê phòng";
-                        break;
-                    case (int)EnumQuyen.TRAPHONG:
-                        quyen.Text = "Nghiệp vụ trả phòng";
-                        break;
-                    default:
-                        break;
-                }
-                nhomNguoiDungModel.DanhSachQuyen.Add(quyen);
-            }
-            nhomNguoiDungModel.DanhSachQuyen = allQuyen;
-            return View(nhomNguoiDungModel);
+            model.DanhSachQuyen = allQuyen;
+            return View(model);
         }
 
         [HttpPost]
@@ -207,6 +146,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Edit", model);
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.NHOMNGUOIDUNGs.Where(c => c.ID == model.ID).FirstOrDefault();
             if (item == null)
             {
@@ -216,6 +159,7 @@ namespace QLKS.Controllers
             }
             //map from model to database object
             item = Mapper.Map(model, item);
+            item.ID = model.ID.Value;
             item.QUYENs.Clear();
             if (model.SelectedQuyens != null)
             {
@@ -237,6 +181,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_XOA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var nhomnguoidung = db.NHOMNGUOIDUNGs.Find(id);
             db.NHOMNGUOIDUNGs.Remove(nhomnguoidung);
             db.SaveChanges();

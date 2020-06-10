@@ -11,6 +11,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using QLKS.Services;
+using static QLKS.Extensions.Enum;
 
 namespace QLKS.Controllers
 {
@@ -18,7 +19,7 @@ namespace QLKS.Controllers
     {
         private QLKSContext db = new QLKSContext();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
-
+        private QuyenServices _quyenServices = new QuyenServices();
         // GET: LoaiTinhTrang/List
         public ActionResult List()
         {
@@ -27,6 +28,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.LOAITINHTRANG_XEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             return View();
         }
@@ -52,6 +57,11 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.LOAITINHTRANG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
+
             var loaiTinhTrangModel = new LoaiTinhTrangModel();
             var maxId = db.LOAITINHTRANGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
@@ -68,6 +78,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.LOAITINHTRANG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var loaitinhtrang = AutoMapper.Mapper.Map<LOAITINHTRANG>(model);
             db.LOAITINHTRANGs.Add(loaitinhtrang);
             db.SaveChanges();
@@ -83,6 +97,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.LOAITINHTRANG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             if (id == null)
             {
@@ -109,6 +127,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Edit", model);
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.LOAITINHTRANG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.LOAITINHTRANGs.Where(c => c.ID == model.ID).FirstOrDefault();
             if (item == null)
             {
@@ -127,6 +149,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.LOAITINHTRANG_XOA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var loaitinhtrang = db.LOAITINHTRANGs.Find(id);
             if (loaitinhtrang != null)
             {

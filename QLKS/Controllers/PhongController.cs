@@ -22,7 +22,7 @@ namespace QLKS.Controllers
         private LoaiTinhTrangServices _loaiTinhTrangServices = new LoaiTinhTrangServices();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         private LichSuServices _lichSuServices = new LichSuServices();
-
+        private QuyenServices _quyenServices = new QuyenServices();
         public ActionResult List()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -30,6 +30,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.PHONG_XEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             return View();
         }
@@ -73,6 +77,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.PHONG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var phongModel = new PhongModel();
             var maxId = db.PHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(4, '0');
@@ -85,6 +93,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Create(PhongModel model)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.PHONG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             if (!ModelState.IsValid)
             {
                 TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
@@ -108,6 +120,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.PHONG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             if (id == null)
             {
                 return RedirectToAction("List");
@@ -130,6 +146,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Edit(PhongModel model)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.PHONG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             if (!ModelState.IsValid)
             {
                 TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
@@ -156,6 +176,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.PHONG_XOA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.PHONGs.Find(id);
             if (item != null)
             {

@@ -46,7 +46,6 @@ namespace QLKS.Domain
         public string malaymatkhau { get; set; }
 
         public int? NHOMNGUOIDUNG_ID { get; set; }
-
         public virtual ICollection<CHITIETTHUEPHONG> CHITIETTHUEPHONGs { get; set; }
 
         public virtual ICollection<LUUTRU> LUUTRUs { get; set; }
