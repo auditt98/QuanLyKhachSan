@@ -25,7 +25,7 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
-            if (!_quyenServices.Authorize1(db,(int)EnumQuyen.NHOMNGUOIDUNG_XEM))
+            if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_XEM))
             {
                 return RedirectToAction("ViewDenied", "QLKS");
             }
@@ -157,9 +157,7 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
-            //map from model to database object
-            item = Mapper.Map(model, item);
-            item.ID = model.ID.Value;
+            item.ten = model.ten;
             item.QUYENs.Clear();
             if (model.SelectedQuyens != null)
             {

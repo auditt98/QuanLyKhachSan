@@ -73,19 +73,13 @@ namespace QLKS.Services
                 }
                 else
                 {
-                    if (nguoidung.NHOMNGUOIDUNG == null || nguoidung.NHOMNGUOIDUNG_ID == null)
-                    {
-                        return false;
-                    }
                     if (!nguoidung.NHOMNGUOIDUNG.QUYENs.Contains(q))
                     {
                         return false;
                     }
                 }
-
             }
             return true;
-
         }
     }
 }

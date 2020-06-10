@@ -35,7 +35,6 @@
         @Html.ValidationMessageFor(model => model.sodienthoai, "", new { @class = "text-danger" })
     </div>
 
-
     @Html.LabelFor(model => model.ngaysinh, "Ngày sinh", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
     <div class="col-md-3">
         <input id="ngaysinh" name="ngaysinh" class="form-control datepicker-here" data-language="vi" />@Html.ValidationMessageFor(model => model.ngaysinh, "", new { @class = "text-danger" })
@@ -76,17 +75,27 @@
                     <th scope="row">@nhomnguoidung.Text</th>
                     <td class="text-center">
                         <input type="radio" name="selectedNhomNguoiDung" value="@nhomnguoidung.Value"
-                               @if (nhomnguoidung.Selected) { <text> checked </text>  } />
+                               @if (nhomnguoidung.Selected) { <text> checked </text> } />
                     </td>
                 </tr>
             }
-
         </tbody>
     </table>
 </div>
 
+@if (Model.ID != null)
+{
+    if (Model.ID != 0)
+    {
+        <script>
+        var ngaysinh = $("#ngaysinh").datepicker().data('datepicker').selectDate(new Date(@Model.ngaysinh.Value.Year, @Model.ngaysinh.Value.Month, @Model.ngaysinh.Value.Day));
+        </script>
+    }
+
+}
+
 <script>
-    var ngaysinh = $("#ngaysinh").datepicker().data('datepicker').selectDate(new Date(@Model.ngaysinh.Value.Year, @Model.ngaysinh.Value.Month, @Model.ngaysinh.Value.Day));
+
     $("#passwordReveal").mousedown(function () {
         var passwordField = document.getElementById("matkhau");
         passwordField.type = "text";
@@ -97,4 +106,3 @@
         passwordField.type = "password";
     })
 </script>
-
