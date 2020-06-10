@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using AutoMapper;
 using static QLKS.Extensions.Enum;
+using Newtonsoft.Json;
 
 namespace QLKS.Controllers
 {
@@ -17,6 +18,7 @@ namespace QLKS.Controllers
         private QLKSContext db = new QLKSContext();
         private PhongServices _phongServices = new PhongServices();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+        private LichSuServices _lichSuServices = new LichSuServices();
 
         public ActionResult List()
         {
@@ -58,7 +60,7 @@ namespace QLKS.Controllers
             }
             var vatTuModel = new VatTuModel();
             //prepare select list phong
-            vatTuModel.DanhSachPhong = _phongServices.PrepareSelectListPhong(-1);
+            vatTuModel.DanhSachPhong = _phongServices.PrepareSelectListPhong(0);
             //phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(-1);
             return View(vatTuModel);
         }
@@ -72,9 +74,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            var vattu = AutoMapper.Mapper.Map<VATTU>(model);
-            db.VATTUs.Add(vattu);
-            db.SaveChangesAsync();
+            var item = AutoMapper.Mapper.Map<VATTU>(model);
+            db.VATTUs.Add(item);
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -124,7 +127,8 @@ namespace QLKS.Controllers
             }
             //map from model to database object
             item = Mapper.Map(model, item);
-            db.SaveChangesAsync();
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -132,12 +136,13 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var vattu = db.VATTUs.Find(id);
-            if (vattu != null)
+            var item = db.VATTUs.Find(id);
+            if (item != null)
             {
-                db.VATTUs.Remove(vattu);
-                db.SaveChangesAsync();
+                db.VATTUs.Remove(item);
+                db.SaveChanges();
                 //Thông báo
+                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
                 TempData["Message"] = "Xóa vật tư thành công";
                 TempData["NotiType"] = "success";
                 return Json("ok");

@@ -18,3 +18,37 @@
         @Html.ValidationMessageFor(model => model.ten, "", new { @class = "text-danger" })
     </div>
 </div>
+
+<br class="dropdown-divider" />
+<div class="dropdown-divider"></div>
+<h5>Gán quyền cho nhóm người dùng</h5>
+<br />
+<div class="row">
+    <div class="col-md-3"></div>
+    <table class="table table-hover table-bordered table-striped col-md-4">
+        <thead>
+            <tr>
+                <th scope="col" width="80%" class="text-center">Tên quyền</th>
+                <th scope="col" class="text-center">Gán</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var quyen in Model.DanhSachQuyen)
+            {
+                <tr>
+                    <th scope="row">@quyen.Text</th>
+                    <td class="text-center">
+                        <input type="checkbox" name="SelectedQuyens" value="@quyen.Value" 
+                           @if (quyen.Selected)
+                           {
+                               <text> checked </text>
+                           }
+                        />
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>

@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static QLKS.Extensions.Enum;
 
 namespace QLKS.Controllers
 {
@@ -19,6 +20,8 @@ namespace QLKS.Controllers
         private QLKSContext db = new QLKSContext();
         private KhachHangServices _khachHangServices = new KhachHangServices();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+        private LichSuServices _lichSuServices = new LichSuServices();
+
         public ActionResult List()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -68,9 +71,11 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            var khachhang = AutoMapper.Mapper.Map<KHACHHANG>(model);
-            db.KHACHHANGs.Add(khachhang);
-            db.SaveChangesAsync();
+            var item = Mapper.Map<KHACHHANG>(model);
+            db.KHACHHANGs.Add(item);
+            db.SaveChanges();
+            //Lưu lịch sử hệ thống
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -118,7 +123,9 @@ namespace QLKS.Controllers
             }
             //map from model to database object
             item = Mapper.Map(model, item);
-            db.SaveChangesAsync();
+            db.SaveChanges();
+            //Lưu lịch sử hệ thống
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -127,11 +134,13 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var khachhang = db.KHACHHANGs.Find(id);
-            if (khachhang != null)
+            var item = db.KHACHHANGs.Find(id);
+            if (item != null)
             {
-                db.KHACHHANGs.Remove(khachhang);
-                db.SaveChangesAsync();
+                db.KHACHHANGs.Remove(item);
+                db.SaveChanges();
+                //Lưu lịch sử hệ thống
+                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
                 //Thông báo
                 TempData["Message"] = "Xóa khách hàng thành công";
                 TempData["NotiType"] = "success";

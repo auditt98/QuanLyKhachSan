@@ -70,7 +70,7 @@ namespace QLKS.Controllers
             }
             var loaitinhtrang = AutoMapper.Mapper.Map<LOAITINHTRANG>(model);
             db.LOAITINHTRANGs.Add(loaitinhtrang);
-            db.SaveChangesAsync();
+            db.SaveChanges();
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -118,7 +118,7 @@ namespace QLKS.Controllers
             }
             //map from model to database object
             item = Mapper.Map(model, item);
-            db.SaveChangesAsync();
+            db.SaveChanges();
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -131,7 +131,7 @@ namespace QLKS.Controllers
             if (loaitinhtrang != null)
             {
                 db.LOAITINHTRANGs.Remove(loaitinhtrang);
-                db.SaveChangesAsync();
+                db.SaveChanges();
                 //Thông báo
                 TempData["Message"] = "Xóa khách hàng thành công";
                 TempData["NotiType"] = "success";

@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using BCrypt.Net;
 using Microsoft.Ajax.Utilities;
 using QLKS.Services;
+using static QLKS.Extensions.Enum;
+using Newtonsoft.Json;
 
 namespace QLKS.Controllers
 {
@@ -17,7 +19,7 @@ namespace QLKS.Controllers
         // GET: NguoiDung
         private QLKSContext db = new QLKSContext();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
-
+        private LichSuServices _lichSuServices = new LichSuServices();
         public ActionResult List()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -73,7 +75,8 @@ namespace QLKS.Controllers
             item.ngaysinh = model.ngaysinh;
             item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
             db.NGUOIDUNGs.Add(item);
-            db.SaveChangesAsync();
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -128,7 +131,8 @@ namespace QLKS.Controllers
             //map from model to database object
             item = Mapper.Map(model, item);
             item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
-            db.SaveChangesAsync();
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -139,7 +143,7 @@ namespace QLKS.Controllers
         {
             var nguoidung = db.NGUOIDUNGs.Find(id);
             db.NGUOIDUNGs.Remove(nguoidung);
-            db.SaveChangesAsync();
+            db.SaveChanges();
             //Thông báo
             TempData["Message"] = "Xóa thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
@@ -166,8 +170,10 @@ namespace QLKS.Controllers
                 var dungMatKhau = BCrypt.Net.BCrypt.Verify(model.matkhau, item.hash);
                 if (dungMatKhau)
                 {
+                    Session["ID"] = item.ID;
                     Session["tendangnhap"] = item.tendangnhap;
                     Session["tennguoidung"] = item.tennguoidung;
+                    _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.DANGNHAP, item.ToString());
                     TempData["Message"] = "Đăng nhập thành công";
                     TempData["NotiType"] = "success"; //success là class trong bootstrap
                     return RedirectToAction("Index", "QLKS");

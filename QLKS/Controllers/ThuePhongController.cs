@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using QLKS.Domain;
 using QLKS.Models;
 using QLKS.Services;
@@ -16,11 +17,11 @@ namespace QLKS.Controllers
     {
         // GET: ThuePhong
         QLKSContext db = new QLKSContext();
-        LoaiPhongServices _loaiPhongServices = new LoaiPhongServices();
-        PhongServices _phongServices = new PhongServices();
-        KhachHangServices _khachHangServices = new KhachHangServices();
+        private LoaiPhongServices _loaiPhongServices = new LoaiPhongServices();
+        private PhongServices _phongServices = new PhongServices();
+        private KhachHangServices _khachHangServices = new KhachHangServices();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
-
+        private LichSuServices _lichSuServices = new LichSuServices();
         public ActionResult List()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -85,24 +86,26 @@ namespace QLKS.Controllers
             newKhachHang.tenkhachhang = model.tenkhachhang;
             
             //insert new thuephong
-            var newThuePhong = new THUEPHONG();
-            newThuePhong.KHACHHANG = newKhachHang;
-            newThuePhong.KHACHHANG_ID = newKhachHang.ID;
-            newThuePhong.ma = model.ma;
-            db.THUEPHONGs.Add(newThuePhong);
-            newThuePhong.KHACHHANG = newKhachHang;
+            var item = new THUEPHONG();
+            item.KHACHHANG = newKhachHang;
+            item.KHACHHANG_ID = newKhachHang.ID;
+            item.ma = model.ma;
+            db.THUEPHONGs.Add(item);
+            item.KHACHHANG = newKhachHang;
             foreach(var chitiet in model.ChiTietThuePhong)
             {
                 var newChiTiet = new CHITIETTHUEPHONG();
                 newChiTiet.ngayra = chitiet.ngayra;
                 newChiTiet.ngayvao = chitiet.ngayvao;
                 newChiTiet.PHONG_ID = chitiet.phong_id;
-                newChiTiet.THUEPHONG_ID = newThuePhong.ID;
-                newThuePhong.CHITIETTHUEPHONGs.Add(newChiTiet);
+                newChiTiet.THUEPHONG_ID = item.ID;
+                item.CHITIETTHUEPHONGs.Add(newChiTiet);
                 var phong = db.PHONGs.Find(chitiet.phong_id);
                 phong.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DATHUE;
             }
             db.SaveChanges();
+            //Lưu lịch sử hệ thống
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return Json("ok");
@@ -174,7 +177,8 @@ namespace QLKS.Controllers
                 p.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DATHUE;
 
             }
-            db.SaveChangesAsync();
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success";
             return Json("ok");
@@ -216,7 +220,9 @@ namespace QLKS.Controllers
             if (item != null)
             {
                 db.THUEPHONGs.Remove(item);
-                db.SaveChangesAsync();
+                db.SaveChanges();
+                //Lưu nhật ký
+                _lichSuServices.LuuLichSu((int)Session["ID"],(int)EnumLoaiHanhDong.XOA, item.ToString());
                 //Thông báo
                 TempData["Message"] = "Xóa thông tin thành công";
                 TempData["NotiType"] = "success";

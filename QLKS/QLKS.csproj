@@ -212,8 +212,10 @@
     <Compile Include="Services\KhachHangServices.cs" />
     <Compile Include="Services\LoaiTinhTrangServices.cs" />
     <Compile Include="Services\LoaiPhongServices.cs" />
+    <Compile Include="Services\LichSuServices.cs" />
     <Compile Include="Services\NguoiDungServices.cs" />
     <Compile Include="Services\PhongServices.cs" />
+    <Compile Include="Services\QuyenServices.cs" />
     <Compile Include="Validators\KhachHangValidator.cs" />
     <Compile Include="Validators\LoaiPhongValidator.cs" />
     <Compile Include="Validators\LoaiTinhTrangValidator.cs" />
