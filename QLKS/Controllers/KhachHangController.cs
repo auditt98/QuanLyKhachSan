@@ -19,16 +19,22 @@ namespace QLKS.Controllers
     {
         private QLKSContext db = new QLKSContext();
         private KhachHangServices _khachHangServices = new KhachHangServices();
-        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();// dòng này để check login
         private LichSuServices _lichSuServices = new LichSuServices();
-
+        private QuyenServices _quyenServices = new QuyenServices(); //check quyền
         public ActionResult List()
         {
+            //check login
             if (!_nguoiDungServices.isLoggedIn())
             {
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            //check quyền
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_XEM)) //quyền đặt trong EnumQuyen
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             return View();
         }
@@ -57,9 +63,13 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
-            var khachHangModel = new KhachHangModel();
-            khachHangModel.ma = _khachHangServices.GenMaKhachHang();
-            return View(khachHangModel);
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
+            var model = new KhachHangModel();
+            model.ma = _khachHangServices.GenMaKhachHang();
+            return View(model);
         }
 
         [HttpPost]
@@ -70,6 +80,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return View("Create", model);
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             var item = Mapper.Map<KHACHHANG>(model);
             db.KHACHHANGs.Add(item);
@@ -88,6 +102,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             if (id == null)
             {
@@ -114,6 +132,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Edit", model);
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.KHACHHANGs.Where(c => c.ID == model.ID).FirstOrDefault();
             if(item == null)
             {
@@ -134,6 +156,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_XOA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.KHACHHANGs.Find(id);
             if (item != null)
             {
@@ -153,6 +179,16 @@ namespace QLKS.Controllers
                 return Json("error");
             }
         }
-    
+
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.KHACHHANG_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
+        }
+
     }
 }

@@ -6,7 +6,9 @@ using QLKS.Models;
 using QLKS.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 using static QLKS.Extensions.Enum;
@@ -22,6 +24,7 @@ namespace QLKS.Controllers
         private KhachHangServices _khachHangServices = new KhachHangServices();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         private LichSuServices _lichSuServices = new LichSuServices();
+        private QuyenServices _quyenServices = new QuyenServices();
         public ActionResult List()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -29,6 +32,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.THUEPHONG_XEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             return View();
         }
@@ -61,6 +68,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.THUEPHONG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             var model = new ThuePhongModel();
             var maxId = db.THUEPHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
@@ -118,6 +129,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.THUEPHONG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             if (id == null)
             {
@@ -211,6 +226,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int? id = 0)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.THUEPHONG_XOA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.THUEPHONGs.Find(id);
             foreach(var i in item.CHITIETTHUEPHONGs)
             {
@@ -234,6 +253,16 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger";
                 return Json("error");
             }
+        }
+
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.THUEPHONG_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Web;
 using AutoMapper;
 using static QLKS.Extensions.Enum;
 using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
 
 namespace QLKS.Controllers
 {
@@ -19,7 +20,7 @@ namespace QLKS.Controllers
         private PhongServices _phongServices = new PhongServices();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         private LichSuServices _lichSuServices = new LichSuServices();
-
+        private QuyenServices _quyenServices = new QuyenServices();
         public ActionResult List()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -27,6 +28,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.VATTU_XEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             return View();
         }
@@ -57,6 +62,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.VATTU_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             var vatTuModel = new VatTuModel();
             //prepare select list phong
@@ -90,6 +99,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.VATTU_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             if (id == null)
             {
@@ -136,6 +149,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.VATTU_XOA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.VATTUs.Find(id);
             if (item != null)
             {
@@ -155,6 +172,14 @@ namespace QLKS.Controllers
             }
         }
 
-
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.VATTU_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
+        }
     }
 }

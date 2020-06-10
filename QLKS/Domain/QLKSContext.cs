@@ -11,6 +11,7 @@ namespace QLKS.Domain
             : base("name=QLKSContext")
         {
         }
+
         public virtual DbSet<CHITIETDATPHONG> CHITIETDATPHONGs { get; set; }
         public virtual DbSet<CHITIETTHUEPHONG> CHITIETTHUEPHONGs { get; set; }
         public virtual DbSet<DATPHONG> DATPHONGs { get; set; }

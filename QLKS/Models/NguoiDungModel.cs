@@ -1,9 +1,11 @@
-﻿using FluentValidation.Attributes;
+﻿using Antlr.Runtime.Tree;
+using FluentValidation.Attributes;
 using QLKS.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace QLKS.Models
 {
@@ -34,9 +36,11 @@ namespace QLKS.Models
 
         public string malaymatkhau { get; set; }
 
-        public bool isLoggedIn { get; set; }
-
         public string matkhau { get; set; }
+
+        public List<SelectListItem> DanhSachNhomNguoiDung { get; set; }
+
+        public int selectedNhomNguoiDung { get; set; }
 
         public IEnumerable<NhomNguoiDungModel> nhomNguoiDung { get; set; }
     }

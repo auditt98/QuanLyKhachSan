@@ -1,4 +1,5 @@
-﻿using QLKS.Services;
+﻿using QLKS.Domain;
+using QLKS.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,21 @@ namespace QLKS.Controllers
     public class QLKSController : Controller
     {
         // GET: QLKS
+        QLKSContext db = new QLKSContext();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         public ActionResult Index()
+        {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
+            var item = db.NHOMNGUOIDUNGs.First();
+            return View(item);
+        }
+
+        public ActionResult ViewDenied()
         {
             if (!_nguoiDungServices.isLoggedIn())
             {

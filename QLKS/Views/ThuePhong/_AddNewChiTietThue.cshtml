@@ -79,21 +79,61 @@
             var _data = {
                 phong: $(this).find('option:selected').val()
             }
-            $.ajax({
-                url: '/Phong/GetGiaPhong',
-                type: 'POST',
-                data: _data,
-                success: function (data) {
-                    $("#gia_@guid").val(toVND(data));
+        $.ajax({
+            url: '/Phong/GetGiaPhong',
+            type: 'POST',
+            data: _data,
+            success: function (data) {
+                //giá 1 đêm
+                var nvao = moment($("#ngayvao_@guid").val(), "MM-DD-YYYY");
+                var nra = moment($("#ngayra_@guid").val(), "MM-DD-YYYY");
+                var g = Math.abs(data * nra.diff(nvao, 'days',true));
+                    $("#gia_@guid").val(toVND(g));
                 }
             });
 
     })
-        @*$("#phong_@guid").on('change', function () {
 
-        });*@
+        $("#ngayvao_@guid").change(function () {
+        $("#gia_@guid").val(0);
+            var _data = {
+                phong: $("#phong_@guid").find('option:selected').val()
+            }
+        $.ajax({
+            url: '/Phong/GetGiaPhong',
+            type: 'POST',
+            data: _data,
+            success: function (data) {
+                var nvao = moment($("#ngayvao_@guid").val(), "MM-DD-YYYY");
+                var nra = moment($("#ngayra_@guid").val(), "MM-DD-YYYY");
+                var g = Math.abs(data * nra.diff(nvao, 'days',true));
+                    $("#gia_@guid").val(toVND(g));
+                }
+            });
+        })
 
-
+    $("#ngayra_@guid").change(function () {
+        $("#gia_@guid").val(0);
+            var _data = {
+                phong: $("#phong_@guid").find('option:selected').val()
+            }
+        $.ajax({
+            url: '/Phong/GetGiaPhong',
+            type: 'POST',
+            data: _data,
+            success: function (data) {
+                var nvao = moment($("#ngayvao_@guid").val(), "MM-DD-YYYY");
+                var nra = moment($("#ngayra_@guid").val(), "MM-DD-YYYY");
+                var g = Math.abs(data * nra.diff(nvao, 'days', true));
+                    $("#gia_@guid").val(toVND(g));
+                }
+            });
+        })
+    $('.datepicker-here').datepicker({
+        onSelect: function (formattedDate, date, inst) {
+            $(inst.el).trigger('change');
+        }
+    });
     $('.datepicker-here').datepicker({
         language: 'vi'
     })
@@ -102,10 +142,13 @@
 
 @if (Model.ngayra != null)
 {
-    <script>
-        var ngayVao = $("#ngayvao_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayvao.Value.Year, @Model.ngayvao.Value.Month, @Model.ngayvao.Value.Day));
-        var ngayRa = $("#ngayra_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayra.Value.Year, @Model.ngayra.Value.Month, @Model.ngayra.Value.Day));
-        var gia = toVND(@Model.gia);
-        $("#gia_@guid").val(gia);
-    </script>
+<script>
+    var ngayVao = $("#ngayvao_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayvao.Value.Year, @Model.ngayvao.Value.Month, @Model.ngayvao.Value.Day));
+    var ngayRa = $("#ngayra_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayra.Value.Year, @Model.ngayra.Value.Month, @Model.ngayra.Value.Day));
+    var nv = new Date(@Model.ngayvao.Value.Year, @Model.ngayvao.Value.Month, @Model.ngayvao.Value.Day);
+    var nr = new Date(@Model.ngayra.Value.Year, @Model.ngayra.Value.Month, @Model.ngayra.Value.Day)
+    var giatien = @Model.gia * (nr.getTime() - nv.getTime())/(1000 * 3600 * 24); 
+    var gia = toVND(soNgay);
+    $("#gia_@guid").val(gia);
+</script>
 }

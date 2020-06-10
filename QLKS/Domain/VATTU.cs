@@ -11,6 +11,7 @@ namespace QLKS.Domain
     {
         public int ID { get; set; }
 
+        [StringLength(100)]
         public string ten { get; set; }
 
         [Column(TypeName = "date")]

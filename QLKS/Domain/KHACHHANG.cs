@@ -9,6 +9,7 @@ namespace QLKS.Domain
     [Table("KHACHHANG")]
     public partial class KHACHHANG
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public KHACHHANG()
         {
             DATPHONGs = new HashSet<DATPHONG>();
@@ -35,8 +36,10 @@ namespace QLKS.Domain
         [StringLength(100)]
         public string email { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DATPHONG> DATPHONGs { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<THUEPHONG> THUEPHONGs { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace QLKS.Controllers
         private QLKSContext db = new QLKSContext();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         private LichSuServices _lichSuServices = new LichSuServices();
+        private QuyenServices _quyenServices = new QuyenServices();
         // GET: DichVu/List
         public ActionResult List()
         {
@@ -25,6 +26,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.DICHVU_XEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             return View();
         }
@@ -50,6 +55,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.DICHVU_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             var dichVuModel = new DichVuModel();
             var maxId = db.DICHVUs.Select(c => c.ID).DefaultIfEmpty(0).Max();
@@ -83,6 +92,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.DICHVU_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             if (id == null)
             {
@@ -134,6 +147,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.DICHVU_XOA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.DICHVUs.Find(id);
             db.DICHVUs.Remove(item);
             db.SaveChanges();
@@ -142,6 +159,15 @@ namespace QLKS.Controllers
             TempData["Message"] = "Xóa thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return Json("ok");
+        }
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.DICHVU_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
         }
     }
 }

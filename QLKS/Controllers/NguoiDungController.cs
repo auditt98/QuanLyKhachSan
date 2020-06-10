@@ -20,8 +20,14 @@ namespace QLKS.Controllers
         private QLKSContext db = new QLKSContext();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         private LichSuServices _lichSuServices = new LichSuServices();
+        private NhomNguoiDungServices _nhomNguoiDungServices = new NhomNguoiDungServices();
+        private QuyenServices _quyenServices = new QuyenServices();
         public ActionResult List()
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_XEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             if (!_nguoiDungServices.isLoggedIn())
             {
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
@@ -47,14 +53,21 @@ namespace QLKS.Controllers
 
         public ActionResult Create()
         {
+
             if (!_nguoiDungServices.isLoggedIn())
             {
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
             }
-            var nguoiDungModel = new NguoiDungModel();
-            return View(nguoiDungModel);
+            if (!_quyenServices.Authorize((int)EnumQuyen.NGUOIDUNG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
+            var model = new NguoiDungModel();
+            var allNhomNguoiDung = _nhomNguoiDungServices.PrepareSelectListNhomNguoiDung(0);
+            model.DanhSachNhomNguoiDung = allNhomNguoiDung;
+            return View(model);
         }
 
         [HttpPost]
@@ -66,6 +79,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Create", model);
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.NGUOIDUNG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = new NGUOIDUNG();
             item.tendangnhap = model.tendangnhap;
             item.tennguoidung = model.tennguoidung;
@@ -74,6 +91,7 @@ namespace QLKS.Controllers
             item.diachi = model.diachi;
             item.ngaysinh = model.ngaysinh;
             item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
+            item.NHOMNGUOIDUNG_ID = model.selectedNhomNguoiDung;
             db.NGUOIDUNGs.Add(item);
             db.SaveChanges();
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
@@ -89,6 +107,10 @@ namespace QLKS.Controllers
                 TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.NGUOIDUNG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
             }
             if (id == null)
             {
@@ -109,6 +131,8 @@ namespace QLKS.Controllers
             model.gioitinh = item.gioitinh;
             model.diachi = item.diachi;
             model.ngaysinh = item.ngaysinh;
+            var allNhomNguoiDung = _nhomNguoiDungServices.PrepareSelectListNhomNguoiDung(item.NHOMNGUOIDUNG_ID.Value);
+            model.DanhSachNhomNguoiDung = allNhomNguoiDung;
             return View(model);
         }
 
@@ -121,6 +145,10 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Edit", model);
             }
+            if (!_quyenServices.Authorize((int)EnumQuyen.NGUOIDUNG_SUA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var item = db.NGUOIDUNGs.Where(c => c.ID == model.ID).FirstOrDefault();
             if (item == null)
             {
@@ -129,7 +157,13 @@ namespace QLKS.Controllers
                 return RedirectToAction("List");
             }
             //map from model to database object
-            item = Mapper.Map(model, item);
+            item.tendangnhap = model.tendangnhap;
+            item.tennguoidung = model.tennguoidung;
+            item.sodienthoai = model.sodienthoai;
+            item.ngaysinh = model.ngaysinh;
+            item.gioitinh = model.gioitinh;
+            item.diachi = model.diachi;
+            item.NHOMNGUOIDUNG_ID = model.selectedNhomNguoiDung;
             item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
             db.SaveChanges();
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
@@ -141,6 +175,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
+            if (!_quyenServices.Authorize((int)EnumQuyen.NGUOIDUNG_XOA))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             var nguoidung = db.NGUOIDUNGs.Find(id);
             db.NGUOIDUNGs.Remove(nguoidung);
             db.SaveChanges();
@@ -197,11 +235,24 @@ namespace QLKS.Controllers
             }
             else
             {
+                Session["ID"] = null;
+                Session["tendangnhap"] = null;
+                Session["tennguoidung"] = null;
                 Session.Abandon();
                 TempData["Message"] = "Đăng xuất thành công";
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return RedirectToAction("Login");
             }
+        }
+
+        [HttpPost]
+        public ActionResult CheckQuyen()
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.NGUOIDUNG_XEM))
+            {
+                return Json("no");
+            }
+            return Json("yes");
         }
 
     }
