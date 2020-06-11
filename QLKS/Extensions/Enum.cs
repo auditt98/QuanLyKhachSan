@@ -16,7 +16,7 @@ namespace QLKS.Extensions
             CHUATHANHTOAN = 5,
             DATHANHTOAN = 6
         }
-
+        //
         public enum EnumNhomNguoiDung
         {
             ADMIN = 1,

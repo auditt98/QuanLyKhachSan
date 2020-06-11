@@ -1,0 +1,364 @@
+﻿
+<form>
+    <div class="card mb-4">
+        <h6 class="card-header">
+            Hóa đơn trả phòng
+            <small>
+                <i class="fa fa-arrow-circle-left"></i>
+                <a href="/TraPhong/List">Quay lại danh sách</a>
+            </small>
+            <div id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; " onclick="generateInvoice()">
+                <i class="fas fa-save" style="margin-right:5px;"></i>
+                Thanh toán
+            </div>
+        </h6>
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="control-label col-md-2 text-right">Mã thuê:</label>
+                <div id="maThue" class="col-md-3"></div>
+                <label class="control-label col-md-1 text-right">Tên khách hàng</label>
+                <div id="tenKhachHang" class="col-md-3"></div>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-2 text-right">Số CMT:</label>
+                <div id="soCMT" class="col-md-3"></div>
+                <label class="control-label col-md-1 text-right">Số điện thoại</label>
+                <div id="soDT" class="col-md-3"></div>
+            </div>
+            <br class="dropdown-divider" />
+            <div class="dropdown-divider"></div>
+            <br class="dropdown-divider" />
+            <h5>Chi tiết phòng đã thuê</h5>
+            <table id="bangChiTietThuePhong" class="table table-striped table-bordered dt-responsive nowrap">
+                <thead>
+                    <tr>
+                        <th class="text-center">Mã phòng</th>
+                        <th class="text-center">Giá thuê/ ngày</th>
+                        <th class="text-center">Tầng</th>
+                        <th class="text-center">Ngày vào</th>
+                        <th class="text-center">Ngày ra</th>
+                        <th class="text-center">Thành tiền</th>
+                    </tr>
+                </thead>
+            </table>
+            <br class="dropdown-divider" />
+            <h5>Tổng tiền: <span id="tongTienThuePhong"></span> </h5>
+            <br class="dropdown-divider" />
+            <div class="dropdown-divider"></div>
+            <br class="dropdown-divider" />
+            <h5>Chi tiết dịch vụ sử dụng</h5>
+            <table id="bangChiTietDichVu" class="table table-striped table-bordered dt-responsive nowrap">
+                <thead>
+                    <tr>
+                        <th class="text-center">Mã dịch vụ</th>
+                        <th class="text-center">Tên dịch vụ</th>
+                        <th class="text-center">Đơn giá</th>
+                        <th class="text-center">Ngày sử dụng</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-center">Thành tiền</th>
+                    </tr>
+                </thead>
+            </table>
+            <br class="dropdown-divider" />
+            <h5>Tổng tiền: <span id="tongTienDichVu"></span> </h5>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script>
+        var idThue = '@ViewBag.maThue'
+        let thongTinKhachHang = {}
+        let thongTinDatPhong = []
+        let thongTinDichVu = []
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "/TraPhong/thongTinDatPhong/",
+                method: "POST",
+                data: {
+                    id: idThue
+                },
+                success: function (result) {
+                    $("#maThue").text(result.data[0].maThue);
+                    $("#tenKhachHang").text(result.data[0].tenKhach);
+                    $("#soCMT").text(result.data[0].cmt);
+                    $("#soDT").text(result.data[0].sdt);
+                    thongTinKhachHang.maThue = result.data[0].maThue
+                    thongTinKhachHang.tenKhach = result.data[0].tenKhach
+                    thongTinKhachHang.cmt = result.data[0].cmt
+                    thongTinKhachHang.sdt = result.data[0].sdt
+
+                    $.ajax({
+                        "url": "/TraPhong/thongTinThuePhong/",
+                        method: "POST",
+                        data: {
+                            id: idThue
+                        },
+                        success: function (result) {
+                            $('#bangChiTietThuePhong').DataTable({
+                                responsive: true,
+                                data: result.data,
+                                columns: [
+                                    { "data": "maPhong" },
+                                    {
+                                        "data": "giaThue",
+                                        render: function (data, type, row) {
+                                            return formatCost(data)
+                                        }
+                                    },
+                                    { "data": "soTang" },
+                                    {
+                                        "data": "ngayVao",
+                                        render: function (data, type, row) {
+                                            return convertTimeStampToDate(data)
+                                        }
+                                    },
+                                    {
+                                        "data": "ngayRa",
+                                        render: function (data, type, row) {
+                                            return convertTimeStampToDate(data)
+                                        }
+                                    },
+                                    {
+                                        "data": "ngayVao",
+                                        render: function (data, type, row) {
+                                            return formatCost(totalRent(data, row.ngayRa, row.giaThue))
+                                        }
+                                    },
+                                ],
+                                "paging": false,
+                                "ordering": false,
+                                "info": false
+                            });
+
+                            let tongTienThuePhong = 0
+                            if (result.data.length) {
+                                thongTinDatPhong = result.data
+                                result.data.forEach(p => {
+                                    tongTienThuePhong += totalRent(p.ngayVao, p.ngayRa, p.giaThue)
+                                })
+                            }
+                            thongTinKhachHang.tongTienThuePhong = tongTienThuePhong
+                            $("#tongTienThuePhong").text(formatCost(tongTienThuePhong));
+                        }
+                    });
+
+                    $.ajax({
+                        "url": "/TraPhong/thongTinDichVu/",
+                        method: "POST",
+                        data: {
+                            id: idThue
+                        },
+                        success: function (result) {
+                            $('#bangChiTietDichVu').DataTable({
+                                responsive: true,
+                                data: result.data,
+                                columns: [
+                                    { "data": "maDichVu" },
+                                    { "data": "tenDichVu" },
+                                    {
+                                        "data": "donGia",
+                                        render: function (data, type, row) {
+                                            return formatCost(data)
+                                        }
+                                    },
+                                    {
+                                        "data": "ngaySD",
+                                        render: function (data, type, row) {
+                                            return convertTimeStampToDate(data)
+                                        }
+                                    },
+                                    { "data": "soLuong" },
+                                    {
+                                        "data": "thanhTien",
+                                        render: function (data, type, row) {
+                                            return formatCost(row.donGia * row.soLuong)
+                                        }
+                                    },
+                                ],
+                                "paging": false,
+                                "ordering": false,
+                                "info": false,
+                                language: {
+                                    emptyTable: "Khống có dịch vụ nào được sử dụng!"
+                                }
+                            });
+
+                            let tongTienDichVu = 0
+                            if (result.data.length) {
+                                thongTinDichVu = result.data
+                                result.data.forEach(dv => {
+                                    tongTienDichVu += dv.donGia * dv.soLuong
+                                })
+                            }
+                            thongTinKhachHang.tongTienDichVu = tongTienDichVu
+                            $("#tongTienDichVu").text(formatCost(tongTienDichVu));
+                        }
+                    });
+                }
+            });
+        })
+
+        function formatCost(cost, currency = ' VND') {
+            return cost.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + currency;
+        }
+
+        function convertTimeStampToDate(timeStampString) {
+            let timeStamp = timeStampString.match(/\d+/g).join('')
+            let dt = new Date(parseInt(timeStamp))
+            let month = dt.getMonth() + 1
+
+            return dt.getDate() + '/' + month + '/' + dt.getFullYear()
+        }
+
+        function totalRent(start, end, price) {
+            let fromDate = start.match(/\d+/g).join('')
+            let toDate = end.match(/\d+/g).join('')
+            let numberOfDays = (parseInt(toDate) - parseInt(fromDate)) / 86400000 + 1
+
+            return numberOfDays * price
+        }
+
+        function generateInvoice() {
+            let date = new Date
+            let chiTietDatPhongHTML = '';
+            let chiTietDichVu = '';
+
+            $.ajax({
+                url: "/TraPhong/thanhToan/",
+                method: "POST",
+                data: {
+                    tienPhong: thongTinKhachHang.tongTienDichVu + thongTinKhachHang.tongTienThuePhong,
+                    maKiemTra: '?',
+                    maNguoiDung: 1,
+                    maThuePhong: idThue
+                },
+                success: function (result) {
+                    console.log(result)
+                }
+            });
+
+            thongTinDatPhong.forEach(p => {
+                chiTietDatPhongHTML += 
+                    `<tr>
+                        <td>${p.maPhong}</td>
+                        <td>${p.giaThue}</td>
+                        <td>${p.soTang}</td>
+                        <td>${convertTimeStampToDate(p.ngayVao)}</td>
+                        <td>${convertTimeStampToDate(p.ngayRa)}</td>
+                        <td>${formatCost(totalRent(p.ngayVao, p.ngayRa, p.giaThue))}</td>
+                    </tr>`
+            }) 
+            let chiTietDichVuHTML = '';
+            thongTinDichVu.forEach(dv => {
+                chiTietDichVu +=
+                    `<tr>
+                        <td>${dv.maDichVu}</td>
+                        <td>${dv.tenDichVu}</td>
+                        <td>${formatCost(dv.donGia)}</td>
+                        <td>${convertTimeStampToDate(dv.ngaySD)}</td>
+                        <td>${dv.soLuong}</td>
+                        <td>${formatCost(dv.donGia * dv.soLuong)}</td>
+                    </tr>`
+            }) 
+            let invoiceTemplate = `
+                <div id="invoice" style='color: red; margin: 50px 20px 0 20px'>
+	                <div style='justify-content: space-between; display: flex;'>
+		                <div style='width: 20%'></div>
+		                <div style="width: 50%; text-align: center;">
+			                <h4><b>HÓA ĐƠN THANH TOÁN</b></h4>
+			                <p>Ngày: ${date.getHours()}:${date.getMinutes()} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}</p>
+			                <p>Bản thể hiện của hóa đơn điện tử</p>
+		                </div>
+		                <div style='width: 20%'>
+			                <p>Mẫu số: 001</p>
+			                <p>Ký hiệu: HDTT</p>
+			                <p>Số: ${thongTinKhachHang.maThue}</p>
+		                </div>
+	                </div>
+	                <hr style='border: 1px solid;'>
+	                <div style='text-align: center;'>
+		                <b>Khách sạn Mail Villa</b>
+		                <p>Mã số thuế: 111111</p>
+		                <p>Địa chỉ: 12 Đặng Thùy Trâm Cổ Nhuế Hà Nội</p>
+	                </div>
+	                <div style='justify-content: space-between; display: flex;'>
+		                <p>Điện thoại: 0963672222</p>
+		                <p>Fax: 024 35739471</p>
+	                </div>
+	                <hr style='border: 1px solid;'>
+	                <div style='display: flex;'>
+		                <div style='width: 150px'>
+			                <p>Khách hàng</p>
+			                <p>Só điện thoại</p>
+			                <p>Số CMT</p>
+			                <p>Hình thức thanh toán</p>
+		                </div>
+		                <div style='width: calc(100% - 150px);'>
+			                <p>${thongTinKhachHang.tenKhach}</p>
+			                <p>${thongTinKhachHang.sdt}</p>
+			                <p>${thongTinKhachHang.cmt}</p>
+			                <div style='justify-content: space-between; display: flex;'>
+				                <div>TM/CK:...............</div>
+				                <div>Số TK...............</div>
+				                <div>Ngân Hàng:...............</div>
+			                </div>
+		                </div>
+	                </div>
+	                <hr style='border: 1px solid;'>
+	                <h4><b>Chi tiết thuê phòng</b></h4>
+                    <table style="width:100%">
+                        <tr>
+                        <th>Mã phòng</th>
+                        <th>Giá thuê/ ngày</th> 
+                        <th>Tầng</th>
+                        <th>Ngày vào</th>
+                        <th>Ngày ra</th>
+                        <th>Thành tiền</th>
+                        </tr>
+                        ${chiTietDatPhongHTML}
+                    </table>
+	                <br>
+	                <h4><b>Tổng tiền: ${formatCost(thongTinKhachHang.tongTienThuePhong)}</b></h4>
+	                <hr style='border: 1px solid;'>
+	                <h4><b>Chi Tiết dịch vụ</b></h4>
+                    ${
+                    thongTinDichVu.length === 0
+                    ? `Không có dịch vụ nào được sử dụng`
+                    : `<table style="width:100%">
+                            <tr>
+                            <th>Mã dịch vụ</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Đơn giá</th>
+                            <th>Ngày sử dụng</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            </tr>
+                            ${chiTietDichVu}
+                        </table>`
+                    }
+                    
+	                <br>
+	                <h4><b>Tổng tiền: ${formatCost(thongTinKhachHang.tongTienDichVu)}</b></h4>
+	                <hr style='border: 1px solid;'>
+	                <h4><b>Tổng thanh toán: ${formatCost(thongTinKhachHang.tongTienDichVu + thongTinKhachHang.tongTienThuePhong)}</b></h4>
+	                <br>
+	                <div style='display: flex;'>
+		                <div style='width: 50%'>
+			                <p style='text-align: center;'><b>Người mua hàng</b></p>
+			                <p style='text-align: center;'>(Ký và ghi rõ họ tên)</p>
+		                </div>
+		                <div style='width: 50%'>
+			                <p style='text-align: center;'><b>Người bán hàng</b></p>
+			                <p style='text-align: center;'>(Ký, đóng dấu, ghi rõ họ tên)</p>
+		                </div>
+	                </div>
+                </div>
+                `
+            html2pdf()
+                .from(invoiceTemplate)
+                .save();
+        }
+    </script>
+}
