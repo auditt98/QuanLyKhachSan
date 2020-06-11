@@ -71,7 +71,7 @@ namespace QLKS.Controllers
 
 		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out)
 		{
-			var a;
+			var a = 0;
 			var sessionCart = (List<DatPhongItem>)Session[CommonConstants.DatPhongSession];
 			// tạo mới đổi tượng cart item
 			var item = new DatPhongItem();

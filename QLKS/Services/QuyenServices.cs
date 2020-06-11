@@ -20,6 +20,7 @@ namespace QLKS.Services
                 Value = c.ID.ToString(),
                 Selected = selected.Contains(c.ID)
             }).ToList();
+            //
             return items;
         }
 

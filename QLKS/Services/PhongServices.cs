@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using static QLKS.Extensions.Enum;
 
 namespace QLKS.Services
-{
+{//
     public class PhongServices
     {
         private QLKSContext db = new QLKSContext();
