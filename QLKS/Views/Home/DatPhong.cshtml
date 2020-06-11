@@ -10,7 +10,10 @@
 	<script src="~/Scripts/controller/DatPhong.js"></script>
 }
 
-
+@{
+	ViewBag.check_in = (ViewBag.check_in != null) ? ViewBag.check_in : DateTime.Now;
+	ViewBag.check_out = (ViewBag.check_out != null) ? ViewBag.check_out : DateTime.Now;
+}
 <div id="gembooking-container" class="container">
 	<div id="gembooking-main" class="gembooking-main" role="main">
 		<div class="gembooking-block gembooking-page gembooking-page--search">
@@ -25,13 +28,9 @@
 									<div class="searchbox__box-wrap">
 										<div class="searchbox__box-line">
 											<label class="searchbox__box-label"><span>Ngày đến</span></label>
-											@{
-												ViewBag.check_in = (ViewBag.check_in != null) ? ViewBag.check_in : DateTime.Now;
-												ViewBag.check_out = (ViewBag.check_out != null) ? ViewBag.check_out : DateTime.Now;
-											}
 											<div class="searchbox__box-input">
 												<input type="text" readonly data-bind="value: checkInFormatted()" class="searchbox__input searchbox__input--checkin input-transparent" placeholder="@ViewBag.check_in.ToString("yyyy-MM-dd")" autocomplete="off" aria-haspopup="true">
-												<input type="hidden" data-bind="value: checkInDate" name="check_in" value="@ViewBag.check_in.ToString("yyyy-MM-dd")">
+												<input type="hidden" data-bind="value: checkInDate" name="check_in" id="txtCheck_in" value="@ViewBag.check_in.ToString("yyyy-MM-dd")">
 											</div>
 										</div>
 									</div>
@@ -44,7 +43,7 @@
 
 											<div class="searchbox__box-input">
 												<input type="text" readonly data-bind="value: checkOutFormatted()" class="searchbox__input searchbox__input--checkout input-transparent" placeholder="@ViewBag.check_out.ToString("yyyy-MM-dd")" autocomplete="off" aria-haspopup="true">
-												<input type="hidden" data-bind="value: checkOutDate" name="check_out" value="@ViewBag.check_out.ToString("yyyy-MM-dd")">
+												<input type="hidden" data-bind="value: checkOutDate" name="check_out" id="txtCheck_out" value="@ViewBag.check_out.ToString("yyyy-MM-dd")">
 											</div>
 										</div>
 									</div>
@@ -149,8 +148,8 @@
 										</h3>
 
 										<!-- <button class="button button--secondary button--circle-icon">
-											<span class="aficon aficon-arrow-down"></span>
-										</button> -->
+							<span class="aficon aficon-arrow-down"></span>
+						</button> -->
 									</div>
 
 									<div class="roommaster-wrapper">
@@ -306,22 +305,134 @@
 
 
 					</div>
+					@if (1 > 2)
+					{
+						<aside class="hotel-content__aside">
+							<div class="reservation">
+								<h2 class="reservation__title">Tóm tắt đặt phòng</h2>
 
-					<aside class="hotel-content__aside">
-						<div class="reservation">
-							<h2 class="reservation__title">Tóm tắt đặt phòng</h2>
+
+								<div class="reservation__empty">
+									<span><i class="aficon aficon-bed"></i></span>
+									<p>Không có phòng được chọn</p>
+								</div>
 
 
-							<div class="reservation__empty">
-								<span><i class="aficon aficon-bed"></i></span>
-								<p>Không có phòng được chọn</p>
+							</div><!-- /.reservation -->
+
+
+						</aside>
+					}
+					else
+					{
+						<aside class="hotel-content__aside">
+
+							<div class="reservation">
+								<h2 class="reservation__title">Tóm tắt đặt phòng</h2>
+
+
+								<div class="reservation__section reservation__section--dates">
+									<div class="reservation-dates">
+										<div class="reservation-date reservation-date--checkin">
+											<span class="reservation-date__title">Ngày đến</span>
+
+											<div class="reservation-date__date">
+												<span class="reservation-date__day" data-date-format="d">19</span>
+												<span class="reservation-date__week" data-date-format="l">Thứ Sáu</span>
+												<span class="reservation-date__year" data-date-format="M Y">Th6 2020</span>
+											</div>
+
+											<span class="reservation-date__time">
+												từ 13:00
+											</span>
+										</div><!-- /.reservation-date-->
+
+										<div class="reservation-date__arrow">
+											<i class="aficon aficon-arrow-forward"></i>
+										</div>
+
+										<div class="reservation-date reservation-date--checkout">
+											<span class="reservation-date__title">Ngày đi</span>
+
+											<div class="reservation-date__date">
+												<span class="reservation-date__day" data-date-format="d">21</span>
+												<span class="reservation-date__week" data-date-format="l">Chủ Nhật</span>
+												<span class="reservation-date__year" data-date-format="M Y">Th6 2020</span>
+											</div>
+
+											<span class="reservation-date__time">
+												đến 12:00
+											</span>
+
+										</div><!-- /.reservation-date-->
+									</div><!-- /.reservation-dates -->
+								</div><!-- /.reservation__section -->
+
+
+								<div class="reservation__section reservation__section--room">
+									<div class="roomdetails-room">
+										<dl class="roomdetails-room__list">
+											<dt>Phòng</dt>
+											<dd>Phòng đôi</dd>
+
+											<dt>Ở lại</dt>
+											<dd>
+												2 đêm, <span class="gembooking_guest__adults">2 người lớn</span> , <span class="gembooking_guest__children">3 trẻ em</span>
+											</dd>
+										</dl>
+
+										<dl class="roomdetails-room__list--price">
+											<dt>
+												Giá			<small>
+													(2 đêm x 1 phòng)
+												</small>
+											</dt>
+											<dd>
+												<span class="gembooking-price "><span class="gembooking-price__amount">500.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span>
+											</dd>
+
+										</dl>
+
+										<div class="roomdetails-room__actions">
+											<a href="https://hotel.sonqb.com/gembooking-route/reservation/remove/e94b4fdc68b5b2971951400ad0be3705e08c6462" class="remove-selected-room">Xóa</a>
+										</div>
+									</div><!-- /.roomdetails-room -->
+								</div><!-- /.reservation__section -->
+
+
+
+
+								<div class="reservation__section reservation__section--totals">
+									<dl>
+										<dt>Tổng phụ</dt>
+										<dd><span class="gembooking-price "><span class="gembooking-price__amount">500.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span></dd>
+									</dl>
+
+
+
+									<dl>
+										<dt><strong>Tổng</strong></dt>
+										<dd><span class="gembooking-price "><span class="gembooking-price__amount">500.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span></dd>
+									</dl>
+
+								</div>
+
+
+							</div><!-- /.reservation -->
+
+
+							<div class="reservation-goto-checkout">
+								<a href="~/Home/ThanhToan" class="button button--primary button--block">Checkout</a>
 							</div>
 
 
-						</div><!-- /.reservation -->
+						</aside>
+
+					}
 
 
-					</aside>
+
+
 				</div><!-- /.hotel-content -->
 
 			</div><!-- /.search-rooms -->

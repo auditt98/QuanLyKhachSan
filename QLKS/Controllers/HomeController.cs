@@ -39,7 +39,7 @@ namespace QLKS.Controllers
 			//prepare model
 			return View(loaiphong);
 		}
-		public ActionResult DatPhong(DateTime? check_in, DateTime? check_out, int? adults, int? children , int? loaiphongId)
+		public ActionResult DatPhong(DateTime? check_in, DateTime? check_out, int? adults, int? children)
 		{
 			string dateIn = check_in.ToString();
 			ViewBag.check_in = check_in;
@@ -68,19 +68,47 @@ namespace QLKS.Controllers
 			return View(data.ToList());
 			
 		}
-
+		[HttpGet]
+		public ActionResult ThanhToan()
+		{			
+			return View();
+		}
+		[HttpPost]
+		public ActionResult ThanhToan(int id , int diachi ,string sdt)
+		{
+			return View();
+		}
+		public JsonResult ListCart()
+		{
+			var sessionCart = (List<DatPhongItem>)Session[CommonConstants.DatPhongSession];
+			return Json(new
+			{
+				data = sessionCart,
+				status = true
+			}) ;
+		}
 		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out)
 		{
-			var a;
-			var sessionCart = (List<DatPhongItem>)Session[CommonConstants.DatPhongSession];
-			// tạo mới đổi tượng cart item
+			var cart = Session[CommonConstants.DatPhongSession];
 			var item = new DatPhongItem();
 			item.loaiphongId = id;
 			item.ngaydukienden = check_in;
 			item.ngaydukiendi = check_out;
-			var list = new List<DatPhongItem>();
-			sessionCart.Add(item);
-			//gán vào session 	
+
+			if (cart != null)
+			{
+				var list =  (List<DatPhongItem>)cart;
+				list.Add(item);
+				//gán vào session 	
+				Session[CommonConstants.DatPhongSession] = list;
+			}
+			else
+			{
+				var list = new List<DatPhongItem>();
+				list.Add(item);
+				//gán vào session 	
+				Session[CommonConstants.DatPhongSession] = list;
+			}
 			return Json(new
 			{
 				status = true
