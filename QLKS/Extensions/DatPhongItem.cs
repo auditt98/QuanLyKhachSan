@@ -10,8 +10,16 @@ namespace QLKS.Extensions
 	{
 		public int loaiphongId { get; set; }
 
-		public DateTime? ngaydukienden { get; set; }
+		public string tenloaiphong { get; set; }
+		public string ngaydukienden { get; set; }
 
-		public DateTime? ngaydukiendi { get; set; }
+		public string ngaydukiendi { get; set; }
+
+		public int songay { get; set; }
+		public int nguoilon { get; set; }
+
+		public int trecon { get; set; }
+
+		public int gia { get; set; }
 	}
 }

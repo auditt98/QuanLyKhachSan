@@ -39,7 +39,7 @@ namespace QLKS.Controllers
 			//prepare model
 			return View(loaiphong);
 		}
-		public ActionResult DatPhong(DateTime? check_in, DateTime? check_out, int? adults, int? children , int? loaiphongId)
+		public ActionResult DatPhong(DateTime? check_in, DateTime? check_out, int? adults, int? children)
 		{
 			string dateIn = check_in.ToString();
 			ViewBag.check_in = check_in;
@@ -68,21 +68,59 @@ namespace QLKS.Controllers
 			return View(data.ToList());
 			
 		}
-
-		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out)
+		[HttpGet]
+		public ActionResult ThanhToan()
+		{			
+			return View();
+		}
+		[HttpPost]
+		public ActionResult ThanhToan(int id , int diachi ,string sdt)
 		{
-			var a = 0;
+			return View();
+		}
+		public JsonResult ListCart()
+		{
 			var sessionCart = (List<DatPhongItem>)Session[CommonConstants.DatPhongSession];
-			// tạo mới đổi tượng cart item
-			var item = new DatPhongItem();
-			item.loaiphongId = id;
-			item.ngaydukienden = check_in;
-			item.ngaydukiendi = check_out;
-			var list = new List<DatPhongItem>();
-			sessionCart.Add(item);
-			//gán vào session 	
 			return Json(new
 			{
+				data = sessionCart,
+				status = true
+			}) ;
+		}
+		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out, int adults, int children)
+		{
+			var a = 2;
+			var loaiPhong = db.LOAIPHONGs.Find(id);
+			var cart = Session[CommonConstants.DatPhongSession];
+			var item = new DatPhongItem();
+			item.loaiphongId = id;
+			item.tenloaiphong = loaiPhong.tenloaiphong;
+			item.ngaydukienden = check_in.ToString("yyyy-MM-dd");
+			item.ngaydukiendi = check_out.ToString("yyyy-MM-dd");
+			TimeSpan soNgay = check_out - check_in;
+			item.songay = soNgay.Days;
+			item.nguoilon = adults;
+			item.trecon = children;
+			item.gia = Convert.ToInt32(loaiPhong.ma);
+
+			if (cart != null)
+			{
+				var list =  (List<DatPhongItem>)cart;
+				list.Add(item);
+				//gán vào session 	
+				Session[CommonConstants.DatPhongSession] = list;
+			}
+			else
+			{
+				var list = new List<DatPhongItem>();
+				list.Add(item);
+				//gán vào session 	
+				Session[CommonConstants.DatPhongSession] = list;
+			}
+			
+			return Json(new
+			{
+				data = Session[CommonConstants.DatPhongSession],
 				status = true
 			});
 		}

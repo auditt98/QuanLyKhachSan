@@ -4,13 +4,17 @@
 	ViewBag.Title = "DatPhong";
 	Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
-@section jsFooter{
+@section scripts{
 
 
 	<script src="~/Scripts/controller/DatPhong.js"></script>
 }
 
-
+@{
+	var today = DateTime.Now;
+	ViewBag.check_in = (ViewBag.check_in != null) ? ViewBag.check_in : today;
+	ViewBag.check_out = (ViewBag.check_out != null) ? ViewBag.check_out : today.AddDays(1);
+}
 <div id="gembooking-container" class="container">
 	<div id="gembooking-main" class="gembooking-main" role="main">
 		<div class="gembooking-block gembooking-page gembooking-page--search">
@@ -25,13 +29,9 @@
 									<div class="searchbox__box-wrap">
 										<div class="searchbox__box-line">
 											<label class="searchbox__box-label"><span>Ngày đến</span></label>
-											@{
-												ViewBag.check_in = (ViewBag.check_in != null) ? ViewBag.check_in : DateTime.Now;
-												ViewBag.check_out = (ViewBag.check_out != null) ? ViewBag.check_out : DateTime.Now;
-											}
 											<div class="searchbox__box-input">
 												<input type="text" readonly data-bind="value: checkInFormatted()" class="searchbox__input searchbox__input--checkin input-transparent" placeholder="@ViewBag.check_in.ToString("yyyy-MM-dd")" autocomplete="off" aria-haspopup="true">
-												<input type="hidden" data-bind="value: checkInDate" name="check_in" value="@ViewBag.check_in.ToString("yyyy-MM-dd")">
+												<input type="hidden" data-bind="value: checkInDate" name="check_in" id="txtCheck_in" value="@ViewBag.check_in.ToString("yyyy-MM-dd")">
 											</div>
 										</div>
 									</div>
@@ -44,7 +44,7 @@
 
 											<div class="searchbox__box-input">
 												<input type="text" readonly data-bind="value: checkOutFormatted()" class="searchbox__input searchbox__input--checkout input-transparent" placeholder="@ViewBag.check_out.ToString("yyyy-MM-dd")" autocomplete="off" aria-haspopup="true">
-												<input type="hidden" data-bind="value: checkOutDate" name="check_out" value="@ViewBag.check_out.ToString("yyyy-MM-dd")">
+												<input type="hidden" data-bind="value: checkOutDate" name="check_out" id="txtCheck_out" value="@ViewBag.check_out.ToString("yyyy-MM-dd")">
 											</div>
 										</div>
 									</div>
@@ -58,12 +58,12 @@
 
 											<div class="searchbox__box-input searchbox-occupancy-info">
 												<span class="searchbox-occupancy-info__item">
-													<span class="searchbox-occupancy-info__number" data-bind="text: adults">@ViewBag.adults</span>
+													<span id="txtadults" class="searchbox-occupancy-info__number" data-bind="text: adults">@ViewBag.adults</span>
 													người lớn
 												</span>
 
 												<span class="searchbox-occupancy-info__item">
-													<span class="searchbox-occupancy-info__number" data-bind="text: children">@ViewBag.children</span>
+													<span  id="txtchildren" class="searchbox-occupancy-info__number" data-bind="text: children">@ViewBag.children</span>
 													trẻ em
 												</span>
 
@@ -144,7 +144,7 @@
 									<div class="roommaster-header">
 										<h3 class="roommaster-header__title">
 											<a href="~/Home/Details?id=@item.ID" rel="bookmark" target="_blank">
-												Phòng loại thường
+												@item.tenloaiphong
 											</a>
 										</h3>
 
@@ -308,20 +308,28 @@
 					</div>
 
 					<aside class="hotel-content__aside">
-						<div class="reservation">
+						<div class=" reservation">
 							<h2 class="reservation__title">Tóm tắt đặt phòng</h2>
-
-
 							<div class="reservation__empty">
 								<span><i class="aficon aficon-bed"></i></span>
 								<p>Không có phòng được chọn</p>
 							</div>
+							<div class="thongTinDatPhong">
+
+							</div>
 
 
 						</div><!-- /.reservation -->
-
+						<div  class="btncheckuot reservation-goto-checkout" >
+							<a href="~/Home/ThanhToan" class="button button--primary button--block">Tiếp tục</a>
+						</div>
 
 					</aside>
+
+
+
+
+
 				</div><!-- /.hotel-content -->
 
 			</div><!-- /.search-rooms -->

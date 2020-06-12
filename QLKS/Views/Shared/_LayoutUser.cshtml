@@ -59,6 +59,18 @@
             opacity: 1;
         }
     </style><!--[if IE]><link rel="stylesheet" type="text/css" href="https://hotel.sonqb.com/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="https://hotel.sonqb.com/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]-->
+    <script type="text/javascript">
+        WebFontConfig = {
+            google: { families: ["Roboto:regular,700", "Muli:regular,regular", "Roboto:regular,regular", "Dancing+Script:regular,400",] }
+        };
+        (function () {
+            var wf = document.createElement('script');
+            wf.src = '../ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+            wf.type = 'text/javascript';
+            wf.async = 'true';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(wf, s);
+        })();</script>
     <link rel="icon" href="~/Assets/User/wp-content/uploads/2019/09/cropped-fav-sonqb-32x32.png" sizes="32x32" />
     <link rel="icon" href="~/Assets/User/wp-content/uploads/2019/09/cropped-fav-sonqb-192x192.png" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="~/Assets/User/wp-content/uploads/2019/09/cropped-fav-sonqb-180x180.png" />
@@ -631,8 +643,14 @@
     </style>
 
     <div id="fb-root"></div>
-
-    <link rel='stylesheet' id='flatsome-effects-css' href='~/Assets/User/wp-content/themes/flatsome/assets/css/effectsf3df.css?ver=3.7.2' type='text/css' media='all' />
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = '../connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.2&appId=117339255484207&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script><link rel='stylesheet' id='flatsome-effects-css' href='~/Assets/User/wp-content/themes/flatsome/assets/css/effectsf3df.css?ver=3.7.2' type='text/css' media='all' />
     <script type='text/javascript' src='~/Assets/User/wp-content/plugins/gembooking/assets/vendor/flatpickr/flatpickr.min8686.js?ver=4.5.1'></script>
     <script type='text/javascript'>(function () { flatpickr.localize({ "firstDayOfWeek": 1, "weekdays": { "shorthand": ["CN", "T2", "T3", "T4", "T5", "T6", "T7"], "longhand": ["Ch\u1ee7 Nh\u1eadt", "Th\u1ee9 Hai", "Th\u1ee9 Ba", "Th\u1ee9 T\u01b0", "Th\u1ee9 N\u0103m", "Th\u1ee9 S\u00e1u", "Th\u1ee9 B\u1ea3y"] }, "months": { "shorthand": ["Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12"], "longhand": ["Th\u00e1ng M\u1ed9t", "Th\u00e1ng Hai", "Th\u00e1ng Ba", "Th\u00e1ng T\u01b0", "Th\u00e1ng N\u0103m", "Th\u00e1ng S\u00e1u", "Th\u00e1ng B\u1ea3y", "Th\u00e1ng T\u00e1m", "Th\u00e1ng Ch\u00edn", "Th\u00e1ng M\u01b0\u1eddi", "Th\u00e1ng M\u01b0\u1eddi M\u1ed9t", "Th\u00e1ng M\u01b0\u1eddi Hai"] } }); })();</script>
     <script type='text/javascript' src='~/Assets/User/wp-content/plugins/gembooking/assets/vendor/tippy-js/tippy.standalone.mind315.js?ver=2.6.0'></script>
@@ -661,6 +679,6 @@
     <script type='text/javascript' src='~/Assets/User/wp-content/themes/flatsome-child/assets/libs/html5lightbox/html5lightbox5223.js?ver=5.2.6'></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("jsFooter", required: false)
+    @RenderSection("scripts", required: false)
 </body>
 </html>
