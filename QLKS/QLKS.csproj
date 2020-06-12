@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\TraPhongController.cs" />
     <Compile Include="Extensions\CommonConstants.cs" />
     <Compile Include="Controllers\LoaiTinhTrangController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
@@ -409,6 +410,7 @@
     <Content Include="Scripts\esm\popper.js" />
     <Content Include="Scripts\esm\popper.min.js" />
     <Content Include="Scripts\headroom.js" />
+    <Content Include="Scripts\html2pdf.bundle.min.js" />
     <Content Include="Scripts\index.js.flow" />
     <Content Include="Scripts\esm\popper.min.js.map" />
     <Content Include="Scripts\esm\popper.js.map" />
@@ -547,7 +549,9 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -609,6 +613,8 @@
     <Content Include="Views\QLKS\ViewDenied.cshtml" />
     <Content Include="Views\Home\DatPhong.cshtml" />
     <Content Include="Views\Home\ThanhToan.cshtml" />
+    <Content Include="Views\TraPhong\List.cshtml" />
+    <Content Include="Views\TraPhong\traPhong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />
