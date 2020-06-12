@@ -677,5 +677,8 @@
     <script type='text/javascript' src='~/Assets/User/wp-content/themes/flatsome/assets/js/flatsomef3df.js?ver=3.7.2'></script>
     <script type='text/javascript' src='~/Assets/User/wp-includes/js/wp-embed.min5223.js?ver=5.2.6'></script>
     <script type='text/javascript' src='~/Assets/User/wp-content/themes/flatsome-child/assets/libs/html5lightbox/html5lightbox5223.js?ver=5.2.6'></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 </body>
 </html>

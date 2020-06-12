@@ -87,13 +87,21 @@ namespace QLKS.Controllers
 				status = true
 			}) ;
 		}
-		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out)
+		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out, int adults, int children)
 		{
+			var a = 2;
+			var loaiPhong = db.LOAIPHONGs.Find(id);
 			var cart = Session[CommonConstants.DatPhongSession];
 			var item = new DatPhongItem();
 			item.loaiphongId = id;
-			item.ngaydukienden = check_in;
-			item.ngaydukiendi = check_out;
+			item.tenloaiphong = loaiPhong.tenloaiphong;
+			item.ngaydukienden = check_in.ToString("yyyy-MM-dd");
+			item.ngaydukiendi = check_out.ToString("yyyy-MM-dd");
+			TimeSpan soNgay = check_out - check_in;
+			item.songay = soNgay.Days;
+			item.nguoilon = adults;
+			item.trecon = children;
+			item.gia = Convert.ToInt32(loaiPhong.ma);
 
 			if (cart != null)
 			{
@@ -109,8 +117,10 @@ namespace QLKS.Controllers
 				//gán vào session 	
 				Session[CommonConstants.DatPhongSession] = list;
 			}
+			
 			return Json(new
 			{
+				data = Session[CommonConstants.DatPhongSession],
 				status = true
 			});
 		}
