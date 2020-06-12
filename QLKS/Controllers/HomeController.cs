@@ -89,7 +89,7 @@ namespace QLKS.Controllers
 		}
 		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out, int adults, int children)
 		{
-			var a = 1;
+			var a = 2;
 			var loaiPhong = db.LOAIPHONGs.Find(id);
 			var cart = Session[CommonConstants.DatPhongSession];
 			var item = new DatPhongItem();
