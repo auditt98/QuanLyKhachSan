@@ -87,6 +87,7 @@ namespace QLKS.Controllers
                 where thuePhong.ID == id
                 select new
                 {
+                    id = phong.ID,
                     maPhong = phong.ma,
                     ngayVao = chiTietThuePhong.ngayvao,
                     ngayRa = chiTietThuePhong.ngayra,
@@ -98,7 +99,7 @@ namespace QLKS.Controllers
         }
 
         [HttpPost]
-        public void thanhToan(int tienPhong, string maKiemTra, int maNguoiDung, int maThuePhong)
+        public void thanhToan(int tienPhong, string maKiemTra, int maNguoiDung, int maThuePhong, int[] danhSachPhongThue)
         {
             DateTime now = DateTime.Now;
             THANHTOAN thanhToan = new THANHTOAN
@@ -109,6 +110,11 @@ namespace QLKS.Controllers
                 NGUOIDUNG_ID = maNguoiDung,
                 THUEPHONG_ID = maThuePhong
             };
+            foreach(var idPhong in danhSachPhongThue)
+            {
+                var phong = db.PHONGs.Find(idPhong);
+                phong.LOAITINHTRANG_ID = 1;
+            }
             db.THANHTOANs.Add(thanhToan);
             db.SaveChangesAsync();
         }

@@ -224,7 +224,7 @@
             let date = new Date
             let chiTietDatPhongHTML = '';
             let chiTietDichVu = '';
-
+            let idPhongThue = thongTinDatPhong.map(p => p.id)
             $.ajax({
                 url: "/TraPhong/thanhToan/",
                 method: "POST",
@@ -232,7 +232,8 @@
                     tienPhong: thongTinKhachHang.tongTienDichVu + thongTinKhachHang.tongTienThuePhong,
                     maKiemTra: '?',
                     maNguoiDung: 1,
-                    maThuePhong: idThue
+                    maThuePhong: idThue,
+                    danhSachPhongThue: idPhongThue
                 },
                 success: function (result) {
                     console.log(result)

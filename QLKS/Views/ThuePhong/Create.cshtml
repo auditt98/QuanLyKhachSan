@@ -56,18 +56,122 @@
                 socmt: socmt,
                 sdt: sdt
             }
-            $.ajax({
-                data: _data,
-                method: "POST",
-                url: "/ThuePhong/Create",
-                success: function (data) {
-                    if (data == "ok") {
-                        window.location.href="/ThuePhong/List"
-                    }
-                }
+            //$.ajax({
+            //    data: _data,
+            //    method: "POST",
+            //    url: "/ThuePhong/Create",
+            //    success: function (data) {
+            //        if (data == "ok") {
+            //            window.location.href="/ThuePhong/List"
+            //        }
+            //    }
 
+            //})
+            // in hoa don thue phong
+            let date = new Date
+            let stt = 0;
+            let chitietThuePhong = []
+            debugger
+            $(".chitiet").each(function () {
+                let gid = $(this).data("guid");
+
+                chitietThuePhong.push({
+                    stt: stt++,
+                    loaiphong: $("#loaiphong_" + gid).val(),
+                    soLuong: 1,
+                    soNguoi: '',
+                    soDem: $("#ngayra_" + gid).val(),
+                    gia: $("#gia_" + gid).val()
+                });
             })
+            let chiTietThuePhongHTML = `
+                <table style="width:100%">
+                    <tr>
+                        <th>Số thứ tự</th>
+                        <th>Loại phòng</th>
+                        <th>Số lượng</th>
+                        <th>Số người</th>
+                        <th>Số đêm</th>
+                        <th>Đơn giá</th>
+                    </tr>
+                    ${chitietThuePhong.forEach(p => {
+                         return `<tr>
+                            <td>${stt++}</td>
+                            <td></td>
+                            <td>1</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>`
+                    })}
+                </table>`
+            let rentContract = `
+                <div style='color: red; margin: 0 20px'>
+	                <h4 style='text-align: center;'>SAO MAI HOTEL</h4>
+	                <div style='justify-content: space-between; display: flex;'>
+		                <div style='display: flex;'>
+			                <div style='width: 120px;'>
+				                <p>Địa chỉ</p>
+				                <p>Số điện thoại</p>
+				                <p>Email</p>
+				                <p>Website</p>
+			                </div>
+			                <div>
+				                <p>: 12 Đặng Thùy Trâm - Cầu Giấy Hà Nội</p>
+				                <p>: 123123123</p>
+				                <p>: saomailhotel@gmail.com</p>
+				                <p>: www.saomaihotel.com</p>
+			                </div>
+		                </div>
+		                <div style='width: 20%'>
+			                <p>Ngày: ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}</p>
+		                </div>
+	                </div>
+	                <h4>PHIẾU THUÊ PHÒNG</h4>
+	                <p>Thông tin khách hàng</p>
+	                <div style='display: flex;'>
+		                <div style='width: 120px;'>
+			                <p>Ông/ Bà</p>
+			                <p>CMTND</p>
+			                <p>SĐT</p>
+			                <p>Email</p>
+			                <p>Thời gian đến</p>
+			                <p>Thời gian đi</p>
+		                </div>
+		                <div>
+			                <p>: ${tenkhachhang}</p>
+			                <p>: ${socmt}</p>
+			                <p>: ${sdt}</p>
+			                <p>: </p>
+			                <p>: </p>
+			                <p>: </p>
+		                </div>
+	                </div>
+	                <h4>Chi tiết thuê phòng</h4>
 
+	                <br>
+	                <h4><b>Tổng thanh toán: VND</b></h4>
+	                <br>
+	                <p>Hình thức thanh toán</p>
+	                <p>Tiền mặt/ Thẻ tín dụng:</p>
+	                <div style='display: flex;'>
+		                <p style='width: 50%; margin: 0'>Số thẻ:</p>
+		                <p style='width: 50%; margin: 0'> Hạn sử dụng:</p>
+	                </div>
+	                <p>Số tiền cọc:</p>
+	                <p>Bằng chữ:</p>
+	                <br><br>
+	                <div style='display: flex;'>
+		                <div style='width: 50%'>
+			                <p style='text-align: center;'><b>Khách hàng</b></p>
+			                <p style='text-align: center;'>(Ký và ghi rõ họ tên)</p>
+		                </div>
+		                <div style='width: 50%'>
+			                <p style='text-align: center;'><b>Nhân viên</b></p>
+			                <p style='text-align: center;'>(Ký, đóng dấu, ghi rõ họ tên)</p>
+		                </div>
+	                </div>
+                </div>`
         })
     </script>
 

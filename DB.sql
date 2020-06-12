@@ -1,5 +1,4 @@
-create database QuanLyThueKhachSan
-go
+
 
 USE [QuanLyThueKhachSan]
 GO
