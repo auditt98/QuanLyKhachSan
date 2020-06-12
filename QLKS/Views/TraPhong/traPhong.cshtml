@@ -231,7 +231,6 @@
                 data: {
                     tienPhong: thongTinKhachHang.tongTienDichVu + thongTinKhachHang.tongTienThuePhong,
                     maKiemTra: '?',
-                    maNguoiDung: 1,
                     maThuePhong: idThue,
                     danhSachPhongThue: idPhongThue
                 },
@@ -280,7 +279,7 @@
 	                </div>
 	                <hr style='border: 1px solid;'>
 	                <div style='text-align: center;'>
-		                <b>Khách sạn Mail Villa</b>
+		                <b>Sao Mai Hotel</b>
 		                <p>Mã số thuế: 111111</p>
 		                <p>Địa chỉ: 12 Đặng Thùy Trâm Cổ Nhuế Hà Nội</p>
 	                </div>
@@ -360,6 +359,9 @@
             html2pdf()
                 .from(invoiceTemplate)
                 .save();
+            setTimeout(function () {
+                window.location.href = "/TraPhong/List"
+            },1200)
         }
     </script>
 }

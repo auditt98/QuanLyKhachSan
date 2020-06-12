@@ -1,21 +1,36 @@
 ﻿using AutoMapper;
 using QLKS.Domain;
 using QLKS.Models;
+using QLKS.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static QLKS.Extensions.Enum;
 
 namespace QLKS.Controllers
 {
     public class TraPhongController : Controller
     {
         private QLKSContext db = new QLKSContext();
+        private QuyenServices _quyenServices = new QuyenServices();
+        private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
+
         // GET: TraPhong
         public ActionResult List()
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.TRAPHONG_XEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             return View();
         }
 
@@ -48,6 +63,16 @@ namespace QLKS.Controllers
 
         public ActionResult traPhong(int? maThue)
         {
+            if (!_nguoiDungServices.isLoggedIn())
+            {
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.TRAPHONG_THEM))
+            {
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
             ViewBag.maThue = maThue;
             return View();
         }
@@ -99,7 +124,7 @@ namespace QLKS.Controllers
         }
 
         [HttpPost]
-        public void thanhToan(int tienPhong, string maKiemTra, int maNguoiDung, int maThuePhong, int[] danhSachPhongThue)
+        public void thanhToan(int tienPhong, string maKiemTra, int maThuePhong, int[] danhSachPhongThue)
         {
             DateTime now = DateTime.Now;
             THANHTOAN thanhToan = new THANHTOAN
@@ -107,7 +132,6 @@ namespace QLKS.Controllers
                 ngaytra = now,
                 tienphong = tienPhong,
                 maktra = maKiemTra,
-                NGUOIDUNG_ID = maNguoiDung,
                 THUEPHONG_ID = maThuePhong
             };
             foreach(var idPhong in danhSachPhongThue)
@@ -116,7 +140,7 @@ namespace QLKS.Controllers
                 phong.LOAITINHTRANG_ID = 1;
             }
             db.THANHTOANs.Add(thanhToan);
-            db.SaveChangesAsync();
+            db.SaveChanges();
         }
     }
 }
