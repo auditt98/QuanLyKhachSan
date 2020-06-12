@@ -51,7 +51,7 @@
             <i class="fas fa-bars"></i>
         </button>
         <!-- Navbar Search-->
-        <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <div class="d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
 
         </div>
         <!-- Navbar-->
@@ -71,7 +71,7 @@
         </ul>
     </nav>
     <div id="layoutSidenav">
-        <div id="layoutSidenav_nav" class="card-shadow-2 d-none">
+        <div id="layoutSidenav_nav" class="card-shadow-2">
             <nav class="sb-sidenav accordion sb-sidenav-dark card-shadow-2" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
@@ -202,25 +202,22 @@
         "use strict";
         // Add active state to sidbar nav links
         var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
-        $(document).ajaxStop(function () {
-            $("#layoutSidenav_nav").removeClass("d-none");
-        });
         $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
             var url = window.location.pathname.split("/");
             var obj = this;
             var controller = url[1];
             var link = this.href.toString().split('/');
             var linkController = link[3];
-            $.ajax({
-                url: "/" + linkController + "/CheckQuyen",
-                method: "POST",
-                data: null,
-                success: function (data) {
-                    if (data == "no") {
-                        $(obj).remove();
-                    }
-                }
-            })
+            //$.ajax({
+            //    url: "/" + linkController + "/CheckQuyen",
+            //    method: "POST",
+            //    data: null,
+            //    success: function (data) {
+            //        if (data == "no") {
+            //            $(obj).remove();
+            //        }
+            //    }
+            //})
             if(controller == linkController){
                 $(this).addClass("active");
             }

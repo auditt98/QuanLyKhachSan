@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\LuuTruController.cs" />
     <Compile Include="Extensions\CommonConstants.cs" />
     <Compile Include="Controllers\LoaiTinhTrangController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
@@ -608,6 +609,7 @@
     <Content Include="Views\QLKS\Index.cshtml" />
     <Content Include="Views\QLKS\ViewDenied.cshtml" />
     <Content Include="Views\Home\DatPhong.cshtml" />
+    <Content Include="Views\LuuTru\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />
