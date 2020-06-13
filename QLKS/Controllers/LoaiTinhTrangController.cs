@@ -20,6 +20,8 @@ namespace QLKS.Controllers
         private QLKSContext db = new QLKSContext();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         private QuyenServices _quyenServices = new QuyenServices();
+        private LichSuServices _lichSuServices = new LichSuServices();
+
         // GET: LoaiTinhTrang/List
         public ActionResult List()
         {
@@ -85,6 +87,7 @@ namespace QLKS.Controllers
             var loaitinhtrang = AutoMapper.Mapper.Map<LOAITINHTRANG>(model);
             db.LOAITINHTRANGs.Add(loaitinhtrang);
             db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, loaitinhtrang.GetType().ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -141,6 +144,7 @@ namespace QLKS.Controllers
             //map from model to database object
             item = Mapper.Map(model, item);
             db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -158,6 +162,7 @@ namespace QLKS.Controllers
             {
                 db.LOAITINHTRANGs.Remove(loaitinhtrang);
                 db.SaveChanges();
+                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, loaitinhtrang.GetType().ToString());
                 //Thông báo
                 TempData["Message"] = "Xóa khách hàng thành công";
                 TempData["NotiType"] = "success";

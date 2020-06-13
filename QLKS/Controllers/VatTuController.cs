@@ -70,7 +70,6 @@ namespace QLKS.Controllers
             var vatTuModel = new VatTuModel();
             //prepare select list phong
             vatTuModel.DanhSachPhong = _phongServices.PrepareSelectListPhong(0);
-            //phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(-1);
             return View(vatTuModel);
         }
 
@@ -86,7 +85,7 @@ namespace QLKS.Controllers
             var item = AutoMapper.Mapper.Map<VATTU>(model);
             db.VATTUs.Add(item);
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -141,7 +140,7 @@ namespace QLKS.Controllers
             //map from model to database object
             item = Mapper.Map(model, item);
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -159,7 +158,7 @@ namespace QLKS.Controllers
                 db.VATTUs.Remove(item);
                 db.SaveChanges();
                 //Thông báo
-                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
+                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.GetType().ToString());
                 TempData["Message"] = "Xóa vật tư thành công";
                 TempData["NotiType"] = "success";
                 return Json("ok");

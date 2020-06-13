@@ -79,7 +79,7 @@ namespace QLKS.Controllers
             var item = AutoMapper.Mapper.Map<DICHVU>(model);
             db.DICHVUs.Add(item);
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -132,7 +132,7 @@ namespace QLKS.Controllers
             //map from model to database object
             item = Mapper.Map(model, item);
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -154,7 +154,7 @@ namespace QLKS.Controllers
             var item = db.DICHVUs.Find(id);
             db.DICHVUs.Remove(item);
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.GetType().ToString());
             //Thông báo
             TempData["Message"] = "Xóa thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap

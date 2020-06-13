@@ -1,5 +1,4 @@
-﻿using Microsoft.Ajax.Utilities;
-using QLKS.Domain;
+﻿using QLKS.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,9 @@ using System.Web.Mvc;
 
 namespace QLKS.Controllers
 {
-    public class LuuTruController : Controller
+    public class LichSuController : Controller
     {
-        // GET: LuuTru
+        // GET: LichSu
         QLKSContext db = new QLKSContext();
         public ActionResult List()
         {
@@ -18,17 +17,18 @@ namespace QLKS.Controllers
         }
 
         [HttpPost]
-        public ActionResult PopulateLuuTru()
+        public ActionResult PopulateLichSu()
         {
-            var danhSachNhomNguoiDung = db.LUUTRUs.Select(c => new
+            var danhSachLichSu= db.LUUTRUs.Select(c => new
             {
                 loaihanhdong = c.loaihanhdong,
                 ngaychinhsua = c.ngaychinhsua,
                 tennguoidung = c.NGUOIDUNG.tennguoidung,
+                tendangnhap = c.NGUOIDUNG.tendangnhap,
                 ghichu = c.ghichu,
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
-            var result = new { data = danhSachNhomNguoiDung };
+            var result = new { data = danhSachLichSu };
             return Json(result);
         }
     }

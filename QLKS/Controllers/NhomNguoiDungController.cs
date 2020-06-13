@@ -17,6 +17,8 @@ namespace QLKS.Controllers
         private QLKSContext db = new QLKSContext();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         private QuyenServices _quyenServices = new QuyenServices();
+        private LichSuServices _lichSuServices = new LichSuServices();
+
         public ActionResult List()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -171,6 +173,7 @@ namespace QLKS.Controllers
                 }
             }
             db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
