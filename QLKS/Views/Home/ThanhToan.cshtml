@@ -1,199 +1,120 @@
 ﻿
 @{
-    ViewBag.Title = "ThanhToan";
-    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+	ViewBag.Title = "ThanhToan";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
-
+	<script src="/Scripts/jquery-3.5.1.js"></script>
+@section scripts{
+	<script src="~/Scripts/controller/DatPhong.js"></script>
+}
 <div id="content" class="content-area page-wrapper" role="main">
-    <div class="row row-main">
-        <div class="large-12 col">
-            <div class="col-inner">
+	<div class="row row-main">
+		<div class="large-12 col">
+			<div class="col-inner">
 
-                <header class="entry-header">
-                    <p id="breadcrumbs"><span><span><a href="http://khachsan2.giaodienwebmau.com/">Trang chủ</a> » <span class="breadcrumb_last" aria-current="page">Thanh toán</span></span></span></p>					<h1 class="entry-title mb uppercase">Thanh toán</h1>
-                </header><!-- .entry-header -->
+				<header class="entry-header">
+					<p id="breadcrumbs"><span><span><a href="~/Home/DatPhong">Đặt Phòng</a> » <span class="breadcrumb_last" aria-current="page">Thanh toán</span></span></span></p>					<h1 class="entry-title mb uppercase">Thanh toán</h1>
+				</header><!-- .entry-header -->			
+				@if (ViewBag.err != null)
+				{
+					<div id="AlertBox" class="alert-error hide" style="color:red">
+						@ViewBag.err
+					</div>
+				}
+				@if (ViewBag.suc != null)
+				{
+					<div id="AlertBox" class="alert-success hide" style="color:lawngreen">
+						@ViewBag.suc
+					</div>
+				}
 
+				<div class="woocommerce">
 
-                <div class="woocommerce">
-                    <div class="woocommerce-notices-wrapper"></div><div class="woocommerce-form-coupon-toggle">
+					<div class="woocommerce-notices-wrapper"></div>
+					<form name="checkout" method="post" class="checkout woocommerce-checkout " action="ThanhToan" enctype="multipart/form-data">
 
-                        <div class="woocommerce-info message-wrapper">
-                            <div class="message-container container medium-text-center">
-                                Bạn có mã ưu đãi? <a href="#" class="showcoupon">Ấn vào đây để nhập mã</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <form class="checkout_coupon woocommerce-form-coupon has-border is-dashed" method="post" style="display:none">
-
-                        <p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới.</p>
-                        <div class="coupon">
-                            <div class="flex-row medium-flex-wrap">
-                                <div class="flex-col flex-grow">
-                                    <input type="text" name="coupon_code" class="input-text" placeholder="Mã ưu đãi" id="coupon_code" value="" />
-                                </div>
-                                <div class="flex-col">
-                                    <button type="submit" class="button expand" name="apply_coupon" value="Áp dụng">Áp dụng</button>
-                                </div>
-                            </div><!-- row -->
-                        </div><!-- coupon -->
-                    </form>
-                    <div class="woocommerce-notices-wrapper"></div>
-                    <form name="checkout" method="post" class="checkout woocommerce-checkout " action="http://khachsan2.giaodienwebmau.com/thanh-toan/" enctype="multipart/form-data">
-
-                        <div class="row pt-0 ">
-                            <div class="large-7 col  ">
+						<div class="row pt-0 ">
+							<div class="large-7 col  ">
 
 
-                                <div id="customer_details">
-                                    <div class="clear">
-                                        <div class="woocommerce-billing-fields">
+								<div id="customer_details">
+									<div class="clear">
+										<div class="woocommerce-billing-fields">
 
-                                            <h3>Thông tin thanh toán</h3>
+											<h3>Thông tin thanh toán</h3>
 
 
 
-                                            <div class="woocommerce-billing-fields__field-wrapper">
-                                                <p class="form-row form-row-wide validate-required" id="billing_last_name_field" data-priority=""><label for="billing_last_name" class="">Họ và tên&nbsp;<abbr class="required" title="bắt buộc">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_last_name" id="billing_last_name" placeholder="Nhập đầy đủ họ và tên của bạn" value="" /></span></p><p class="form-row address-field form-row-first validate-required" id="billing_address_1_field" data-priority="50"><label for="billing_address_1" class="">Địa chỉ&nbsp;<abbr class="required" title="bắt buộc">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_1" id="billing_address_1" placeholder="Ví dụ: Số xx Ngõ xx Phú Kiều, Bắc Từ Liêm, Hà Nội" value="" autocomplete="address-line1" /></span></p><p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Số điện thoại&nbsp;<abbr class="required" title="bắt buộc">*</abbr></label><span class="woocommerce-input-wrapper"><input type="tel" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="" autocomplete="tel" /></span></p><p class="form-row form-row-wide validate-required validate-email" id="billing_email_field" data-priority="110"><label for="billing_email" class="">Địa chỉ email&nbsp;<abbr class="required" title="bắt buộc">*</abbr></label><span class="woocommerce-input-wrapper"><input type="email" class="input-text " name="billing_email" id="billing_email" placeholder="" value="" autocomplete="email username" /></span></p>
-                                            </div>
+											<div class="woocommerce-billing-fields__field-wrapper">
+												<p class="form-row form-row-wide validate-required" id="billing_last_name_field" data-priority="">
+													<label for="billing_last_name" class="">Họ và tên&nbsp;<abbr class="required" title="bắt buộc">*</abbr></label>
+													<span class="woocommerce-input-wrapper">
+														<input type="text" class="input-text " name="txtName" placeholder="Nhập đầy đủ họ và tên của bạn" value="" />
+													</span>
+												</p>
+												<p class="form-row address-field form-row-first validate-required" id="billing_address_1_field" data-priority="50">
+													<label for="billing_address_1" class="">Số CMND&nbsp;<abbr class="required" title="bắt buộc">*</abbr></label>
+													<span class="woocommerce-input-wrapper">
+														<input type="text" class="input-text " name="txtCMND" placeholder="..." value="" autocomplete="address-line1" />
+													</span>
+												</p>
+												<p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100">
+													<label for="billing_phone" class="">Số điện thoại&nbsp;<abbr class="required" title="bắt buộc">*</abbr></label><span class="woocommerce-input-wrapper">
+														<input type="tel" class="input-text " name="txtPhone" placeholder="..." value="" autocomplete="tel" />
+													</span>
+												</p><p class="form-row form-row-wide validate-required validate-email" id="billing_email_field" data-priority="110">
+													<label for="billing_email" class="">Địa chỉ email&nbsp;<abbr class="required" title="bắt buộc">*</abbr></label><span class="woocommerce-input-wrapper">
+														<input type="email" class="input-text " name="txtEmail" placeholder="..." value="" autocomplete="email username" />
+													</span>
+												</p>
+											</div>
 
-                                        </div>
+										</div>
 
-                                    </div>
+									</div>
 
-                                    <div class="clear">
-                                        <div class="woocommerce-shipping-fields">
-                                        </div>
-                                        <div class="woocommerce-additional-fields">
+									<div class="clear">
+										<div class="woocommerce-shipping-fields">
+										</div>
+										<div class="woocommerce-additional-fields">
 
-
-
-                                            <h3>Thông tin bổ sung</h3>
-
-
-                                            <div class="woocommerce-additional-fields__field-wrapper">
-                                                <p class="form-row notes" id="order_comments_field" data-priority=""><label for="order_comments" class="">Ghi chú đơn hàng&nbsp;<span class="optional">(tuỳ chọn)</span></label><span class="woocommerce-input-wrapper"><textarea name="order_comments" class="input-text " id="order_comments" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn." rows="2" cols="5"></textarea></span></p>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                            </div><!-- large-7 -->
-
-                            
-
-                                <aside class="hotel-content__aside">
-
-                                    <div class="reservation">
-                                        <h2 class="reservation__title">Tóm tắt đặt phòng</h2>
-
-
-                                        <div class="reservation__section reservation__section--dates">
-                                            <div class="reservation-dates">
-                                                <div class="reservation-date reservation-date--checkin">
-                                                    <span class="reservation-date__title">Ngày đến</span>
-
-                                                    <div class="reservation-date__date">
-                                                        <span class="reservation-date__day" data-date-format="d">19</span>
-                                                        <span class="reservation-date__week" data-date-format="l">Thứ Sáu</span>
-                                                        <span class="reservation-date__year" data-date-format="M Y">Th6 2020</span>
-                                                    </div>
-
-                                                    <span class="reservation-date__time">
-                                                        từ 13:00
-                                                    </span>
-                                                </div><!-- /.reservation-date-->
-
-                                                <div class="reservation-date__arrow">
-                                                    <i class="aficon aficon-arrow-forward"></i>
-                                                </div>
-
-                                                <div class="reservation-date reservation-date--checkout">
-                                                    <span class="reservation-date__title">Ngày đi</span>
-
-                                                    <div class="reservation-date__date">
-                                                        <span class="reservation-date__day" data-date-format="d">21</span>
-                                                        <span class="reservation-date__week" data-date-format="l">Chủ Nhật</span>
-                                                        <span class="reservation-date__year" data-date-format="M Y">Th6 2020</span>
-                                                    </div>
-
-                                                    <span class="reservation-date__time">
-                                                        đến 12:00
-                                                    </span>
-
-                                                </div><!-- /.reservation-date-->
-                                            </div><!-- /.reservation-dates -->
-                                        </div><!-- /.reservation__section -->
-
-
-                                        <div class="reservation__section reservation__section--room">
-                                            <div class="roomdetails-room">
-                                                <dl class="roomdetails-room__list">
-                                                    <dt>Phòng</dt>
-                                                    <dd>Phòng đôi</dd>
-
-                                                    <dt>Ở lại</dt>
-                                                    <dd>
-                                                        2 đêm, <span class="gembooking_guest__adults">2 người lớn</span> , <span class="gembooking_guest__children">3 trẻ em</span>
-                                                    </dd>
-                                                </dl>
-
-                                                <dl class="roomdetails-room__list--price">
-                                                    <dt>
-                                                        Giá			<small>
-                                                            (2 đêm x 1 phòng)
-                                                        </small>
-                                                    </dt>
-                                                    <dd>
-                                                        <span class="gembooking-price "><span class="gembooking-price__amount">500.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span>
-                                                    </dd>
-
-                                                </dl>
-
-                                                <div class="roomdetails-room__actions">
-                                                    <a href="https://hotel.sonqb.com/gembooking-route/reservation/remove/e94b4fdc68b5b2971951400ad0be3705e08c6462" class="remove-selected-room">Xóa</a>
-                                                </div>
-                                            </div><!-- /.roomdetails-room -->
-                                        </div><!-- /.reservation__section -->
+											<button type="submit" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="Đặt hàng" data-value="Đặt hàng"> Đặt Phòng </button>
+										</div>
+									</div>
+								</div>
 
 
 
-
-                                        <div class="reservation__section reservation__section--totals">
-                                            <dl>
-                                                <dt>Tổng phụ</dt>
-                                                <dd><span class="gembooking-price "><span class="gembooking-price__amount">500.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span></dd>
-                                            </dl>
+							</div><!-- large-7 -->
 
 
 
-                                            <dl>
-                                                <dt><strong>Tổng</strong></dt>
-                                                <dd><span class="gembooking-price "><span class="gembooking-price__amount">500.000</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span></dd>
-                                            </dl>
+							<aside class="hotel-content__aside">
 
-                                        </div>
+								<div class=" reservation">
+									<h2 class="reservation__title">Tóm tắt đặt phòng</h2>
+									<div class="reservation__empty">
+										<span><i class="aficon aficon-bed"></i></span>
+										<p>Không có phòng được chọn</p>
+									</div>
+									<div class="thongTinDatPhong">
 
-
-                                    </div><!-- /.reservation -->
-
-
-                                </aside>
-
-                        
-
-                        </div><!-- row -->
-                    </form>
-
-                </div>
+									</div>
 
 
-            </div><!-- .col-inner -->
-        </div><!-- .large-12 -->
-    </div><!-- .row -->
+								</div><!-- /.reservation -->
+							</aside>
+
+
+
+						</div><!-- row -->
+					</form>
+
+				</div>
+
+
+			</div><!-- .col-inner -->
+		</div><!-- .large-12 -->
+	</div><!-- .row -->
 </div>
 

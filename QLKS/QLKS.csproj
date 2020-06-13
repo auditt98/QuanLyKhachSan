@@ -614,6 +614,8 @@
     <Content Include="Views\QLKS\ViewDenied.cshtml" />
     <Content Include="Views\Home\DatPhong.cshtml" />
     <Content Include="Views\LichSu\List.cshtml" />
+    <Content Include="Views\TraPhong\List.cshtml" />
+    <Content Include="Views\TraPhong\traPhong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />

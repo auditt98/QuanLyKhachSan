@@ -8,8 +8,8 @@ using System.Web.Mvc;
 
 namespace QLKS.Controllers
 {
-    public class HomeController : Controller
-    {
+	public class HomeController : Controller
+	{
 		private QLKSContext db = new QLKSContext();
 		public ActionResult Index()
 		{
@@ -66,17 +66,54 @@ namespace QLKS.Controllers
 			//	data = data.Where(d => d.trecon >= children);
 			//}
 			return View(data.ToList());
-			
+
 		}
 		[HttpGet]
 		public ActionResult ThanhToan()
-		{			
+		{
 			return View();
 		}
 		[HttpPost]
-		public ActionResult ThanhToan(int id , int diachi ,string sdt)
+		public ActionResult ThanhToan(string txtName, string txtCMND, string txtPhone, string txtEmail)
 		{
-			return View();
+			var cart = Session[CommonConstants.DatPhongSession];
+			var list = new List<DatPhongItem>();
+
+			if (cart != null && txtName != "" && txtPhone.Length > 9)
+			{
+				list = (List<DatPhongItem>)cart;
+				//thêm thông tin giao hàng
+				var datPhong = new DATPHONG();
+				db.DATPHONGs.Add(datPhong);
+				db.SaveChanges();
+				//them chi tiết bill
+				foreach (var item in list)
+				{
+					var phong = db.PHONGs.Where(p => p.LOAIPHONG_ID == item.loaiphongId && p.LOAITINHTRANG_ID == 1).FirstOrDefault(); // phong trong
+					var chiTietDatPhong = new CHITIETDATPHONG();
+					chiTietDatPhong.DATPHONG_ID = datPhong.ID;
+					chiTietDatPhong.PHONG_ID = phong.ID;
+					chiTietDatPhong.tenkhachhang = txtName;
+					chiTietDatPhong.sodienthoai = txtPhone;
+					chiTietDatPhong.socmt = txtCMND;
+					chiTietDatPhong.email = txtEmail;
+					chiTietDatPhong.ngaydukienden = Convert.ToDateTime(item.ngaydukienden);
+					chiTietDatPhong.ngaydukiendi = Convert.ToDateTime(item.ngaydukiendi);
+					phong.LOAITINHTRANG_ID = 3;
+					db.SaveChanges();
+					db.CHITIETDATPHONGs.Add(chiTietDatPhong);
+					db.SaveChanges();
+					
+				}
+				ViewBag.suc = "Đặt phòng  thành công ! Chúng tôi sẽ liên hệ với quý khách sớm nhất .";
+				Session[CommonConstants.DatPhongSession] = null;
+				return View();
+			}
+			else
+			{
+				ViewBag.err = "Giỏ hàng chủa có sản phầm nào , hoặc bạn nhập thiếu thông tin khách hàng !";
+				return View(list);
+			}
 		}
 		public JsonResult ListCart()
 		{
@@ -85,11 +122,10 @@ namespace QLKS.Controllers
 			{
 				data = sessionCart,
 				status = true
-			}) ;
+			});
 		}
-		public JsonResult ADD(int id ,DateTime check_in ,DateTime check_out, int adults, int children)
+		public JsonResult ADD(int id, DateTime check_in, DateTime check_out, int adults, int children)
 		{
-			var a = 2;
 			var loaiPhong = db.LOAIPHONGs.Find(id);
 			var cart = Session[CommonConstants.DatPhongSession];
 			var item = new DatPhongItem();
@@ -105,7 +141,7 @@ namespace QLKS.Controllers
 
 			if (cart != null)
 			{
-				var list =  (List<DatPhongItem>)cart;
+				var list = (List<DatPhongItem>)cart;
 				list.Add(item);
 				//gán vào session 	
 				Session[CommonConstants.DatPhongSession] = list;
@@ -117,7 +153,19 @@ namespace QLKS.Controllers
 				//gán vào session 	
 				Session[CommonConstants.DatPhongSession] = list;
 			}
-			
+
+			return Json(new
+			{
+				data = Session[CommonConstants.DatPhongSession],
+				status = true
+			});
+		}
+		public JsonResult DELETE(int id)
+		{
+			var cart = (List<DatPhongItem>)Session[CommonConstants.DatPhongSession];
+			cart.RemoveAll(x => x.Id == id);
+			//gán vào session 	
+			Session[CommonConstants.DatPhongSession] = cart;
 			return Json(new
 			{
 				data = Session[CommonConstants.DatPhongSession],

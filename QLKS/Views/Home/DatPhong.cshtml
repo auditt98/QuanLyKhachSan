@@ -4,9 +4,10 @@
 	ViewBag.Title = "DatPhong";
 	Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
+	<script src="/Scripts/jquery-3.5.1.js"></script>
 @section scripts{
 
-
+	
 	<script src="~/Scripts/controller/DatPhong.js"></script>
 }
 
@@ -63,7 +64,7 @@
 												</span>
 
 												<span class="searchbox-occupancy-info__item">
-													<span  id="txtchildren" class="searchbox-occupancy-info__number" data-bind="text: children">@ViewBag.children</span>
+													<span id="txtchildren" class="searchbox-occupancy-info__number" data-bind="text: children">@ViewBag.children</span>
 													trẻ em
 												</span>
 
@@ -288,7 +289,7 @@
 																<div class="roommaster-button roommaster-box">
 																	<button data-id="@item.ID" class="btnAdd booknow button is-primary">Đặt Ngay</button>
 																	<span class="roommaster-button__remaining-rooms">
-																		Còn lại @item.PHONGs.Count() phòng
+																		Còn lại @item.PHONGs.Count(p => p.LOAITINHTRANG_ID == 1) phòng
 																	</span>
 																</div>
 															</div>
@@ -307,7 +308,7 @@
 
 					</div>
 
-					<aside class="hotel-content__aside">
+					<div class="hotel-content__aside">
 						<div class=" reservation">
 							<h2 class="reservation__title">Tóm tắt đặt phòng</h2>
 							<div class="reservation__empty">
@@ -320,11 +321,11 @@
 
 
 						</div><!-- /.reservation -->
-						<div  class="btncheckuot reservation-goto-checkout" >
+						<div class="btncheckuot reservation-goto-checkout">
 							<a href="~/Home/ThanhToan" class="button button--primary button--block">Tiếp tục</a>
 						</div>
 
-					</aside>
+					</div>
 
 
 
