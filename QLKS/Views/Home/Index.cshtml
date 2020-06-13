@@ -53,7 +53,6 @@
 						padding-top: 360px;
 					}
 
-
 					#banner-98454872 {
 						padding-top: 500px;
 					}
@@ -106,11 +105,6 @@
 
 	<section class="section form-searh-home" id="section_1023370565">
 		<div class="bg section-bg fill bg-fill  bg-loaded">
-
-
-
-
-
 		</div><!-- .section-bg -->
 
 		<div class="section-content relative">
@@ -124,7 +118,7 @@
 				<div class="col pb-0 medium-12 small-12 large-9">
 					<div class="col-inner">
 						<div class="gembooking-block gembooking-block--check_form">
-							<form action="DatPhong" method="GET" role="search" novalidate>
+							<form id="gembooking_searchbox_1" action="DatPhong" method="GET" role="search" novalidate>
 
 								<div class="searchbox searchbox--horizontal">
 									<div class="searchbox__wrap">
@@ -134,8 +128,8 @@
 													<label class="searchbox__box-label"><span>Ngày đến</span></label>
 
 													<div class="searchbox__box-input">
-														<input type="text" readonly data-bind="value: checkInFormatted()" class="searchbox__input searchbox__input--checkin input-transparent" placeholder="@DateTime.Now.ToString("yyyy-MM-dd")" autocomplete="off" aria-haspopup="true">
-														<input type="hidden" data-bind="value: checkInDate" name="check_in" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+														<input type="text" readonly data-bind="value: checkInFormatted()" class="searchbox__input searchbox__input--checkin input-transparent" placeholder="2020-05-15" autocomplete="off" aria-haspopup="true">
+														<input type="hidden" data-bind="value: checkInDate" name="check_in" value="2020-05-15">
 													</div>
 												</div>
 											</div>
@@ -147,8 +141,8 @@
 													<label class="searchbox__box-label"><span>Ngày đi</span></label>
 
 													<div class="searchbox__box-input">
-														<input type="text" readonly data-bind="value: checkOutFormatted()" class="searchbox__input searchbox__input--checkout input-transparent" placeholder="@DateTime.Now.ToString("yyyy-MM-dd")" autocomplete="off" aria-haspopup="true">
-														<input type="hidden" data-bind="value: checkOutDate" name="check_out" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+														<input type="text" readonly data-bind="value: checkOutFormatted()" class="searchbox__input searchbox__input--checkout input-transparent" placeholder="2020-05-16" autocomplete="off" aria-haspopup="true">
+														<input type="hidden" data-bind="value: checkOutDate" name="check_out" value="2020-05-16">
 													</div>
 												</div>
 											</div>
@@ -290,7 +284,7 @@
 
 		<div class="section-content relative">
 
-			<div class="gap-element" style="display:block; height:auto; padding-top:30px" ></div>
+			<div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
 			<div class="row align-middle align-center" id="row-617174076">
 				<div class="col medium-6 small-12 large-6">
 					<div class="col-inner">
@@ -551,7 +545,7 @@
 
 		<div class="section-content relative">
 
-			<div class="gap-element" style="display:block; height:auto; padding-top:30px" 0></div>
+			<div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
 			<div class="row align-center" id="row-587745021">
 				<div class="col small-12 large-12">
 					<div class="col-inner text-center">
@@ -694,7 +688,7 @@
 					</div><!-- .col-inner -->
 				</div><!-- .col -->
 			</div>
-			<div class="gap-element" style="display:block; height:auto; padding-top:30px" ></div>
+			<div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
 		</div><!-- .section-content -->
 
 
@@ -717,7 +711,7 @@
 
 		<div class="section-content relative">
 
-			<div class="gap-element" style="display:block; height:auto; padding-top:30px" 0></div>
+			<div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
 			<div class="row" id="row-1304834693">
 				<div class="col small-12 large-12">
 					<div class="col-inner text-center dark">
@@ -799,7 +793,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="gap-element" style="display:block; height:auto; padding-top:20px" 0></div>
+			<div class="gap-element" style="display:block; height:auto; padding-top:20px" class="clearfix"></div>
 		</div><!-- .section-content -->
 
 
@@ -823,7 +817,7 @@
 
 		<div class="section-content relative">
 
-			<div class="gap-element" style="display:block; height:auto; padding-top:30px" 0></div>
+			<div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
 			<div class="row align-center" id="row-142921642">
 				<div class="col small-12 large-12">
 					<div class="col-inner text-center">
