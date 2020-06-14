@@ -11,6 +11,9 @@
                 <i class="fa fa-arrow-circle-left"></i>
                 <a href="/ThuePhong/List">Quay lại danh sách</a>
             </small>
+            <div id="btnPrintInvoice" name="save" class="btn btn-warning" style="float:right;margin-right:5px; color: white;">
+                In hóa đơn
+            </div>
             <div id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
                 <i class="fas fa-save" style="margin-right:5px;"></i>
                 Lưu
@@ -26,6 +29,7 @@
 @section scripts{
 
     <script>
+        let hasPrinted = false; // cờ kiểm tra xem nhân viên đã in hóa đơn chưa, nếu chưa in thì khi save sẽ in 1 bản, in rồi thì khi ấn save sẽ k in thêm nữa
         $("#btnSave").on("click", function () {
             var listChiTiet = [];
             var ma = $("#ma").val();
@@ -56,7 +60,10 @@
                 socmt: socmt,
                 sdt: sdt
             }
-            exportInvoice(tenkhachhang, socmt, sdt)
+            // Kiểm tra hóa đơn đã in lần nào chưa, chưa thì mới in
+            if (!hasPrinted) {
+                exportInvoice(tenkhachhang, socmt, sdt)
+            }
             $.ajax({
                 data: _data,
                 method: "POST",
@@ -73,8 +80,21 @@
             }) 
         })
 
+        $("#btnPrintInvoice").on("click", function () {
+            var tenkhachhang = $("#tenkhachhang").val();
+            var socmt = $("#socmt").val();
+            var sdt = $("#sdt").val();
+
+            hasPrinted = true
+            exportInvoice(tenkhachhang, socmt, sdt)
+        })
+
+        function formatCost(cost, currency = ' VND') {
+            return cost.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + currency;
+        }
+
+        // Hàm in hóa đơn thuê phòng, sử dụng thư viện html2pdf,
         function exportInvoice(tenkhachhang, socmt, sdt) {
-            // in hoa don thue phong
             let date = new Date
             let stt = 0;
             let chitietThuePhong = []
@@ -105,9 +125,9 @@
                     <td>${p.soDem}</td>
                     <td>${p.gia}</td>
                 </tr>`
-                tongTienThue += p.soDem * p.gia
+                tongTienThue += p.soDem * parseInt(p.gia.match(/\d+/g).join(''))
             })
-
+            // phần template của hóa đơn, cái này code trước rồi copy vào đây và thay các thông số bên trong ${thông số}
             let rentContract = `
                 <div style='color: red; margin: 40px 20px 0 20px'>
 	                <h4 style='text-align: center;'>SAO MAI HOTEL</h4>
@@ -163,7 +183,7 @@
                         ${chiTietThuePhongHTML}
                     </table>
 	                <br>
-	                <h4><b>Tổng thanh toán: VND</b></h4>
+	                <h4><b>Tổng thanh toán: ${formatCost(tongTienThue)}</b></h4>
 	                <br>
 	                <p>Hình thức thanh toán</p>
 	                <p>Tiền mặt/ Thẻ tín dụng:</p>
@@ -185,9 +205,16 @@
 		                </div>
 	                </div>
                 </div>`
-            html2pdf()
-                .from(rentContract)
-                .save();
+            //kiểm tra xem có dữ liệu thuê phòng hay chưa, có thì mới in hóa đơn
+            if (chitietThuePhong.length) {
+                // lệnh in hóa đơn, cú pháp mặc định
+                html2pdf()
+                    .set({ filename: 'Thue_phong' })
+                    .from(rentContract)
+                    .save();
+            } else {
+                alert("Vui lòng chọn phòng thuê")
+            }
         }
     </script>
 

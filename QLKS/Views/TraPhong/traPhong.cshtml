@@ -7,9 +7,12 @@
                 <i class="fa fa-arrow-circle-left"></i>
                 <a href="/TraPhong/List">Quay lại danh sách</a>
             </small>
-            <div id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; " onclick="generateInvoice()">
+            <div id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; " onclick="payment()">
                 <i class="fas fa-save" style="margin-right:5px;"></i>
                 Thanh toán
+            </div>
+            <div id="btnPrintInvoice" name="print" class="btn btn-warning" style="float:right;margin-right:5px; color: white;" onclick="printInvoice()">
+                In hóa đơn
             </div>
         </h6>
         <div class="card-body">
@@ -67,10 +70,11 @@
 
 @section scripts{
     <script>
-        var idThue = '@ViewBag.maThue'
+        var idThue = '@ViewBag.maThue'; // nhận mã thuê truyền từ controller
         let thongTinKhachHang = {}
         let thongTinDatPhong = []
         let thongTinDichVu = []
+        let hasPrintedInvoice = false // cờ kiểm tra xem nhân viên đã in hóa đơn chưa, nếu chưa in thì khi save sẽ in 1 bản, in rồi thì khi ấn save sẽ k in thêm nữa
 
         $(document).ready(function () {
             $.ajax({
@@ -199,11 +203,11 @@
                 }
             });
         })
-
+        //hàm format lại tiền cho đẹp, dùng Regex (Regular Expression)
         function formatCost(cost, currency = ' VND') {
             return cost.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + currency;
         }
-
+        // DB truyền về /Date(171294200000)/ -> phải convert sang dddd/MM/YYYY thay vì hiển thị /Date(171294200000)/
         function convertTimeStampToDate(timeStampString) {
             let timeStamp = timeStampString.match(/\d+/g).join('')
             let dt = new Date(parseInt(timeStamp))
@@ -211,36 +215,22 @@
 
             return dt.getDate() + '/' + month + '/' + dt.getFullYear()
         }
-
+        // Hàm tính tổng tiền thuê
         function totalRent(start, end, price) {
             let fromDate = start.match(/\d+/g).join('')
             let toDate = end.match(/\d+/g).join('')
-            let numberOfDays = (parseInt(toDate) - parseInt(fromDate)) / 86400000 + 1
+            let numberOfDays = ((parseInt(toDate) - parseInt(fromDate)) / 86400000 + 1) - 1
 
             return numberOfDays * price
         }
-
-        function generateInvoice() {
+        // Hàm xuất hóa đơn,  sử dụng thư viện html2pdf,
+        function invoice() {
             let date = new Date
             let chiTietDatPhongHTML = '';
             let chiTietDichVu = '';
-            let idPhongThue = thongTinDatPhong.map(p => p.id)
-            $.ajax({
-                url: "/TraPhong/thanhToan/",
-                method: "POST",
-                data: {
-                    tienPhong: thongTinKhachHang.tongTienDichVu + thongTinKhachHang.tongTienThuePhong,
-                    maKiemTra: '?',
-                    maThuePhong: idThue,
-                    danhSachPhongThue: idPhongThue
-                },
-                success: function (result) {
-                    console.log(result)
-                }
-            });
 
             thongTinDatPhong.forEach(p => {
-                chiTietDatPhongHTML += 
+                chiTietDatPhongHTML +=
                     `<tr>
                         <td>${p.maPhong}</td>
                         <td>${p.giaThue}</td>
@@ -249,8 +239,7 @@
                         <td>${convertTimeStampToDate(p.ngayRa)}</td>
                         <td>${formatCost(totalRent(p.ngayVao, p.ngayRa, p.giaThue))}</td>
                     </tr>`
-            }) 
-            let chiTietDichVuHTML = '';
+            })
             thongTinDichVu.forEach(dv => {
                 chiTietDichVu +=
                     `<tr>
@@ -261,7 +250,8 @@
                         <td>${dv.soLuong}</td>
                         <td>${formatCost(dv.donGia * dv.soLuong)}</td>
                     </tr>`
-            }) 
+            })
+            //phần template của hóa đơn, cái này code trước rồi copy vào đây và thay các thông số bên trong ${ thông số }
             let invoiceTemplate = `
                 <div id="invoice" style='color: red; margin: 50px 20px 0 20px'>
 	                <div style='justify-content: space-between; display: flex;'>
@@ -324,7 +314,7 @@
 	                <hr style='border: 1px solid;'>
 	                <h4><b>Chi Tiết dịch vụ</b></h4>
                     ${
-                    thongTinDichVu.length === 0
+                thongTinDichVu.length === 0
                     ? `Không có dịch vụ nào được sử dụng`
                     : `<table style="width:100%">
                             <tr>
@@ -337,7 +327,7 @@
                             </tr>
                             ${chiTietDichVu}
                         </table>`
-                    }
+                }
                     
 	                <br>
 	                <h4><b>Tổng tiền: ${formatCost(thongTinKhachHang.tongTienDichVu)}</b></h4>
@@ -357,11 +347,35 @@
                 </div>
                 `
             html2pdf()
+                .set({ filename: 'Tra_phong' })
                 .from(invoiceTemplate)
                 .save();
+        }
+
+        function payment() {
+            let idPhongThue = thongTinDatPhong.map(p => p.id)
+            $.ajax({
+                url: "/TraPhong/thanhToan/",
+                method: "POST",
+                data: {
+                    tienPhong: thongTinKhachHang.tongTienDichVu + thongTinKhachHang.tongTienThuePhong,
+                    maKiemTra: '?',
+                    maThuePhong: idThue,
+                    danhSachPhongThue: idPhongThue
+                }
+            });
+            // Kiểm tra hóa đơn đã in lần nào chưa, chưa thì mới in
+            if (!hasPrintedInvoice) {
+                invoice();
+            }
             setTimeout(function () {
-                window.location.href = "/TraPhong/List"
-            },1200)
+                window.location.href = "/TraPhong/List"// điều hướng về phần List
+            }, 1200)
+        }
+
+        function printInvoice() {
+            hasPrintedInvoice = true
+            invoice();
         }
     </script>
 }
