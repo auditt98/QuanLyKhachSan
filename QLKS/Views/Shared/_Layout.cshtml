@@ -1,4 +1,8 @@
 ﻿@using QLKS.Models
+@using QLKS.Domain
+@{ 
+    var user = Session["NguoiDung"] as NGUOIDUNG;
+}
 
 <!DOCTYPE html>
 <html>
@@ -93,6 +97,7 @@
                         </a>
                         <div class="sb-sidenav-menu-heading">Nghiệp vụ</div>
                         <a class="nav-link checkperm" id="NghiepVuThuePhong" href="/ThuePhong/List">
+                           
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
                             Thuê phòng
                         </a>

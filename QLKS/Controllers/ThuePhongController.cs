@@ -227,6 +227,7 @@ namespace QLKS.Controllers
             {
                 var i = new SUDUNGDICHVU();
                 i.DICHVU_ID = dichvu.DICHVU_ID;
+                i.THUEPHONG_ID = item.ID;
                 i.ngaysudung = dichvu.ngaysudung;
                 i.NGUOIDUNG_ID = (int)Session["ID"];
                 i.soluong = dichvu.soluong;

@@ -107,7 +107,7 @@
 @if (Model.ngaysudung != null)
 {
 <script>
-    var ngaySuDung = $("#ngaysudung_@guid1").datepicker().data('datepicker').selectDate(new Date(@Model.ngaysudung.Value.Year, @Model.ngaysudung.Value.Month, @Model.ngaysudung.Value.Day));
+    var ngaySuDung = $("#ngaysudung_@guid1").datepicker().data('datepicker').selectDate(new Date(@Model.ngaysudung.Value.Year, @Model.ngaysudung.Value.Month-1, @Model.ngaysudung.Value.Day));
     var giaTien = @Model.thanhtien;
     $("#thanhtienHidden_@guid1").val(giaTien);
     $("#thanhtien_@guid1").val(toVND(giaTien));
