@@ -83,7 +83,8 @@ namespace QLKS.Extensions
             THEM = 1,
             SUA = 2,
             XOA = 3,
-            DANGNHAP = 4
+            DANGNHAP = 4,
+            DANGXUAT = 5
         }
     }
 }

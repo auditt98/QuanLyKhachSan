@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DoanhThuController.cs" />
     <Compile Include="Controllers\LichSuController.cs" />
     <Compile Include="Controllers\TraPhongController.cs" />
     <Compile Include="Extensions\CommonConstants.cs" />
@@ -626,6 +627,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Fonts\" />
+    <Folder Include="Views\DoanhThu\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
