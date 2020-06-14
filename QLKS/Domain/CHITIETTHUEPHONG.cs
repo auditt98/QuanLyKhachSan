@@ -23,7 +23,6 @@ namespace QLKS.Domain
 
         public DateTime? ngayra { get; set; }
 
-        [StringLength(20)]
         public string maktra { get; set; }
 
         public int? NGUOIDUNG_ID { get; set; }

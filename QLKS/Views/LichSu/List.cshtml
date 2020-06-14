@@ -45,7 +45,12 @@
                 columns: [
                     { "data": "tendangnhap"},
                     { "data": "tennguoidung" },
-                    { "data": "ngaychinhsua"},
+                    {
+                        "data": "ngaychinhsua",
+                        "render": function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY")
+                        }
+                    },
                     { "data": "loaihanhdong" },
                     { "data": "ghichu" }
                 ],

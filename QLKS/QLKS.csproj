@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DoanhThuController.cs" />
     <Compile Include="Controllers\DatPhongController.cs" />
     <Compile Include="Controllers\LichSuController.cs" />
     <Compile Include="Controllers\TraPhongController.cs" />
@@ -203,6 +204,7 @@
     </Compile>
     <Compile Include="Models\ChiTietThuePhongModel.cs" />
     <Compile Include="Models\DatPhongModel.cs" />
+    <Compile Include="Models\SuDungDichVuModel.cs" />
     <Compile Include="Models\ThuePhongModel.cs" />
     <Compile Include="Models\DichVuModel.cs" />
     <Compile Include="Models\KhachHangModel.cs" />
@@ -632,6 +634,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Fonts\" />
+    <Folder Include="Views\DoanhThu\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

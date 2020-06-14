@@ -94,7 +94,7 @@ namespace QLKS.Controllers
             item.NHOMNGUOIDUNG_ID = model.selectedNhomNguoiDung;
             db.NGUOIDUNGs.Add(item);
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -166,7 +166,7 @@ namespace QLKS.Controllers
             item.NHOMNGUOIDUNG_ID = model.selectedNhomNguoiDung;
             item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return RedirectToAction("List");
@@ -236,10 +236,12 @@ namespace QLKS.Controllers
             }
             else
             {
+                var nguoidungid = (int)Session["ID"];
                 Session["ID"] = null;
                 Session["tendangnhap"] = null;
                 Session["tennguoidung"] = null;
                 Session.Abandon();
+                _lichSuServices.LuuLichSu(nguoidungid, (int)EnumLoaiHanhDong.DANGXUAT);
                 TempData["Message"] = "Đăng xuất thành công";
                 TempData["NotiType"] = "success"; //success là class trong bootstrap
                 return RedirectToAction("Login");
