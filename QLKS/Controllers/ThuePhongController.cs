@@ -116,7 +116,7 @@ namespace QLKS.Controllers
             }
             db.SaveChanges();
             //Lưu lịch sử hệ thống
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return Json("ok");
@@ -193,7 +193,7 @@ namespace QLKS.Controllers
 
             }
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success";
             return Json("ok");
@@ -241,7 +241,7 @@ namespace QLKS.Controllers
                 db.THUEPHONGs.Remove(item);
                 db.SaveChanges();
                 //Lưu nhật ký
-                _lichSuServices.LuuLichSu((int)Session["ID"],(int)EnumLoaiHanhDong.XOA, item.ToString());
+                _lichSuServices.LuuLichSu((int)Session["ID"],(int)EnumLoaiHanhDong.XOA, item.GetType().ToString());
                 //Thông báo
                 TempData["Message"] = "Xóa thông tin thành công";
                 TempData["NotiType"] = "success";

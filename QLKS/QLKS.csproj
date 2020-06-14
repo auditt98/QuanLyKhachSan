@@ -164,6 +164,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DatPhongController.cs" />
     <Compile Include="Controllers\LuuTruController.cs" />
+    <Compile Include="Controllers\LichSuController.cs" />
     <Compile Include="Controllers\TraPhongController.cs" />
     <Compile Include="Extensions\CommonConstants.cs" />
     <Compile Include="Controllers\LoaiTinhTrangController.cs" />
@@ -615,6 +616,7 @@
     <Content Include="Views\QLKS\Index.cshtml" />
     <Content Include="Views\QLKS\ViewDenied.cshtml" />
     <Content Include="Views\Home\DatPhong.cshtml" />
+    <Content Include="Views\LichSu\List.cshtml" />
     <Content Include="Views\TraPhong\List.cshtml" />
     <Content Include="Views\TraPhong\traPhong.cshtml" />
     <Content Include="Views\DatPhong\List.cshtml" />
@@ -631,7 +633,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Fonts\" />
-    <Folder Include="Views\NhanVien\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

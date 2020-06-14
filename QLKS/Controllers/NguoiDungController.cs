@@ -211,7 +211,8 @@ namespace QLKS.Controllers
                     Session["ID"] = item.ID;
                     Session["tendangnhap"] = item.tendangnhap;
                     Session["tennguoidung"] = item.tennguoidung;
-                    _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.DANGNHAP, item.ToString());
+                    _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.DANGNHAP, item.GetType().ToString());
+                    Session["NguoiDung"] = item;
                     TempData["Message"] = "Đăng nhập thành công";
                     TempData["NotiType"] = "success"; //success là class trong bootstrap
                     return RedirectToAction("Index", "QLKS");

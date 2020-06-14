@@ -1,4 +1,5 @@
-
+﻿create database QuanLyThueKhachSan
+go
 
 USE [QuanLyThueKhachSan]
 GO
@@ -538,7 +539,7 @@ INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [n
 INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (63, N'THONGKESOLUONGDATPHONG_XEM', N'Q-0000063', NULL, NULL, NULL, NULL, NULL)
 INSERT [dbo].[QUYEN] ([ID], [ten], [ma], [ngaytao], [nguoitao], [ipchinhsua], [ngaychinhsua], [nguoisua]) VALUES (64, N'THONGKEDOANHTHUDICHVU_XEM', N'Q-0000064', NULL, NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[QUYEN] OFF
-SET IDENTITY_INSERT [dbo].[QUYEN] OFF
+
 INSERT [dbo].[CHITIETPHANQUYEN] ([NHOMNGUOIDUNG_ID], [QUYEN_ID]) VALUES (1, 1)
 INSERT [dbo].[CHITIETPHANQUYEN] ([NHOMNGUOIDUNG_ID], [QUYEN_ID]) VALUES (1, 2)
 INSERT [dbo].[CHITIETPHANQUYEN] ([NHOMNGUOIDUNG_ID], [QUYEN_ID]) VALUES (1, 3)
@@ -618,3 +619,8 @@ INSERT [dbo].[CHITIETPHANQUYEN] ([NHOMNGUOIDUNG_ID], [QUYEN_ID]) VALUES (4, 32)
 
 insert into NGUOIDUNG (tendangnhap, hash, tennguoidung, NHOMNGUOIDUNG_ID) values ('admin', N'$2a$11$TNCWZrg1BV2/KiqvQPSIxuDgM.g0tZkdVr6KwKHKbHA/5a/FljTWm', 'admin', 1)
 
+SET IDENTITY_INSERT [dbo].[NGUOIDUNG] ON 
+INSERT [dbo].[NGUOIDUNG] ([ID], [tendangnhap], [hash], [tennguoidung], [sodienthoai], [ngaysinh], [diachi], [gioitinh], [avatar], [malaymatkhau], [NHOMNGUOIDUNG_ID]) VALUES (2, N'letan01', N'$2a$11$4mN7DDrWXuv02FRTYCpdD.DFW3gKZGSkw3kgYOE7HYGoGc8e.KqSy', N'Lễ tân 01', N'0326373667', CAST(N'1981-02-13' AS Date), N'asdasd', 1, NULL, NULL, 2)
+INSERT [dbo].[NGUOIDUNG] ([ID], [tendangnhap], [hash], [tennguoidung], [sodienthoai], [ngaysinh], [diachi], [gioitinh], [avatar], [malaymatkhau], [NHOMNGUOIDUNG_ID]) VALUES (3, N'buongphong01', N'$2a$11$nQQhpD6nyGMm1pbMTuno7emC1ew6vFBG6cMK5pF13I/3u14OEYub2', N'Buồng phòng 01', N'0124123123', CAST(N'2020-06-17' AS Date), N'asdasd', 0, NULL, NULL, 4)
+INSERT [dbo].[NGUOIDUNG] ([ID], [tendangnhap], [hash], [tennguoidung], [sodienthoai], [ngaysinh], [diachi], [gioitinh], [avatar], [malaymatkhau], [NHOMNGUOIDUNG_ID]) VALUES (4, N'ketoan01', N'$2a$11$62KBPLedYbi9eeba5wloJ.7cyhsdH1T2Zk0ovoH8.SZBlzISTMPoa', N'Kế toán 01', N'567657', CAST(N'2020-06-09' AS Date), N'aaaa', 1, NULL, NULL, 3)
+SET IDENTITY_INSERT [dbo].[NGUOIDUNG] OFF
