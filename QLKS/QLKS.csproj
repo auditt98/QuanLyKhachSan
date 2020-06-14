@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DatPhongController.cs" />
     <Compile Include="Controllers\LuuTruController.cs" />
     <Compile Include="Controllers\TraPhongController.cs" />
     <Compile Include="Extensions\CommonConstants.cs" />
@@ -201,6 +202,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChiTietThuePhongModel.cs" />
+    <Compile Include="Models\DatPhongModel.cs" />
     <Compile Include="Models\ThuePhongModel.cs" />
     <Compile Include="Models\DichVuModel.cs" />
     <Compile Include="Models\KhachHangModel.cs" />
@@ -615,6 +617,10 @@
     <Content Include="Views\Home\DatPhong.cshtml" />
     <Content Include="Views\TraPhong\List.cshtml" />
     <Content Include="Views\TraPhong\traPhong.cshtml" />
+    <Content Include="Views\DatPhong\List.cshtml" />
+    <Content Include="Views\DatPhong\Edit.cshtml" />
+    <Content Include="Views\DatPhong\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Home\ThanhToan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />
