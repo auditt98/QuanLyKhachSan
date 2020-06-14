@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace QLKS.Models
 {
@@ -20,7 +21,7 @@ namespace QLKS.Models
 
         public int? NGUOIDUNG_ID { get; set; }
 
-        public IEnumerable<DichVuModel> danhsachdichvu { get; set; }
+        public IEnumerable<SelectListItem> DanhSachDichVu { get; set; }
 
     }
 }

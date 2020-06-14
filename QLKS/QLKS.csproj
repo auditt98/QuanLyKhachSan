@@ -217,6 +217,7 @@
     <Compile Include="Models\QuyenModel.cs" />
     <Compile Include="Models\VatTuModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DichVuServices.cs" />
     <Compile Include="Services\KhachHangServices.cs" />
     <Compile Include="Services\LoaiTinhTrangServices.cs" />
     <Compile Include="Services\LoaiPhongServices.cs" />
@@ -624,6 +625,7 @@
     <Content Include="Views\DatPhong\Edit.cshtml" />
     <Content Include="Views\DatPhong\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Home\ThanhToan.cshtml" />
+    <Content Include="Views\ThuePhong\_AddNewSuDungDichVu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />

@@ -148,7 +148,7 @@
     var nv = new Date(@Model.ngayvao.Value.Year, @Model.ngayvao.Value.Month, @Model.ngayvao.Value.Day);
     var nr = new Date(@Model.ngayra.Value.Year, @Model.ngayra.Value.Month, @Model.ngayra.Value.Day)
     var giatien = @Model.gia * (nr.getTime() - nv.getTime())/(1000 * 3600 * 24); 
-    var gia = toVND(soNgay);
-    $("#gia_@guid").val(gia);
+    //var gia = toVND(soNgay
+    $("#gia_@guid").val(toVND(giatien));
 </script>
 }

@@ -13,6 +13,7 @@ namespace QLKS.Models
         public ThuePhongModel()
         {
             ChiTietThuePhong = new List<ChiTietThuePhongModel>();
+            ChiTietDichVu = new List<SuDungDichVuModel>();
         }
 
         public int ID { get; set; }
@@ -30,5 +31,7 @@ namespace QLKS.Models
         public string sdt { get; set; }
 
         public List<ChiTietThuePhongModel> ChiTietThuePhong { get; set; }
+
+        public List<SuDungDichVuModel> ChiTietDichVu { get; set; }
     }
 }

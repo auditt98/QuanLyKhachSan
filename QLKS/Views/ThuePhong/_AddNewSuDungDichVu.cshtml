@@ -1,0 +1,115 @@
+﻿@model SuDungDichVuModel
+
+@{
+    string guid1 = Guid.NewGuid().ToString().Replace("-", "");
+}
+<div class="chitietdichvu" id="chitietdichvu_@guid1" data-guid="@guid1">
+    <div class="btn float-right" data-guid="@guid1" style="color:#e53935; margin-top: 10px;" onclick="xoaDivDichVu('@guid1')"><i class="fas fa-minus-circle"></i></div>
+    <div class="form-group row" style="padding-top: 2px">
+        <div class="dropdown-divider" style="width:100%"></div>
+        <div class="col-sm-3">
+            <label class="text-sm-left text-required">Chọn dịch vụ</label>
+            <select id="dichvu_@guid1" name="DICHVU_ID" class="form-control" required title="Vui lòng chọn dịch vụ">
+                @foreach (var dv in Model.DanhSachDichVu)
+                {
+                    if (dv.Selected == true)
+                    {
+                        <option value="@dv.Value" selected>@dv.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@dv.Value">@dv.Text</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label class="text-sm-left text-required">Ngày sử dụng</label>
+            <input id="ngaysudung_@guid1" class="form-control datepicker-here" data-position="top center" data-language="vi" placeholder="--Chọn ngày sử dụng--" required title="Vui lòng chọn ngày sử dụng" />
+        </div>
+        <div class="col-sm-3">
+            <label class="text-sm-left text-required">Số lượng </label>
+            <input class="form-control" id="soluong_@guid1" value="@Model.soluong"/>
+        </div>
+        <div class="col-sm-3">
+            <label class="text-sm-left text-required">Thành tiền </label>
+            <input id="thanhtienHidden_@guid1" name="thanhtien"  hidden/>
+            <input class="form-control disabled" disabled id="thanhtien_@guid1"/>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $("#soluong_@guid1").change(function () {
+        $("#giadichvu_@guid1").val(0);
+            var _data = {
+                dichvu: $("#dichvu_@guid1").find('option:selected').val()
+        }
+
+        $.ajax({
+            url: '/DichVu/GetGiaDichVu',
+            type: 'POST',
+            data: _data,
+            success: function (data) {
+                //giá dịch vụ
+                var soluong = $("#soluong_@guid1").val();
+                var g;
+                if (soluong == "") {
+                    g = data * 1;
+                } else {
+                    g = data * soluong
+                }
+                $("#thanhtienHidden_@guid1").val(g)
+                $("#thanhtien_@guid1").val(toVND(g));
+            }
+        });
+    })
+
+    $("#dichvu_@guid1").change(function () {
+        $("#giadichvu_@guid1").val(0);
+            var _data = {
+                dichvu: $(this).find('option:selected').val()
+        }
+
+        $.ajax({
+            url: '/DichVu/GetGiaDichVu',
+            type: 'POST',
+            data: _data,
+            success: function (data) {
+                //giá dịch vụ
+                var soluong = $("#soluong_@guid1").val();
+                var g;
+                if (soluong == "") {
+                    g = data * 1;
+                } else {
+                    g = data * soluong
+                }
+                $("#thanhtienHidden_@guid1").val(g)
+                $("#thanhtien_@guid1").val(toVND(g));
+            }
+        });
+
+    })
+
+
+    $('.datepicker-here').datepicker({
+        onSelect: function (formattedDate, date, inst) {
+            $(inst.el).trigger('change');
+        }
+    });
+    $('.datepicker-here').datepicker({
+        language: 'vi'
+    })
+</script>
+
+
+@if (Model.ngaysudung != null)
+{
+<script>
+    var ngaySuDung = $("#ngaysudung_@guid1").datepicker().data('datepicker').selectDate(new Date(@Model.ngaysudung.Value.Year, @Model.ngaysudung.Value.Month, @Model.ngaysudung.Value.Day));
+    var giaTien = @Model.thanhtien;
+    $("#thanhtienHidden_@guid1").val(giaTien);
+    $("#thanhtien_@guid1").val(toVND(giaTien));
+</script>
+}

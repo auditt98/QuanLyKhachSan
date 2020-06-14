@@ -6,6 +6,7 @@ using QLKS.Models;
 using QLKS.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,6 +25,7 @@ namespace QLKS.Controllers
         private KhachHangServices _khachHangServices = new KhachHangServices();
         private NguoiDungServices _nguoiDungServices = new NguoiDungServices();
         private LichSuServices _lichSuServices = new LichSuServices();
+        private DichVuServices _dichVuServices = new DichVuServices();
         private QuyenServices _quyenServices = new QuyenServices();
         public ActionResult List()
         {
@@ -117,6 +119,18 @@ namespace QLKS.Controllers
                 var phong = db.PHONGs.Find(chitiet.phong_id);
                 phong.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DATHUE;
             }
+
+            foreach(var sudungdichvu in model.ChiTietDichVu)
+            {
+                var newSuDungDichVu = new SUDUNGDICHVU();
+                newSuDungDichVu.THUEPHONG_ID = item.ID;
+                newSuDungDichVu.DICHVU_ID = sudungdichvu.DICHVU_ID;
+                newSuDungDichVu.ngaysudung = sudungdichvu.ngaysudung;
+                newSuDungDichVu.NGUOIDUNG_ID = (int)Session["ID"];
+                newSuDungDichVu.soluong = sudungdichvu.soluong;
+                newSuDungDichVu.thanhtien = sudungdichvu.thanhtien;
+                item.SUDUNGDICHVUs.Add(newSuDungDichVu);
+            }
             db.SaveChanges();
             //Lưu lịch sử hệ thống
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
@@ -151,12 +165,25 @@ namespace QLKS.Controllers
             //prepare model
             var model = Mapper.Map<ThuePhongModel>(item);
             var listChiTietModel = new List<ChiTietThuePhongModel>();
+            var listDichVuModel = new List<SuDungDichVuModel>();
             foreach(var chitiet in item.CHITIETTHUEPHONGs)
             {
                 var m = Mapper.Map<ChiTietThuePhongModel>(chitiet);
                 listChiTietModel.Add(m);
             }
+
+            foreach(var chitiet in item.SUDUNGDICHVUs)
+            {
+                var m = new SuDungDichVuModel();
+                m.DICHVU_ID = chitiet.DICHVU_ID;
+                m.ngaysudung = chitiet.ngaysudung;
+                m.soluong = chitiet.soluong;
+                m.thanhtien = chitiet.thanhtien;
+                m.THUEPHONG_ID = chitiet.THUEPHONG_ID;
+                listDichVuModel.Add(m);
+            }
             model.ChiTietThuePhong = listChiTietModel;
+            model.ChiTietDichVu= listDichVuModel;
             model.tenkhachhang = item.KHACHHANG.tenkhachhang;
             model.sdt = item.KHACHHANG.sodienthoai;
             model.socmt = item.KHACHHANG.socmt;
@@ -193,7 +220,18 @@ namespace QLKS.Controllers
                 item.CHITIETTHUEPHONGs.Add(m);
                 var p = db.PHONGs.Find(chitiet.phong_id);
                 p.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DATHUE;
+            }
 
+            item.SUDUNGDICHVUs.Clear();
+            foreach(var dichvu in model.ChiTietDichVu)
+            {
+                var i = new SUDUNGDICHVU();
+                i.DICHVU_ID = dichvu.DICHVU_ID;
+                i.ngaysudung = dichvu.ngaysudung;
+                i.NGUOIDUNG_ID = (int)Session["ID"];
+                i.soluong = dichvu.soluong;
+                i.thanhtien = dichvu.thanhtien;
+                item.SUDUNGDICHVUs.Add(i);
             }
             db.SaveChanges();
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
@@ -225,7 +263,32 @@ namespace QLKS.Controllers
 
             return PartialView(model);
         }
-    
+
+        public ActionResult _AddNewSuDungDichVu(int? dichvu = 0, int? thuephong = 0)
+        {
+            var model = new SuDungDichVuModel();
+            if (dichvu != 0 && thuephong != 0)
+            {
+                var itemThue = db.THUEPHONGs.Find(thuephong);
+
+                var itemChiTietDichVu = itemThue.SUDUNGDICHVUs.Where(c => c.DICHVU_ID == dichvu).FirstOrDefault();
+                //check null here but im lazy 
+                var itemSuDungDichVu = db.SUDUNGDICHVUs.Where(c=> c.THUEPHONG_ID == thuephong && c.DICHVU_ID == dichvu).FirstOrDefault();
+
+                model.DanhSachDichVu = _dichVuServices.PrepareSelectListDichVu(itemChiTietDichVu.DICHVU_ID);
+                model.ngaysudung = itemSuDungDichVu.ngaysudung;
+                model.thanhtien = itemSuDungDichVu.thanhtien;
+                model.soluong = itemSuDungDichVu.soluong;
+            }
+            else
+            {
+                model.DanhSachDichVu = _dichVuServices.PrepareSelectListDichVu(0);
+            }
+
+            return PartialView(model);
+        }
+
+
         [HttpPost]
         public ActionResult Delete(int? id = 0)
         {

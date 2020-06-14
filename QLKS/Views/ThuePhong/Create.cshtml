@@ -28,6 +28,7 @@
     <script>
         $("#btnSave").on("click", function () {
             var listChiTiet = [];
+            var listChiTietDichVu = [];
             var ma = $("#ma").val();
             var tenkhachhang = $("#tenkhachhang").val();
             var socmt = $("#socmt").val();
@@ -49,8 +50,26 @@
                 }
                 listChiTiet.push(ChiTiet);
             })
+
+            $(".chitietdichvu").each(function () {
+                var gid = $(this).data("guid");
+                dichvu = $("#dichvu_" + gid).val();
+                ngaysudung = $("#ngaysudung_" + gid).val();
+                soluong = $("#soluong_" + gid).val();
+                thanhtien = $("#thanhtienHidden_" + gid).val();
+
+                var ChiTietDichVu = {
+                    DICHVU_ID: dichvu,
+                    ngaysudung: ngaysudung,
+                    soluong: soluong,
+                    thanhtien: thanhtien
+                }
+                listChiTietDichVu.push(ChiTietDichVu);
+            })
+
             var _data = {
                 ChiTietThuePhong: listChiTiet,
+                ChiTietDichVu: listChiTietDichVu,
                 ma: ma,
                 tenkhachhang: tenkhachhang,
                 socmt: socmt,

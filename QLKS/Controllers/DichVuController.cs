@@ -160,6 +160,14 @@ namespace QLKS.Controllers
             TempData["NotiType"] = "success"; //success là class trong bootstrap
             return Json("ok");
         }
+
+        [HttpPost]
+        public ActionResult GetGiaDichVu(int? dichvu)
+        {
+            var item = db.DICHVUs.Find(dichvu);
+            return Json(item.dongia);
+        }
+
         [HttpPost]
         public ActionResult CheckQuyen()
         {

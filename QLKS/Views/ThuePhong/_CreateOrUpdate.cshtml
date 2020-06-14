@@ -14,7 +14,7 @@
 <div class="dropdown-divider"></div>
 <h5>Thông tin khách đặt phòng</h5>
 <br />
-<input id="khachhang_id" type="hidden" value="@Model.KHACHHANG_ID"/>
+<input id="khachhang_id" type="hidden" value="@Model.KHACHHANG_ID" />
 
 
 <div class="form-group row">
@@ -92,10 +92,33 @@
 <div id="danhsachchitiet" style="padding-top: 10px;">
 
 </div>
+
+<br class="dropdown-divider" />
+<div class="dropdown-divider"></div>
+<h5 style="display: inline-block">Sử dụng dịch vụ</h5>
+<div id="addNewDichVu" class="btn btn-outline-info float-right">Thêm mới</div>
+<br />
+
+<div id="danhsachsudungdichvu" style="padding-top: 10px;">
+
+</div>
+
 <script>
     var soPhongTrong;
     $.ajax({
         type: "POST",
+        url: "/Phong/ThongKePhong",
+        success: function (data) {
+            $("#phongban").text(data.phongban);
+            $("#phongtrong").text(data.phongtrong);
+            $("#phongdangsudung").text(data.phongdangsudung);
+            $("#phongdattruoc").text(data.phongdattruoc);
+            soPhongTrong = data.phongtrong;
+        }
+    })
+    $("#updateStats").on("click", function () {
+        $.ajax({
+            type: "POST",
             url: "/Phong/ThongKePhong",
             success: function (data) {
                 $("#phongban").text(data.phongban);
@@ -105,46 +128,50 @@
                 soPhongTrong = data.phongtrong;
             }
         })
-    $("#updateStats").on("click", function (){
-        $.ajax({
-            type: "POST",
-            url: "/Phong/ThongKePhong",
-            success: function (data) {
-                $("#phongban").text(data.phongban);
-                $("#phongtrong").text(data.phongtrong);
-                $("#phongdangsudung").text(data.phongdangsudung);
-                $("#phongdattruoc").text(data.phongdattruoc);
-                    soPhongTrong = data.phongtrong;
-                }
-            })
 
     })
 
-    function xoaDivChiTiet(guid, isFromDb){
+    function xoaDivChiTiet(guid) {
         $("#chitiet_" + guid).remove();
-        }
+    }
+
+    function xoaDivDichVu(guid) {
+        $("#chitietdichvu_" + guid).remove();
+    }
 </script>
 
 <script>
 
     $("#addNewChiTiet").on("click", function () {
-            if (soPhongTrong != null) {
-                var soDiv = $(".chitiet").length;
-                if (soPhongTrong != 0) {
+        if (soPhongTrong != null) {
+            var soDiv = $(".chitiet").length;
+            if (soPhongTrong != 0) {
                 $.ajax({
                     type: "GET",
                     url: "/ThuePhong/_AddNewChiTietThue",
                     success: function (data) {
                         $("#danhsachchitiet").append(data);
-                        }
-                    });
-                } else {
+                    }
+                });
+            } else {
                 $("#customToastMessage").text("Không còn phòng trống");
                 $('#customToast').toast('show')
-                }
             }
+        }
         $("#updateStats").click();
-        })
+    })
+
+    $("#addNewDichVu").on("click", function () {
+        $.ajax({
+            type: "GET",
+            url: "/ThuePhong/_AddNewSuDungDichVu",
+            success: function (data) {
+                $("#danhsachsudungdichvu").append(data);
+            }
+        });
+
+    })
+
 </script>
 
 @*remember to prepare chitietthuephong*@
@@ -162,7 +189,7 @@
 }
 else
 {
-    foreach(var ct in Model.ChiTietThuePhong)
+    foreach (var ct in Model.ChiTietThuePhong)
     {
         <script>
             $.ajax({
@@ -176,6 +203,30 @@ else
     }
 }
 
+
+@if (Model.ChiTietDichVu.Count == 0)
+{
+    <script>
+        $(document).ready(function () {
+            $("#addNewDichVu").click();
+        })
+    </script>
+}
+else
+{
+    foreach (var ct in Model.ChiTietDichVu)
+    {
+        <script>
+            $.ajax({
+                type: "GET",
+                url: "/ThuePhong/_AddNewSuDungDichVu?dichvu=@ct.DICHVU_ID&thuephong=@ct.THUEPHONG_ID",
+                success: function (data) {
+                    $("#danhsachsudungdichvu").append(data);
+                }
+            });
+        </script>
+    }
+}
 
 
 

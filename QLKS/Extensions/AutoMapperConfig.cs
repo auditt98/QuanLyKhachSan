@@ -36,7 +36,8 @@ namespace QLKS.Extensions
             CreateMap<NGUOIDUNG, NguoiDungModel>();
             CreateMap<QUYEN, QuyenModel>();
             CreateMap<QuyenModel, QUYEN>();
-
+            CreateMap<SUDUNGDICHVU, SuDungDichVuModel>();
+            CreateMap<SuDungDichVuModel, SUDUNGDICHVU>();
 
             //Phần dưới này đang lỗiii đừng dùng map nhá :)
             //ThuePhongModel -> KHACHHANG

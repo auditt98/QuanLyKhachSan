@@ -38,12 +38,12 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult PopulateNhomNguoiDung()
         {
-            var danhSachNhomNguoiDung = db.NHOMNGUOIDUNGs.Select(c => new
+            var danhSachNhomNguoiDung = db.NHOMNGUOIDUNGs.Where(c=>c.ID != 1).Select(c => new
             {
                 ma = c.ma,
                 ten = c.ten,
                 uid = c.ID
-            }).OrderBy(c => c.uid).ToList();
+            }).ToList();
             var result = new { data = danhSachNhomNguoiDung };
             return Json(result);
         }
