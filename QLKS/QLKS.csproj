@@ -163,7 +163,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DatPhongController.cs" />
-    <Compile Include="Controllers\LuuTruController.cs" />
     <Compile Include="Controllers\LichSuController.cs" />
     <Compile Include="Controllers\TraPhongController.cs" />
     <Compile Include="Extensions\CommonConstants.cs" />

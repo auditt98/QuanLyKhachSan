@@ -48,23 +48,31 @@ namespace QLKS.Controllers
 			ViewBag.children = children;
 
 
+			IQueryable<LOAIPHONG> data = db.LOAIPHONGs;
+			//var data = db.LOAIPHONGs.Select(lp => new
+			//{
+			//	Id = lp.ID,
+			//	tenloaiphong = lp.tenloaiphong,
+			//	gia = lp.PHONGs.Max(p=>p.giathue),
+			//	anh1= lp.anh,
+			//	khungnhin = lp.khungnhin,
+			//	dientich =lp.dientich,
+			//	giuong = lp.giuong,
+			//	nguoilon = lp.nguoilon,
+			//	trecon =lp.trecon,
 
-			var data = from lp in db.LOAIPHONGs select lp;
-			//		   select new
-			//		   {
-			//			   lp.ID,
-			//			   lpCount = db.PHONGs.Where(c => c.LOAIPHONG_ID == 1 && c.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.TRONG).ToList().Count
-			//		   };
+			//});
+
 			//var a = data.ToList();
 			//var sophongtrong = db.PHONGs.Where(c => c.LOAIPHONG_ID == 1 && c.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.TRONG).ToList().Count;
-			//if (adults != null)
-			//{
-			//	data = data.Where(d => d.nguoilon >= adults);
-			//}
-			//if (children != null)
-			//{
-			//	data = data.Where(d => d.trecon >= children);
-			//}
+			if (adults != null)
+			{
+				data = data.Where(d => d.nguoilon >= adults);
+			}
+			if (children != null)
+			{
+				data = data.Where(d => d.trecon >= children);
+			}
 			return View(data.ToList());
 
 		}
@@ -137,7 +145,7 @@ namespace QLKS.Controllers
 			item.songay = soNgay.Days;
 			item.nguoilon = adults;
 			item.trecon = children;
-			item.gia = Convert.ToInt32(loaiPhong.ma);
+			item.gia = Convert.ToInt32(loaiPhong.PHONGs.Max(p=>p.giathue));
 
 			if (cart != null)
 			{
