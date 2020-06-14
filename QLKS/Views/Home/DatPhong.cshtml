@@ -22,7 +22,7 @@
 			<div class="search-rooms">
 
 				<div class="search-rooms__form">
-					<form id="gembooking_searchbox_1" action="https://hotel.sonqb.com/he-thong-phong/" method="GET" role="search" novalidate>
+					<form id="gembooking_searchbox_1" action="DatPhong" method="GET" role="search" novalidate>
 
 						<div class="searchbox searchbox--horizontal searchbox--align-left">
 							<div class="searchbox__wrap">
@@ -281,7 +281,7 @@
 																<div class="roommaster-inventory roommaster-box">
 																	<h4 class="roommaster-content__title">Giá</h4>
 
-																	<span class="gembooking-price "><span class="gembooking-price__amount">@item.ma</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span>Chi phí trung bình mỗi đêm
+																	<span class="gembooking-price "><span class="gembooking-price__amount"> @String.Format("{0:0,0}", @item.PHONGs.Max(p => p.giathue))</span>&nbsp;<span class="gembooking-price__symbol">&#8363;</span></span>Chi phí trung bình mỗi đêm
 																</div>
 															</div>
 
