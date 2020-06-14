@@ -164,7 +164,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DoanhThuController.cs" />
     <Compile Include="Controllers\DatPhongController.cs" />
-    <Compile Include="Controllers\LuuTruController.cs" />
     <Compile Include="Controllers\LichSuController.cs" />
     <Compile Include="Controllers\TraPhongController.cs" />
     <Compile Include="Extensions\CommonConstants.cs" />
@@ -205,6 +204,7 @@
     </Compile>
     <Compile Include="Models\ChiTietThuePhongModel.cs" />
     <Compile Include="Models\DatPhongModel.cs" />
+    <Compile Include="Models\SuDungDichVuModel.cs" />
     <Compile Include="Models\ThuePhongModel.cs" />
     <Compile Include="Models\DichVuModel.cs" />
     <Compile Include="Models\KhachHangModel.cs" />

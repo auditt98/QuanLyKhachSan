@@ -47,15 +47,18 @@ namespace QLKS.Controllers
             var a = new List<object>();
             foreach(var thue in allThuePhong)
             {
-                var data = new
+                if(thue.CHITIETTHUEPHONGs.Where(c => c.PHONG.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.DATHUE).FirstOrDefault() != null)
                 {
-                    tenkhachhang = thue.KHACHHANG.tenkhachhang,
-                    sdt = thue.KHACHHANG.sodienthoai,
-                    sophongthue = thue.CHITIETTHUEPHONGs.Count,
-                    uid = thue.ID,
-                    ma = thue.ma
-                };
-                a.Add(data);
+                    var data = new
+                    {
+                        tenkhachhang = thue.KHACHHANG.tenkhachhang,
+                        sdt = thue.KHACHHANG.sodienthoai,
+                        sophongthue = thue.CHITIETTHUEPHONGs.Count,
+                        uid = thue.ID,
+                        ma = thue.ma
+                    };
+                    a.Add(data);
+                }
             }
             var result = new { data = a };
             return Json(result);
