@@ -47,7 +47,7 @@ namespace QLKS.Controllers
 			ViewBag.adults = adults;
 			ViewBag.children = children;
 
-
+			var a = 1;
 			IQueryable<LOAIPHONG> data = db.LOAIPHONGs;
 			//var data = db.LOAIPHONGs.Select(lp => new
 			//{
