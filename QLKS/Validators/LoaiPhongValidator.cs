@@ -10,7 +10,7 @@ namespace QLKS.Validators
             {
                 RuleFor(c => c.ma).NotEmpty().WithMessage("Mã loại phòng không được để trống");
                 RuleFor(c => c.tenloaiphong).NotEmpty().WithMessage("Tên loại phòng không được để trống");
-                RuleFor(c => c.thongtin).Must(c => c == null || c.Length <= 500).WithMessage("Không vượt quá 500 ký tự");
+                RuleFor(c => c.thongtin).Must(c => c == null || c.Length <= 2000).WithMessage("Không vượt quá 2000 ký tự");
             }
 
     }

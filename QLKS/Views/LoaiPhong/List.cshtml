@@ -33,7 +33,7 @@
         <thead>
             <tr>
                 <th class="text-center">Số thứ tự</th>
-                <th class="text-center">Giá loại phòng</th>
+                <th class="text-center">Mã loại phòng</th>
                 <th class="text-center">Tên loại phòng</th>
                 <th class="text-center">Ảnh</th>
                 <th class="text-center">Số giường</th>
@@ -54,12 +54,7 @@
                 responsive: true,
                 columns: [
                     { data: "uid"},
-					{
-                        "data": "ma",
-                        render: function (data, type, row) {
-                            return toVND(data);
-                        }
-                    },
+					{"data": "ma"},
                     { "data": "ten" },
                     {
                         "data": "anh",

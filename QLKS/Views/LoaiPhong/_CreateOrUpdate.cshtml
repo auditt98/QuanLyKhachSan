@@ -5,7 +5,7 @@
     @Html.LabelFor(model => model.ma, "Mã loại phòng:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
     <div class="col-md-3">
         <input name="ma" hidden value="@Model.ma" />
-        <input id="ma" class="form-control  disabled" disabled value="@Model.ma" />
+        <input id="ma" class="form-control  disabled" disabled value="@Model.ID" />
         @Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })
     </div>
     @Html.LabelFor(model => model.tenloaiphong, "Tên loại phòng:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
@@ -67,7 +67,7 @@
         Ảnh
     </label>
     <div class="custom-file col-md-6 form-control" style="margin-left: 10px" id="customFile">
-        <input type="file" name="UploadImage" class="custom-file-input" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" id="fileInput" aria-describedby="fileHelp">
+        <input type="file" name="UploadImage" class="custom-file-input" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" id="fileInput" aria-describedby="fileHelp" value="@Model.anh">
         <label class="custom-file-label" for="fileInput">
             Tải ảnh lên
         </label>
