@@ -19,7 +19,9 @@
                     <i class="fas fa-save" style="margin-right:5px;"></i>
                     Lưu
                 </div>
-
+                <div id="btnPrintInvoice" name="save" class="btn btn-warning" style="float:right;margin-right:5px; color: white;">
+                    In hóa đơn
+                </div>
             </h6>
             <div class="card-body">
                 @{
@@ -96,6 +98,140 @@
                 })
 
             })
+
+            $("#btnPrintInvoice").on("click", function () {
+                var tenkhachhang = $("#tenkhachhang").val();
+                var socmt = $("#socmt").val();
+                var sdt = $("#sdt").val();
+
+                hasPrinted = true
+                exportInvoice(tenkhachhang, socmt, sdt)
+            })
+
+            function formatCost(cost, currency = ' VND') {
+                return cost.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + currency;
+            }
+
+            function exportInvoice(tenkhachhang, socmt, sdt) {
+                // in hoa don thue phong
+                let date = new Date
+                let stt = 0;
+                let chitietThuePhong = []
+                let chiTietThuePhongHTML = ''
+                let tongTienThue = 0;
+
+                $(".chitiet").each(function () {
+                    let gid = $(this).data("guid");
+                    var nvao = moment($("#ngayvao_" + gid).val(), "MM-DD-YYYY");
+                    var nra = moment($("#ngayra_" + gid).val(), "MM-DD-YYYY");
+                    var days = Math.abs(nra.diff(nvao, 'days', true));
+                    chitietThuePhong.push({
+                        stt: stt++,
+                        loaiphong: $("#loaiphong_" + gid + " option:selected").text(),
+                        soLuong: 1,
+                        soNguoi: '',
+                        soDem: days,
+                        gia: $("#gia_" + gid).val()
+                    });
+                });
+                chitietThuePhong.forEach(p => {
+                    chiTietThuePhongHTML += `<tr>
+                    <td>${stt++}</td>
+                    <td>${p.loaiphong}</td>
+                    <td>1</td>
+                    <td></td>
+                    <td>${p.soDem}</td>
+                    <td>${p.gia}</td>
+                </tr>`
+                    tongTienThue += p.soDem * parseInt(p.gia.match(/\d+/g).join(''))
+                })
+
+                let rentContract = `
+                <div style='color: red; margin: 40px 20px 0 20px'>
+	                <h4 style='text-align: center;'>SAO MAI HOTEL</h4>
+	                <div style='justify-content: space-between; display: flex;'>
+		                <div style='display: flex;'>
+			                <div style='width: 120px;'>
+				                <p>Địa chỉ</p>
+				                <p>Số điện thoại</p>
+				                <p>Email</p>
+				                <p>Website</p>
+			                </div>
+			                <div>
+				                <p>: 12 Đặng Thùy Trâm - Cầu Giấy Hà Nội</p>
+				                <p>: 123123123</p>
+				                <p>: saomailhotel@gmail.com</p>
+				                <p>: www.saomaihotel.com</p>
+			                </div>
+		                </div>
+		                <div style='width: 20%'>
+			                <p>Ngày: ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}</p>
+		                </div>
+	                </div>
+	                <h4 style='text-align: center'>PHIẾU THUÊ PHÒNG</h4>
+	                <p>Thông tin khách hàng</p>
+	                <div style='display: flex;'>
+		                <div style='width: 120px;'>
+			                <p>Ông/ Bà</p>
+			                <p>CMTND</p>
+			                <p>SĐT</p>
+			                <p>Email</p>
+			                <p>Thời gian đến</p>
+			                <p>Thời gian đi</p>
+		                </div>
+		                <div>
+			                <p>: ${tenkhachhang}</p>
+			                <p>: ${socmt}</p>
+			                <p>: ${sdt}</p>
+			                <p>: </p>
+			                <p>: </p>
+			                <p>: </p>
+		                </div>
+	                </div>
+	                <h4>Chi tiết thuê phòng</h4>
+                    <table style="width:100%">
+                        <tr>
+                            <th>Số thứ tự</th>
+                            <th>Loại phòng</th>
+                            <th>Số lượng</th>
+                            <th>Số người</th>
+                            <th>Số đêm</th>
+                            <th>Đơn giá</th>
+                        </tr>
+                        ${chiTietThuePhongHTML}
+                    </table>
+	                <br>
+	                <h4><b>Tổng thanh toán: ${formatCost(tongTienThue)}</b></h4>
+	                <br>
+	                <p>Hình thức thanh toán</p>
+	                <p>Tiền mặt/ Thẻ tín dụng:</p>
+	                <div style='display: flex; margin-bottom: 1rem;'>
+		                <p style='width: 50%; margin: 0'>Số thẻ:</p>
+		                <p style='width: 50%; margin: 0'> Hạn sử dụng:</p>
+	                </div>
+	                <p>Số tiền cọc:</p>
+	                <p>Bằng chữ:</p>
+	                <br><br>
+	                <div style='display: flex;'>
+		                <div style='width: 50%'>
+			                <p style='text-align: center;'><b>Khách hàng</b></p>
+			                <p style='text-align: center;'>(Ký và ghi rõ họ tên)</p>
+		                </div>
+		                <div style='width: 50%'>
+			                <p style='text-align: center;'><b>Nhân viên</b></p>
+			                <p style='text-align: center;'>(Ký, đóng dấu, ghi rõ họ tên)</p>
+		                </div>
+	                </div>
+                </div>`
+                if (chitietThuePhong.length) {
+                    html2pdf()
+                        .set({filename: 'Thue_phong'})
+                        .from(rentContract)
+                        .save();
+                } else {
+                    alert("Vui lòng chọn phòng thuê")
+                }
+            }
         </script>
         <script>
             $("#btnDelete").on("click", function () {

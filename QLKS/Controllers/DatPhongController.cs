@@ -56,30 +56,6 @@ namespace QLKS.Controllers
             return Json(result,JsonRequestBehavior.AllowGet);
         }
 
-
-        // GET: DatPhong/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: DatPhong/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: DatPhong/Edit/5
         public ActionResult Edit(int? iddatphong ,int? idphong)
         {
@@ -159,25 +135,37 @@ namespace QLKS.Controllers
             }
         }
 
-        // GET: DatPhong/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: DatPhong/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int iddatphong , int idphong)
         {
-            try
+            if (!_quyenServices.Authorize((int)EnumQuyen.DATPHONG_XOA))
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                return RedirectToAction("ViewDenied", "QLKS");
             }
-            catch
+            var item = db.CHITIETDATPHONGs.Where(c => c.DATPHONG_ID == iddatphong && c.PHONG_ID==idphong).FirstOrDefault();
+            if (item != null)
             {
-                return View();
+                try
+                {
+                    db.CHITIETDATPHONGs.Remove(item);
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    throw new Exception();
+                }
+
+                //Thông báo
+                TempData["Message"] = "Xóa loại phòng thành công";
+                TempData["NotiType"] = "success";
+                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.GetType().ToString());
+                return Json("ok");
+            }
+            else
+            {
+                TempData["Message"] = "Đã có lỗi xảy ra";
+                TempData["NotiType"] = "danger";
+                return Json("error");
             }
         }
     }
