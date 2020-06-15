@@ -42,7 +42,7 @@
                 .then((willDelete) => {
                     if (willDelete) {
                         var _data = {
-                            id: $("#ID").val()
+                            iddatphong: $("#DATPHONG_ID").val() ,idphong :$("#PHONG_ID").val()
                         }
                         $.ajax({
                             url: "/DatPhong/Delete",
