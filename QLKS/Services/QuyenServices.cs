@@ -54,33 +54,6 @@ namespace QLKS.Services
 
             }
             return true;
-
-        }
-        public bool Authorize1(QLKSContext dbContext, params int[] listQuyen)
-        {
-            var nguoidung_id = HttpContext.Current.Session["ID"];
-            var nguoidung = dbContext.NGUOIDUNGs.Find(nguoidung_id);
-            if (nguoidung == null)
-            {
-                return false;
-            }
-            foreach (var quyen in listQuyen)
-            {
-                var q = dbContext.QUYENs.Find(quyen);
-                var nhom = nguoidung.NHOMNGUOIDUNG_ID;
-                if (q == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    if (!nguoidung.NHOMNGUOIDUNG.QUYENs.Contains(q))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
         }
     }
 }

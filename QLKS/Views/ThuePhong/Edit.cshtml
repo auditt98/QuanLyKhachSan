@@ -1,6 +1,6 @@
 ﻿@model ThuePhongModel
     @{
-        ViewBag.Title = "Sửa thông tin khách hàng";
+        ViewBag.Title = "Sửa thông tin phiếu thuê";
 
     }
     <form method="post">
@@ -20,7 +20,7 @@
                     Lưu
                 </div>
                 <div id="btnPrintInvoice" name="save" class="btn btn-warning" style="float:right;margin-right:5px; color: white;">
-                    In hóa đơn
+                    In phiếu thuê
                 </div>
             </h6>
             <div class="card-body">
@@ -201,7 +201,6 @@
                         ${chiTietThuePhongHTML}
                     </table>
 	                <br>
-	                <h4><b>Tổng thanh toán: ${formatCost(tongTienThue)}</b></h4>
 	                <br>
 	                <p>Hình thức thanh toán</p>
 	                <p>Tiền mặt/ Thẻ tín dụng:</p>

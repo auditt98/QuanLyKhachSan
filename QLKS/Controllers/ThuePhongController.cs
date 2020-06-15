@@ -49,8 +49,6 @@ namespace QLKS.Controllers
             var a = new List<object>();
             foreach(var thue in allThuePhong)
             {
-                if(thue.CHITIETTHUEPHONGs.Where(c => c.PHONG.LOAITINHTRANG_ID == (int)EnumLoaiTinhTrang.DATHUE).FirstOrDefault() != null)
-                {
                     var data = new
                     {
                         tenkhachhang = thue.KHACHHANG.tenkhachhang,
@@ -60,7 +58,6 @@ namespace QLKS.Controllers
                         ma = thue.ma
                     };
                     a.Add(data);
-                }
             }
             var result = new { data = a };
             return Json(result);
