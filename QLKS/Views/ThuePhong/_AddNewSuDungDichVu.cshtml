@@ -5,8 +5,24 @@
 }
 <div class="chitietdichvu" id="chitietdichvu_@guid1" data-guid="@guid1">
     <div class="btn float-right" data-guid="@guid1" style="color:#e53935; margin-top: 10px;" onclick="xoaDivDichVu('@guid1')"><i class="fas fa-minus-circle"></i></div>
-    <div class="form-group row" style="padding-top: 2px">
+    <div class="form-group row">
         <div class="dropdown-divider" style="width:100%"></div>
+        <div class="col-md-3">
+            <label class="text-sm-left text-required">Chọn phòng</label>
+            <select id="phong_@guid1" name="PHONG_ID" class="form-control" required title="Vui lòng chọn phòng">
+                @foreach (var p in Model.DanhSachPhong)
+                {
+                    if (p.Selected == true)
+                    {
+                        <option value="@p.Value" selected>@p.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@p.Value">@p.Text</option>
+                    }
+                }
+            </select>
+        </div>
         <div class="col-sm-3">
             <label class="text-sm-left text-required">Chọn dịch vụ</label>
             <select id="dichvu_@guid1" name="DICHVU_ID" class="form-control" required title="Vui lòng chọn dịch vụ">
@@ -29,18 +45,26 @@
         </div>
         <div class="col-sm-3">
             <label class="text-sm-left text-required">Số lượng </label>
-            <input class="form-control" id="soluong_@guid1" value="@Model.soluong"/>
+            <input class="form-control" id="soluong_@guid1" value="@Model.SoLuong" />
         </div>
+
+
+    </div>
+    <div class="form-group row" style="padding-top: 2px">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"></div>
+
         <div class="col-sm-3">
             <label class="text-sm-left text-required">Thành tiền </label>
-            <input id="thanhtienHidden_@guid1" name="thanhtien"  hidden/>
-            <input class="form-control disabled" disabled id="thanhtien_@guid1"/>
+            <input id="thanhtienHidden_@guid1" name="thanhtien" hidden />
+            <input class="form-control disabled" disabled id="thanhtien_@guid1" />
         </div>
+        <div class="col-sm-3"></div>
+
     </div>
 </div>
 
 <script>
-
     $("#soluong_@guid1").change(function () {
         $("#giadichvu_@guid1").val(0);
             var _data = {
@@ -93,22 +117,17 @@
     })
 
 
-    $('.datepicker-here').datepicker({
-        onSelect: function (formattedDate, date, inst) {
-            $(inst.el).trigger('change');
-        }
+    $('.datepicker-here').flatpickr({
+        allowInput: true,
     });
-    $('.datepicker-here').datepicker({
-        language: 'vi'
-    })
 </script>
 
 
-@if (Model.ngaysudung != null)
+@if (Model.ThoiGianSuDung != null)
 {
 <script>
-    var ngaySuDung = $("#ngaysudung_@guid1").datepicker().data('datepicker').selectDate(new Date(@Model.ngaysudung.Value.Year, @Model.ngaysudung.Value.Month-1, @Model.ngaysudung.Value.Day));
-    var giaTien = @Model.thanhtien;
+    var ngaySuDung = $("#ngaysudung_@guid1").datepicker().data('datepicker').selectDate(new Date(@Model.ThoiGianSuDung.Value.Year, @Model.ThoiGianSuDung.Value.Month-1, @Model.ThoiGianSuDung.Value.Day));
+    var giaTien = @Model.ThoiGianSuDung;
     $("#thanhtienHidden_@guid1").val(giaTien);
     $("#thanhtien_@guid1").val(toVND(giaTien));
 </script>

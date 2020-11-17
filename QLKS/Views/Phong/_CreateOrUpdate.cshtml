@@ -2,37 +2,33 @@
 
 @Html.AntiForgeryToken()
 
+<div class="form-group row">
+    @Html.LabelFor(model => model.SoPhong, "Mã:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        <input name="SoPhong" hidden value="@Model.SoPhong" />
+        <input id="ma" class="form-control disabled" disabled value="@Model.SoPhong" />
+        @Html.ValidationMessageFor(model => model.SoPhong, "", new { @class = "text-danger" })
+    </div>
+</div>
     <div class="form-group row">
-        @Html.LabelFor(model => model.ma, "Mã:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+        @Html.LabelFor(model => model.SoTang, "Số tầng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
         <div class="col-md-3">
-            <input name="ma" hidden value="@Model.ma" />
-            <input id="ma" class="form-control disabled" disabled value="@Model.ma" />
-            @Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })
-        </div>
-        @Html.LabelFor(model => model.giathue, "Giá thuê:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
-        <div class="col-md-3">
-            @Html.EditorFor(model => model.giathue, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.giathue, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.SoTang, new { htmlAttributes = new { @class = "form-control", @required = true, @title = "Số tầng" } })
+            @Html.ValidationMessageFor(model => model.SoTang, "", new { @class = "text-danger" })
         </div>
     </div>
-
-    <div class="form-group row">
-        @Html.LabelFor(model => model.LOAIPHONG_ID, "Loại phòng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-        <div class="col-md-3">
-            @Html.DropDownListFor(model => model.LOAIPHONG_ID, new SelectList(Model.DanhSachLoaiPhong, "Value", "Text"), htmlAttributes: new { @class = "form-control"})
-            @Html.ValidationMessageFor(model => model.LOAIPHONG_ID, "", new { @class = "text-danger" })
-        </div>
-        @Html.LabelFor(model => model.sotang, "Số tầng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-        <div class="col-md-3">
-            @Html.EditorFor(model => model.sotang, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.sotang, "", new { @class = "text-danger" })
-        </div>
+<div class="form-group row">
+    @Html.LabelFor(model => model.LOAIPHONG_ID, "Loại phòng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        @Html.DropDownListFor(model => model.LOAIPHONG_ID, new SelectList(Model.DanhSachLoaiPhong, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.LOAIPHONG_ID, "", new { @class = "text-danger" })
     </div>
-    <div class="form-group row">
-        @Html.LabelFor(model => model.LOAITINHTRANG_ID, "Tình trạng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-        <div class="col-md-3">
-            @Html.DropDownListFor(model => model.LOAITINHTRANG_ID, new SelectList(Model.DanhSachTinhTrang, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.LOAITINHTRANG_ID, "", new { @class = "text-danger" })
-        </div>
+</div>
+<div class="form-group row">
+    @Html.LabelFor(model => model.LOAITINHTRANG_ID, "Tình trạng:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        @Html.DropDownListFor(model => model.LOAITINHTRANG_ID, new SelectList(Model.DanhSachTinhTrang, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.LOAITINHTRANG_ID, "", new { @class = "text-danger" })
     </div>
+</div>
 

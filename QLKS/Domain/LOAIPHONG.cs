@@ -12,38 +12,42 @@ namespace QLKS.Domain
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LOAIPHONG()
         {
+            DATPHONGs = new HashSet<DATPHONG>();
             PHONGs = new HashSet<PHONG>();
+            CHUONGTRINHGIAMGIAs = new HashSet<CHUONGTRINHGIAMGIA>();
         }
 
         public int ID { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string tenloaiphong { get; set; }
+        //[Required]
+        //[StringLength(50)]
+        public string Ten { get; set; }
 
-        public string ghichu { get; set; }
+        //[Required]
+        //[StringLength(10)]
+        public string Ma { get; set; }
 
-        [StringLength(20)]
-        public string ma { get; set; }
+        public string AnhDaiDien { get; set; }
 
-        [StringLength(500)]
-        public string anh { get; set; }
+        public string ThongTin { get; set; }
 
-        [StringLength(100)]
-        public string khungnhin { get; set; }
+        public int GiaThue { get; set; }
 
-        public int? dientich { get; set; }
+        public int? SoNguoiLon { get; set; }
 
-        [StringLength(100)]
-        public string giuong { get; set; }
+        public int? SoTreEm { get; set; }
 
-        public int? nguoilon { get; set; }
+        public int? SoGiuongDon { get; set; }
 
-        public int? trecon { get; set; }
+        public int? SoGiuongDoi { get; set; }
 
-        public string thongtin { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DATPHONG> DATPHONGs { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PHONG> PHONGs { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CHUONGTRINHGIAMGIA> CHUONGTRINHGIAMGIAs { get; set; }
     }
 }

@@ -13,8 +13,8 @@ namespace QLKS.Validators
     {
         public NguoiDungValidator()
         {
-            RuleFor(c => c.matkhau).NotEmpty().WithMessage("Mật khẩu không được trống");
-            RuleFor(c => c.matkhau).MinimumLength(5).WithMessage("Mật khẩu không ngắn dưới 5 ký tự");
+            RuleFor(c => c.MatKhau).NotEmpty().WithMessage("Mật khẩu không được trống");
+            RuleFor(c => c.MatKhau).MinimumLength(5).WithMessage("Mật khẩu không ngắn dưới 5 ký tự");
             //RuleFor(c => c.tendangnhap).Must(tendangnhap =>
             //{
             //    var db = new QLKSContext();
@@ -28,8 +28,8 @@ namespace QLKS.Validators
             //        return false;
             //    }
             //}).WithMessage("Người dùng này đã tồn tại");
-            RuleFor(c => c.tendangnhap).NotEmpty().WithMessage("Tên đăng nhập không được để trống");
-            RuleFor(c => c.tennguoidung).NotEmpty().WithMessage("Tên người dùng không được để trống");
+            RuleFor(c => c.TenDangNhap).NotEmpty().WithMessage("Tên đăng nhập không được để trống");
+            RuleFor(c => c.TenNguoiDung).NotEmpty().WithMessage("Tên người dùng không được để trống");
         }
     }
 }

@@ -35,8 +35,10 @@
                 <th class="text-center">Số thứ tự</th>
                 <th class="text-center">Mã loại phòng</th>
                 <th class="text-center">Tên loại phòng</th>
-                <th class="text-center">Ảnh</th>
-                <th class="text-center">Số giường</th>
+                <th class="text-center">Số giường đôi</th>
+                <th class="text-center">Số giường đơn</th>
+                <th class="text-center">Số người lớn</th>
+                <th class="text-center">Số trẻ em</th>
                 <th class="text-center">Thao tác</th>
             </tr>
         </thead>
@@ -53,17 +55,13 @@
                 },
                 responsive: true,
                 columns: [
-                    { data: "uid"},
+                    { "data": "uid"},
 					{"data": "ma"},
                     { "data": "ten" },
-                    {
-                        "data": "anh",
-                        "render": function (data, type, row) {
-                            console.log(data);
-                            return "<img width='150' height='100' src='../Content/imgLoaiPhong/" + data + "'/>"
-                        }
-                    },
-                    { "data": "giuong" },
+                    { "data": "giuongdoi" },
+                    { "data": "giuongdon" },
+                    { "data": "nguoilon" },
+                    { "data": "treem" },
                     {
                         "data": "uid",
                         "render": function (data, type, row) {
@@ -73,7 +71,7 @@
                 ],
                 columnDefs: [
                     {
-                        targets: [5],
+                        targets: [3, 4, 5, 6, 7],
                         className: "text-center"
                     }],
                 language: {

@@ -9,28 +9,23 @@ namespace QLKS.Domain
     [Table("CHITIETTHUEPHONG")]
     public partial class CHITIETTHUEPHONG
     {
-        [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int PHONG_ID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CHITIETTHUEPHONG()
+        {
+            SUDUNGDICHVUs = new HashSet<SUDUNGDICHVU>();
+        }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ID { get; set; }
+
         public int THUEPHONG_ID { get; set; }
 
-        public DateTime? ngayvao { get; set; }
-
-        public DateTime? ngayra { get; set; }
-
-        public string maktra { get; set; }
-
-        public int? NGUOIDUNG_ID { get; set; }
-
-        public virtual NGUOIDUNG NGUOIDUNG { get; set; }
+        public int PHONG_ID { get; set; }
 
         public virtual PHONG PHONG { get; set; }
 
         public virtual THUEPHONG THUEPHONG { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SUDUNGDICHVU> SUDUNGDICHVUs { get; set; }
     }
 }

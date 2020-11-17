@@ -17,26 +17,13 @@ namespace QLKS.Domain
 
         public int ID { get; set; }
 
-        [StringLength(50)]
-        public string ten { get; set; }
+        //[StringLength(50)]
+        public string Ten { get; set; }
 
-        [StringLength(10)]
-        public string ma { get; set; }
+        //[StringLength(10)]
+        public string Ma { get; set; }
 
-        public DateTime? ngaytao { get; set; }
-
-        public int? nguoitao { get; set; }
-
-        [StringLength(50)]
-        public string ipchinhsua { get; set; }
-
-        public DateTime? ngaychinhsua { get; set; }
-
-        public int? nguoisua { get; set; }
-
-        public virtual NGUOIDUNG NGUOIDUNG { get; set; }
-
-        public virtual NGUOIDUNG NGUOIDUNG1 { get; set; }
+        public string MoTa { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NHOMNGUOIDUNG> NHOMNGUOIDUNGs { get; set; }

@@ -5,6 +5,7 @@ using QLKS.Models;
 using QLKS.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
@@ -44,10 +45,10 @@ namespace QLKS.Controllers
             var allPhong = db.PHONGs.ToList();
             var danhSachPhong = allPhong.Select(c => new
             {
-                ma = c.ma,
-                tenloaiphong = c.LOAIPHONG.tenloaiphong,
-                gia = c.giathue,
-                sotang = c.sotang,
+                ma = c.SoPhong,
+                tenloaiphong = c.LOAIPHONG.Ten,
+                gia = c.LOAIPHONG.GiaThue,
+                sotang = c.SoTang,
                 trangthai = Enum.GetName(typeof(EnumLoaiTinhTrang),c.LOAITINHTRANG_ID).ToString(),
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
@@ -84,7 +85,7 @@ namespace QLKS.Controllers
             var phongModel = new PhongModel();
             var maxId = db.PHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(4, '0');
-            phongModel.ma = "P" + " " + newId;
+            phongModel.SoPhong = "P" + " " + newId;
             phongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
             phongModel.DanhSachTinhTrang = _loaiTinhTrangServices.PrepareLoaiTinhTrangPhong(0);
             return View(phongModel);
@@ -104,7 +105,10 @@ namespace QLKS.Controllers
                 return View("Create", model);
             }
             var item = AutoMapper.Mapper.Map<PHONG>(model);
-            db.PHONGs.Add(item);
+            int a = 0;
+            db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_PHONG @Type, @ID, @SoPhong, @SoTang, @LoaiPhong, @LoaiTinhTrang, @UpdateID", new SqlParameter("@Type", int.Parse("0")), new SqlParameter("@ID", a), new SqlParameter("@SoPhong", item.SoPhong), new SqlParameter("@SoTang", item.SoTang), new SqlParameter("@LoaiPhong", item.LOAIPHONG_ID), new SqlParameter("@UpdateID", int.Parse("0")), new SqlParameter("@LoaiTinhTrang", item.LOAITINHTRANG_ID));
+
+            //db.PHONGs.Add(item);
             db.SaveChanges();
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
             TempData["Message"] = "Thêm mới thành công";
@@ -178,6 +182,8 @@ namespace QLKS.Controllers
         {
             if (!_quyenServices.Authorize((int)EnumQuyen.PHONG_XOA))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này";
+                TempData["NotiType"] = "danger";
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             var item = db.PHONGs.Find(id);
@@ -220,7 +226,7 @@ namespace QLKS.Controllers
             {
                 return Json(0);
             }
-            return Json(gia.giathue) ;
+            return Json(gia.LOAIPHONG.GiaThue) ;
         }
 
         [HttpPost]

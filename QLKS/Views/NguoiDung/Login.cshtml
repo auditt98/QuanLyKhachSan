@@ -30,21 +30,21 @@
                     Đăng nhập
                 </span>
                 <div class="wrap-input100">
-                    @Html.EditorFor(model => model.tendangnhap, new { htmlAttributes = new { @class = "input100", @placeholder = "Nhập tên đăng nhập" } })
+                    @Html.EditorFor(model => model.TenDangNhap, new { htmlAttributes = new { @class = "input100", @placeholder = "Nhập tên đăng nhập" } })
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
                         <i class="fa fa-envelope" aria-hidden="true"></i>
                     </span>
-                    @Html.ValidationMessageFor(model => model.tendangnhap, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.TenDangNhap, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="wrap-input100" data-validate="Vui lòng nhập mật khẩu">
-                    @Html.EditorFor(model => model.matkhau, new { htmlAttributes = new { @class = "input100", @placeholder = "Nhập mật khẩu", @type = "password" } })
+                    @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "input100", @placeholder = "Nhập mật khẩu", @type = "password" } })
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
                         <i class="fa fa-lock" aria-hidden="true"></i>
                     </span>
-                    @Html.ValidationMessageFor(model => model.matkhau, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
                 </div>
                 <div class="container-login100-form-btn">
                     <button class="login100-form-btn">

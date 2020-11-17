@@ -11,13 +11,15 @@ namespace QLKS.Domain
     {
         public int ID { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime? ngaytra { get; set; }
+        public DateTime? NgayThanhToan { get; set; }
 
-        public int? tienphong { get; set; }
+        //[StringLength(10)]
+        public string Ma { get; set; }
 
-        [StringLength(20)]
-        public string maktra { get; set; }
+        public int? ThanhTien { get; set; }
+
+        //[StringLength(20)]
+        public string PhuongThucTra { get; set; }
 
         public int? NGUOIDUNG_ID { get; set; }
 

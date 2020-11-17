@@ -16,7 +16,7 @@ namespace QLKS.Services
         {
             var items = db.NHOMNGUOIDUNGs.Where(c => c.ID != (int)EnumNhomNguoiDung.ADMIN).Select(c => new SelectListItem
             {
-                Text = c.ten,
+                Text = c.Ten,
                 Value = c.ID.ToString(),
                 Selected = c.ID == id
             }).ToList();

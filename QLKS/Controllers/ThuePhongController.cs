@@ -7,6 +7,7 @@ using QLKS.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -51,11 +52,11 @@ namespace QLKS.Controllers
             {
                     var data = new
                     {
-                        tenkhachhang = thue.KHACHHANG.tenkhachhang,
-                        sdt = thue.KHACHHANG.sodienthoai,
+                        tenkhachhang = thue.KHACHHANG.Ten,
+                        sdt = thue.KHACHHANG.SoDienThoai,
                         sophongthue = thue.CHITIETTHUEPHONGs.Count,
                         uid = thue.ID,
-                        ma = thue.ma
+                        ma = thue.Ma
                     };
                     a.Add(data);
             }
@@ -63,7 +64,7 @@ namespace QLKS.Controllers
             return Json(result);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int fromCheckin = 0)
         {
             if (!_nguoiDungServices.isLoggedIn())
             {
@@ -79,61 +80,173 @@ namespace QLKS.Controllers
             var maxId = db.THUEPHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
             model.ma = "TP" + "-" + newId;
-            return View(model);
+            if (fromCheckin == 0)
+            {
+                model.fromEdit = "0";
+                model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
+                model.fromCheckIn = "0";
+                model.KHACHHANG_ID = 0;
+                return View(model);
+            }
+            else
+            {
+                model.fromEdit = "0";
+                model.fromCheckIn = fromCheckin.ToString() ;
+                var datphongId = fromCheckin;
+                var datPhongItem = db.DATPHONGs.Find(datphongId);
+                var khachhangItem = datPhongItem.KHACHHANG;
+                model.KHACHHANG_ID = khachhangItem.ID;
+                model.LOAIPHONG_ID = datPhongItem.LOAIPHONG.ID;
+                model.NgayDen = datPhongItem.NgayDuKienDen;
+                model.NgayDi = datPhongItem.NgayDuKienDi;
+                model.sdt = khachhangItem.SoDienThoai;
+                model.socmt = khachhangItem.SoCMT;
+                model.KHACHHANG_ID = khachhangItem.ID;
+                model.tenkhachhang = khachhangItem.Ten;
+                model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(datPhongItem.LOAIPHONG.ID);
+                return View(model);
+            }
         }
 
         [HttpPost]
         public ActionResult Create(ThuePhongModel model)
         {
+            var fromCheckIn = Int32.Parse(model.fromCheckIn);
             if (!ModelState.IsValid)
             {
+                if (fromCheckIn == 0)
+                {
+                    model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
+                    model.fromCheckIn = "0";
+                    model.fromEdit = "0";
+                    model.KHACHHANG_ID = 0;
+                }
+                else
+                {
+                    model.fromEdit = "0";
+                    model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(fromCheckIn);
+                    
+                }
                 TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            //insert new khachhang
-            var newKhachHang = new KHACHHANG();
-            newKhachHang.ma = _khachHangServices.GenMaKhachHang();
-            newKhachHang.socmt = model.socmt;
-            newKhachHang.sodienthoai = model.sdt;
-            newKhachHang.tenkhachhang = model.tenkhachhang;
-            
-            //insert new thuephong
-            var item = new THUEPHONG();
-            item.KHACHHANG = newKhachHang;
-            item.KHACHHANG_ID = newKhachHang.ID;
-            item.ma = model.ma;
-            db.THUEPHONGs.Add(item);
-            item.KHACHHANG = newKhachHang;
-            foreach(var chitiet in model.ChiTietThuePhong)
+            if(fromCheckIn == 0)
             {
-                var newChiTiet = new CHITIETTHUEPHONG();
-                newChiTiet.ngayra = chitiet.ngayra;
-                newChiTiet.ngayvao = chitiet.ngayvao;
-                newChiTiet.PHONG_ID = chitiet.phong_id;
-                newChiTiet.THUEPHONG_ID = item.ID;
-                item.CHITIETTHUEPHONGs.Add(newChiTiet);
-                var phong = db.PHONGs.Find(chitiet.phong_id);
-                phong.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DATHUE;
+                model.fromEdit = "0";
+                var khachhangItem = new KHACHHANG();
+                var nguoidung = db.NGUOIDUNGs.Find((int)Session["ID"]);
+                khachhangItem.Ma = _khachHangServices.GenMaKhachHang();
+                khachhangItem.Ten = model.tenkhachhang;
+                khachhangItem.SoCMT = model.socmt;
+                khachhangItem.SoDienThoai = model.sdt;
+                db.KHACHHANGs.Add(khachhangItem);
+                db.SaveChanges();
+                var newThuePhongItem = new THUEPHONG();
+                newThuePhongItem.KHACHHANG = khachhangItem;
+                newThuePhongItem.Ma = model.ma;
+                newThuePhongItem.NgayDen = model.NgayDen;
+                newThuePhongItem.NgayDi = model.NgayDi;
+                newThuePhongItem.NGUOIDUNG = nguoidung;
+                newThuePhongItem.ThoiGianThue = DateTime.Now;
+                newThuePhongItem.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.CHUATHANHTOAN;
+                db.THUEPHONGs.Add(newThuePhongItem);
+                db.SaveChanges();
+                foreach(var p in model.SelectedPhongs)
+                {
+                    var newChiTietThuePhong = new CHITIETTHUEPHONG();
+                    var phong = db.PHONGs.Find(p);
+                    newChiTietThuePhong.PHONG = phong;
+                    newThuePhongItem.CHITIETTHUEPHONGs.Add(newChiTietThuePhong);
+                }
+                db.SaveChanges();
+                
+            }
+            else
+            {
+                //check additional errors
+                model.fromEdit = "0";
+                var datphongItem = db.DATPHONGs.Find(fromCheckIn);
+                var khachHang = db.KHACHHANGs.Find(datphongItem.KHACHHANG.ID);
+                var nguoidung = db.NGUOIDUNGs.Find((int)Session["ID"]);
+                khachHang.Ten = model.tenkhachhang;
+                khachHang.SoCMT = model.socmt;
+                khachHang.SoDienThoai = model.sdt;
+                db.SaveChanges();
+                var newThuePhongItem = new THUEPHONG();
+                newThuePhongItem.KHACHHANG = datphongItem.KHACHHANG;
+                newThuePhongItem.Ma = model.ma;
+                newThuePhongItem.NgayDen = model.NgayDen;
+                newThuePhongItem.NgayDi = model.NgayDi;
+                newThuePhongItem.NGUOIDUNG = nguoidung;
+                newThuePhongItem.ThoiGianThue = DateTime.Now;
+                newThuePhongItem.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.CHUATHANHTOAN;
+                db.THUEPHONGs.Add(newThuePhongItem);
+                db.SaveChanges();
+                int temp = datphongItem.SoPhong.Value; //migrate temp rooms from reservation
+                var selectedPhongsCopy = model.SelectedPhongs;
+                foreach (var p in selectedPhongsCopy.ToList())
+                {
+                    if(temp > 0)
+                    {
+                        var phong = db.PHONGs.Find(p);
+                        if(phong.LOAIPHONG.ID == datphongItem.LOAIPHONG.ID)
+                        {
+                            var newChiTietThuePhong = new CHITIETTHUEPHONG();
+                            newChiTietThuePhong.PHONG = phong;
+                            newThuePhongItem.CHITIETTHUEPHONGs.Add(newChiTietThuePhong);
+                            selectedPhongsCopy.Remove(p);
+                            temp--;
+                        }
+                    }
+                }
+                datphongItem.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DACHECKIN;
+                foreach(var p in newThuePhongItem.CHITIETTHUEPHONGs)
+                {
+                    p.PHONG.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DATHUE;
+                }
+
+                db.SaveChanges();
+                
+                if (selectedPhongsCopy.Count() > 0)
+                {
+                    foreach(var p in selectedPhongsCopy)
+                    {
+                        var phong = db.PHONGs.Find(p);
+                        var result = db.Database.SqlQuery<sp_Result_ThongKePhong>("exec ThongKePhong @tungay, @denngay", new SqlParameter("@tungay", newThuePhongItem.NgayDen), new SqlParameter("@denngay", newThuePhongItem.NgayDi)).Where(c => c.ID == phong.LOAIPHONG.ID).FirstOrDefault();
+                        if(result != null)
+                        {
+                            if(result.SoPhongTrong > 0)
+                            {
+                                var newChiTietThuePhong = new CHITIETTHUEPHONG();
+                                var phongThue = db.PHONGs.Find(p);
+                                newChiTietThuePhong.PHONG = phongThue;
+                                newThuePhongItem.CHITIETTHUEPHONGs.Add(newChiTietThuePhong);
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(fromCheckIn);
+                                TempData["Message"] = "Không đủ phòng đặt thêm";
+                                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                                return View("Create", model);
+
+                            }
+                        }
+
+                    }
+                    
+
+                }
+                //Lưu lịch sử hệ thống
+                TempData["Message"] = "Thêm mới thành công";
+                TempData["NotiType"] = "success";
+                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, newThuePhongItem.GetType().ToString());
+
+                //add new chitietthuephong
             }
 
-            foreach(var sudungdichvu in model.ChiTietDichVu)
-            {
-                var newSuDungDichVu = new SUDUNGDICHVU();
-                newSuDungDichVu.THUEPHONG_ID = item.ID;
-                newSuDungDichVu.DICHVU_ID = sudungdichvu.DICHVU_ID;
-                newSuDungDichVu.ngaysudung = sudungdichvu.ngaysudung;
-                newSuDungDichVu.NGUOIDUNG_ID = (int)Session["ID"];
-                newSuDungDichVu.soluong = sudungdichvu.soluong;
-                newSuDungDichVu.thanhtien = sudungdichvu.thanhtien;
-                item.SUDUNGDICHVUs.Add(newSuDungDichVu);
-            }
-            db.SaveChanges();
-            //Lưu lịch sử hệ thống
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
-            TempData["Message"] = "Thêm mới thành công";
-            TempData["NotiType"] = "success";
-            return Json("ok");
+            return RedirectToAction("List", "ThuePhong");
         }
 
         public ActionResult Edit(int? id)
@@ -159,32 +272,44 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
-            //prepare model
+            ////prepare model
+            ///
+            var loaiphong = item.CHITIETTHUEPHONGs.First().PHONG.LOAIPHONG.ID;
             var model = Mapper.Map<ThuePhongModel>(item);
-            var listChiTietModel = new List<ChiTietThuePhongModel>();
-            var listDichVuModel = new List<SuDungDichVuModel>();
-            foreach(var chitiet in item.CHITIETTHUEPHONGs)
+            model.fromCheckIn = "0";
+            model.sdt = item.KHACHHANG.SoDienThoai;
+            model.socmt = item.KHACHHANG.SoCMT;
+            model.KHACHHANG_ID = item.KHACHHANG.ID;
+            model.tenkhachhang = item.KHACHHANG.Ten;
+            model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(loaiphong);
+            model.LOAIPHONG_ID = loaiphong;
+            model.fromEdit = id.ToString();
+            model.GiaThue = 0;
+            foreach(var cttp in item.CHITIETTHUEPHONGs)
             {
-                var m = Mapper.Map<ChiTietThuePhongModel>(chitiet);
-                listChiTietModel.Add(m);
+                model.GiaThue += cttp.PHONG.LOAIPHONG.GiaThue;
             }
-
-            foreach(var chitiet in item.SUDUNGDICHVUs)
+            var listSDDV = item.CHITIETTHUEPHONGs.Select(c => c.SUDUNGDICHVUs).ToList();
+            var ctdv = new List<SUDUNGDICHVU>();
+            foreach (var sddv in listSDDV)
+            {
+                foreach (var s in sddv)
+                {
+                    ctdv.Add(s);
+                }
+            }
+            var listSDDVModel = new List<SuDungDichVuModel>();
+            foreach(var c in ctdv)
             {
                 var m = new SuDungDichVuModel();
-                m.DICHVU_ID = chitiet.DICHVU_ID;
-                m.ngaysudung = chitiet.ngaysudung;
-                m.soluong = chitiet.soluong;
-                m.thanhtien = chitiet.thanhtien;
-                m.THUEPHONG_ID = chitiet.THUEPHONG_ID;
-                listDichVuModel.Add(m);
+                m.PHONG_ID = c.CHITIETTHUEPHONG.PHONG.ID;
+                m.DonGia = c.DonGia;
+                m.SoLuong = c.SoLuong;
+                m.THUEPHONG_ID = c.CHITIETTHUEPHONG.THUEPHONG.ID;
+                m.ThoiGianSuDung = c.ThoiGianSuDung;
+                listSDDVModel.Add(m);
             }
-            model.ChiTietThuePhong = listChiTietModel;
-            model.ChiTietDichVu= listDichVuModel;
-            model.tenkhachhang = item.KHACHHANG.tenkhachhang;
-            model.sdt = item.KHACHHANG.sodienthoai;
-            model.socmt = item.KHACHHANG.socmt;
-            model.KHACHHANG_ID = item.KHACHHANG.ID;
+            model.ChiTietDichVu = listSDDVModel;
             return View(model);
         }
 
@@ -197,95 +322,119 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return View("Create", model);
             }
-            //update khachhang
-            var khachHang = db.KHACHHANGs.Find(model.KHACHHANG_ID);
-            khachHang.socmt = model.socmt;
-            khachHang.sodienthoai = model.sdt;
-            khachHang.tenkhachhang = model.tenkhachhang;
-            //update chitiet
+            ////update khachhang
             var item = db.THUEPHONGs.Find(model.ID);
-            //update trang thai phong
-            foreach(var i in item.CHITIETTHUEPHONGs)
-            {
-                var phong = db.PHONGs.Find(i.PHONG.ID);
-                phong.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.BAN;
-            }
-            item.CHITIETTHUEPHONGs.Clear();
-            foreach(var chitiet in model.ChiTietThuePhong)
-            {
-                var m = Mapper.Map<CHITIETTHUEPHONG>(chitiet);
-                item.CHITIETTHUEPHONGs.Add(m);
-                var p = db.PHONGs.Find(chitiet.phong_id);
-                p.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.DATHUE;
-            }
+            var khachHang = db.KHACHHANGs.Find(model.KHACHHANG_ID);
+            khachHang.SoCMT = model.socmt;
+            khachHang.SoDienThoai= model.sdt;
+            khachHang.Ten = model.tenkhachhang;
 
-            item.SUDUNGDICHVUs.Clear();
-            foreach(var dichvu in model.ChiTietDichVu)
-            {
-                var i = new SUDUNGDICHVU();
-                i.DICHVU_ID = dichvu.DICHVU_ID;
-                i.THUEPHONG_ID = item.ID;
-                i.ngaysudung = dichvu.ngaysudung;
-                i.NGUOIDUNG_ID = (int)Session["ID"];
-                i.soluong = dichvu.soluong;
-                i.thanhtien = dichvu.thanhtien;
-                item.SUDUNGDICHVUs.Add(i);
-            }
             db.SaveChanges();
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
             TempData["NotiType"] = "success";
-            return Json("ok");
+            return RedirectToAction("List", "ThuePhong");
         }
 
-        public ActionResult _AddNewChiTietThue(int? phong = 0, int? thuephong = 0)
+        [HttpPost]
+        public ActionResult GetThongTinHoaDon(string fromEdit)
         {
-            var model = new ChiTietThuePhongModel();
-            if(phong != 0 && thuephong != 0)
+            var tp = Int32.Parse(fromEdit);
+            var item = db.THUEPHONGs.Find(tp);
+            var khachhang = item.KHACHHANG;
+            var listChiTiet = item.CHITIETTHUEPHONGs.Select(c => new { sophong = c.PHONG.SoPhong, dongia = c.PHONG.LOAIPHONG.GiaThue, loaiphong = c.PHONG.LOAIPHONG.Ten }).ToList(); ;
+            var ngaythue = item.ThoiGianThue;
+            var ngaybaocao = DateTime.Now;
+            var giatien = 0;
+            foreach(var i in item.CHITIETTHUEPHONGs)
             {
-                var itemThue = db.THUEPHONGs.Find(thuephong);
-                var itemChiTietThuePhong = itemThue.CHITIETTHUEPHONGs.Where(c => c.PHONG_ID == phong).FirstOrDefault();
-                var itemPhong = db.PHONGs.Find(phong);
+                giatien += i.PHONG.LOAIPHONG.GiaThue;
+            }
+            var result = new { tenkhachhang = khachhang.Ten, emailkhachhang = khachhang.Email, sodienthoaikhachhang = khachhang.SoDienThoai, mahoadon = item.Ma, giatien = giatien, chitiet = listChiTiet };
+            return Json(result);
+        }
 
-                model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(itemPhong.LOAIPHONG_ID);
-                model.gia = itemPhong.giathue.Value;
-                model.DanhSachPhong = _phongServices.PrepareSelectListPhong(phong);
-                model.ngayra = itemChiTietThuePhong.ngayra;
-                model.ngayvao = itemChiTietThuePhong.ngayvao;
+        [HttpPost]
+        public ActionResult GetDanhSachPhong(string loaiphong_id, string fromCheckIn, string fromEdit = "0")
+        {
+            var loaiphong = Int32.Parse(loaiphong_id);
+            var datphongId = Int32.Parse(fromCheckIn);
+            var editId = Int32.Parse(fromEdit);
+            var datphongItem = db.DATPHONGs.Find(datphongId);
+            if(datphongId == 0)
+            {
+                if(editId == 0)
+                {
+                    var danhsachphong = db.PHONGs.Where(x => x.LOAIPHONG.ID == loaiphong && x.LOAITINHTRANG.ID != 2).OrderBy(c => c.ID).ToList().Select(c => new { sophong = c.SoPhong, sotang = c.SoTang, id = c.ID, check = false }).ToList();
+                    var result = new { data = danhsachphong };
+                    return Json(result);
+                }
+                else
+                {
+                    var thuePhongItem = db.THUEPHONGs.Find(editId);
+                    var danhsachphongChecked = thuePhongItem.CHITIETTHUEPHONGs.Select(c => c.PHONG).ToList().Select(c => new { sophong = c.SoPhong, sotang = c.SoTang, id = c.ID, check = true });
+                    var result = new { data = danhsachphongChecked };
+                    return Json(result);
+                }
+                
             }
             else
             {
-                model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
-                model.DanhSachPhong = _phongServices.PrepareSelectListPhong(phong);
-            }
+                var soPhongDat = datphongItem.SoPhong;
+                var danhsachphongChecked = db.PHONGs.Where(x => x.LOAIPHONG.ID == datphongItem.LOAIPHONG.ID && x.LOAITINHTRANG.ID != 2).OrderBy(c => c.ID).ToList().Take(soPhongDat.Value).Select(c => new { sophong = c.SoPhong, sotang = c.SoTang, id = c.ID, check = true });
 
-            return PartialView(model);
+                if(loaiphong != datphongItem.LOAIPHONG.ID)
+                {
+                    var danhsachphong = db.PHONGs.Where(x => x.LOAIPHONG.ID == loaiphong && x.LOAITINHTRANG.ID != 2).OrderBy(c => c.ID).ToList().Select(c => new { sophong = c.SoPhong, sotang = c.SoTang, id = c.ID, check = false }).ToList();
+                    var danhsachphongResult = danhsachphongChecked.Concat(danhsachphong);
+                    var result = new { data = danhsachphongResult };
+                    return Json(result);
+
+                }
+                else
+                {
+                    var danhsachphong = db.PHONGs.Where(x => x.LOAIPHONG.ID == loaiphong && x.LOAITINHTRANG.ID != 2).OrderBy(c => c.ID).ToList().Skip(soPhongDat.Value).Select(c => new { sophong = c.SoPhong, sotang = c.SoTang, id = c.ID, check = false }).ToList();
+                    var danhsachphongResult = danhsachphongChecked.Concat(danhsachphong);
+                    var result = new { data = danhsachphongResult };
+                    return Json(result);
+
+                }
+            }
         }
 
-        public ActionResult _AddNewSuDungDichVu(int? dichvu = 0, int? thuephong = 0)
+        public ActionResult _AddNewSuDungDichVu(int? dichvu = 0, int? thuephong = 0, int? phong = 0)
         {
             var model = new SuDungDichVuModel();
-            if (dichvu != 0 && thuephong != 0)
+            if(dichvu != 0 && phong !=0)
             {
                 var itemThue = db.THUEPHONGs.Find(thuephong);
-
-                var itemChiTietDichVu = itemThue.SUDUNGDICHVUs.Where(c => c.DICHVU_ID == dichvu).FirstOrDefault();
-                //check null here but im lazy 
-                var itemSuDungDichVu = db.SUDUNGDICHVUs.Where(c=> c.THUEPHONG_ID == thuephong && c.DICHVU_ID == dichvu).FirstOrDefault();
-
-                model.DanhSachDichVu = _dichVuServices.PrepareSelectListDichVu(itemChiTietDichVu.DICHVU_ID);
-                model.ngaysudung = itemSuDungDichVu.ngaysudung;
-                model.thanhtien = itemSuDungDichVu.thanhtien;
-                model.soluong = itemSuDungDichVu.soluong;
+                var itemChiTietThue = db.CHITIETTHUEPHONGs.Where(c => c.THUEPHONG.ID == thuephong && c.PHONG.ID == phong).FirstOrDefault();
+                var itemChiTietDichVu = itemChiTietThue.SUDUNGDICHVUs.Where(c => c.DICHVU.ID == dichvu).FirstOrDefault();
+                model.SoLuong = itemChiTietDichVu.SoLuong;
+                model.DICHVU_ID = itemChiTietDichVu.DICHVU_ID;
+                model.PHONG_ID = itemChiTietDichVu.CHITIETTHUEPHONG.PHONG.ID;
+                model.ThoiGianSuDung = itemChiTietDichVu.ThoiGianSuDung;
+                model.DonGia = itemChiTietDichVu.DonGia;
+                model.DanhSachPhong = _phongServices.PrepareSelectListPhongForThuePhong(thuephong, phong);
+                model.DanhSachDichVu = _dichVuServices.PrepareSelectListDichVu(dichvu);
+                model.ThanhTien = itemChiTietDichVu.DonGia * itemChiTietDichVu.SoLuong;
             }
             else
             {
+                var itemThue = db.THUEPHONGs.Find(thuephong);
                 model.DanhSachDichVu = _dichVuServices.PrepareSelectListDichVu(0);
+                model.DanhSachPhong = _phongServices.PrepareSelectListPhongForThuePhong(itemThue.ID, 0);
+
             }
 
             return PartialView(model);
         }
 
+        [HttpPost]
+        public ActionResult EditDichVu(SuDungDichVuModel dichvu)
+        {
+            return Content("");
+        }
 
         [HttpPost]
         public ActionResult Delete(int? id = 0)

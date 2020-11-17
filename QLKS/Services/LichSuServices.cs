@@ -14,12 +14,12 @@ namespace QLKS.Services
         public void LuuLichSu(int nguoidung, int loaihanhdong, string ghichu = "")
         {
             var tenHanhDong = Enum.GetName(typeof(EnumLoaiHanhDong), loaihanhdong);
-            var log = new LUUTRU();
-            log.loaihanhdong = tenHanhDong;
-            log.ghichu = ghichu;
+            var log = new LOG();
+            log.LoaiHanhDong = tenHanhDong;
+            log.GhiChu = ghichu;
             log.NGUOIDUNG_ID = nguoidung;
-            log.ngaychinhsua = DateTime.Now;
-            db.LUUTRUs.Add(log);
+            log.ThoiGianChinhSua= DateTime.Now;
+            db.LOGs.Add(log);
             db.SaveChanges();
         }
     }

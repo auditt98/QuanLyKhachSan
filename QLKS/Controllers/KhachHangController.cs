@@ -7,7 +7,9 @@ using QLKS.Services;
 using QLKS.Validators;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -44,11 +46,11 @@ namespace QLKS.Controllers
         {
             var danhSachKhachHang = db.KHACHHANGs.Select(c => new
             {
-                ma = c.ma,
-                ten = c.tenkhachhang,
-                cmt = c.socmt,
-                sdt = c.sodienthoai,
-                email = c.email,
+                ma = c.Ma,
+                ten = c.Ten,
+                cmt = c.SoCMT,
+                sdt = c.SoDienThoai,
+                email = c.Email,
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
             var result = new { data = danhSachKhachHang };
@@ -68,7 +70,7 @@ namespace QLKS.Controllers
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             var model = new KhachHangModel();
-            model.ma = _khachHangServices.GenMaKhachHang();
+            model.Ma = _khachHangServices.GenMaKhachHang();
             return View(model);
         }
 
@@ -86,8 +88,13 @@ namespace QLKS.Controllers
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             var item = Mapper.Map<KHACHHANG>(model);
-            db.KHACHHANGs.Add(item);
+            int a = 0;
+            db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_KHACHHANG @Type, @ID, @Ma, @Ten, @GioiTinh, @SoCMT, @SoDienThoai, @Email, @UpdateID", new SqlParameter("@Type", int.Parse("0")), new SqlParameter("@ID", a), new SqlParameter("@Ten", item.Ten), new SqlParameter("@GioiTinh", item.GioiTinh.Value ? 0 : 1), new SqlParameter("@Ma", item.Ma), new SqlParameter("@UpdateID", int.Parse("0")), new SqlParameter("@SoCMT", item.SoCMT), new SqlParameter("@SoDienThoai", item.SoDienThoai), new SqlParameter("@Email", item.Email));
+
             db.SaveChanges();
+
+            //db.KHACHHANGs.Add(item);
+            //db.SaveChanges();
             //Lưu lịch sử hệ thống
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
             TempData["Message"] = "Thêm mới thành công";
@@ -144,7 +151,10 @@ namespace QLKS.Controllers
                 return RedirectToAction("List");
             }
             //map from model to database object
-            item = Mapper.Map(model, item);
+
+            //item = Mapper.Map(model, item);
+            int a = 0;
+            a = db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_KHACHHANG @Type, @ID, @Ma, @Ten, @GioiTinh, @SoCMT, @SoDienThoai, @Email, @UpdateID", new SqlParameter("@Type", int.Parse("1")), new SqlParameter("@ID", a), new SqlParameter("@Ten", model.Ten), new SqlParameter("@GioiTinh", model.GioiTinh ? 0 : 1), new SqlParameter("@Ma", model.Ma), new SqlParameter("@UpdateID", model.ID), new SqlParameter("@SoCMT", model.SoCMT), new SqlParameter("@SoDienThoai", model.SoDienThoai), new SqlParameter("@Email", model.Email));
             db.SaveChanges();
             //Lưu lịch sử hệ thống
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
@@ -163,7 +173,9 @@ namespace QLKS.Controllers
             var item = db.KHACHHANGs.Find(id);
             if (item != null)
             {
-                db.KHACHHANGs.Remove(item);
+                //db.KHACHHANGs.Remove(item);
+                int a = 0;
+                a = db.Database.ExecuteSqlCommand("exec SP_Delete_KHACHHANG @ID",  new SqlParameter("@ID", item.ID));
                 db.SaveChanges();
                 //Lưu lịch sử hệ thống
                 _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.GetType().ToString());

@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using QLKS.Services;
 using static QLKS.Extensions.Enum;
+using System.Data.SqlClient;
 
 namespace QLKS.Controllers
 {
@@ -43,8 +44,8 @@ namespace QLKS.Controllers
         {
             var danhsachloaitinhtrang = db.LOAITINHTRANGs.Select(c => new
             {
-                ma = c.ma,
-                ten = c.ten,
+                ma = c.Ma,
+                ten = c.Ten,
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
             var result = new { data = danhsachloaitinhtrang };
@@ -67,7 +68,7 @@ namespace QLKS.Controllers
             var loaiTinhTrangModel = new LoaiTinhTrangModel();
             var maxId = db.LOAITINHTRANGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
             var newId = (maxId + 1).ToString().PadLeft(7, '0');
-            loaiTinhTrangModel.ma = "TT" + "-" + newId;
+            loaiTinhTrangModel.Ma = "TT" + "-" + newId;
             return View(loaiTinhTrangModel);
         }
 
@@ -84,10 +85,13 @@ namespace QLKS.Controllers
             {
                 return RedirectToAction("ViewDenied", "QLKS");
             }
-            var loaitinhtrang = AutoMapper.Mapper.Map<LOAITINHTRANG>(model);
-            db.LOAITINHTRANGs.Add(loaitinhtrang);
+            var item = AutoMapper.Mapper.Map<LOAITINHTRANG>(model);
+            int a = 0;
+            db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_LOAITINHTRANG @Type, @ID, @Ma, @Ten, @UpdateID", new SqlParameter("@Type", int.Parse("0")), new SqlParameter("@ID", a), new SqlParameter("@Ten", item.Ten), new SqlParameter("@Ma", item.Ma), new SqlParameter("@UpdateID", int.Parse("0")));
+
+            //db.LOAITINHTRANGs.Add(loaitinhtrang);
             db.SaveChanges();
-            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, loaitinhtrang.GetType().ToString());
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
             TempData["Message"] = "Thêm mới thành công";
             TempData["NotiType"] = "success";
             return RedirectToAction("List");
@@ -110,6 +114,7 @@ namespace QLKS.Controllers
                 return RedirectToAction("List");
             }
             var loaitinhtrang = db.LOAITINHTRANGs.Find(id);
+
             if (loaitinhtrang == null)
             {
                 TempData["Message"] = "Không tìm thấy tình trạng này";
@@ -132,6 +137,8 @@ namespace QLKS.Controllers
             }
             if (!_quyenServices.Authorize((int)EnumQuyen.LOAITINHTRANG_SUA))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             var item = db.LOAITINHTRANGs.Where(c => c.ID == model.ID).FirstOrDefault();
@@ -141,8 +148,11 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
-            //map from model to database object
-            item = Mapper.Map(model, item);
+            ////map from model to database object
+            //item = Mapper.Map(model, item);
+            int a = 0;
+            a = db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_LOAITINHTRANG @Type, @ID, @Ma, @Ten, @UpdateID", new SqlParameter("@Type", int.Parse("1")), new SqlParameter("@ID", a), new SqlParameter("@Ten", model.Ten), new SqlParameter("@Ma", model.Ma), new SqlParameter("@UpdateID", item.ID));
+
             db.SaveChanges();
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
@@ -157,12 +167,15 @@ namespace QLKS.Controllers
             {
                 return RedirectToAction("ViewDenied", "QLKS");
             }
-            var loaitinhtrang = db.LOAITINHTRANGs.Find(id);
-            if (loaitinhtrang != null)
+            var item = db.LOAITINHTRANGs.Find(id);
+            if (item != null)
             {
-                db.LOAITINHTRANGs.Remove(loaitinhtrang);
+                int a = 0;
+                a = db.Database.ExecuteSqlCommand("exec SP_Delete_LOAITINHTRANG @ID", new SqlParameter("@ID", item.ID));
+
+                //db.LOAITINHTRANGs.Remove(loaitinhtrang);
+                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.GetType().ToString());
                 db.SaveChanges();
-                _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, loaitinhtrang.GetType().ToString());
                 //Thông báo
                 TempData["Message"] = "Xóa khách hàng thành công";
                 TempData["NotiType"] = "success";

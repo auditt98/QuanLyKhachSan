@@ -12,14 +12,14 @@ namespace QLKS.Domain
         {
         }
 
-        public virtual DbSet<CHITIETDATPHONG> CHITIETDATPHONGs { get; set; }
         public virtual DbSet<CHITIETTHUEPHONG> CHITIETTHUEPHONGs { get; set; }
+        public virtual DbSet<CHUONGTRINHGIAMGIA> CHUONGTRINHGIAMGIAs { get; set; }
         public virtual DbSet<DATPHONG> DATPHONGs { get; set; }
         public virtual DbSet<DICHVU> DICHVUs { get; set; }
         public virtual DbSet<KHACHHANG> KHACHHANGs { get; set; }
         public virtual DbSet<LOAIPHONG> LOAIPHONGs { get; set; }
         public virtual DbSet<LOAITINHTRANG> LOAITINHTRANGs { get; set; }
-        public virtual DbSet<LUUTRU> LUUTRUs { get; set; }
+        public virtual DbSet<LOG> LOGs { get; set; }
         public virtual DbSet<NGUOIDUNG> NGUOIDUNGs { get; set; }
         public virtual DbSet<NHOMNGUOIDUNG> NHOMNGUOIDUNGs { get; set; }
         public virtual DbSet<PHONG> PHONGs { get; set; }
@@ -27,37 +27,29 @@ namespace QLKS.Domain
         public virtual DbSet<SUDUNGDICHVU> SUDUNGDICHVUs { get; set; }
         public virtual DbSet<THANHTOAN> THANHTOANs { get; set; }
         public virtual DbSet<THUEPHONG> THUEPHONGs { get; set; }
-        public virtual DbSet<VATTU> VATTUs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CHITIETDATPHONG>()
-                .Property(e => e.socmt)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CHITIETDATPHONG>()
-                .Property(e => e.sodienthoai)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CHITIETDATPHONG>()
-                .Property(e => e.email)
-                .IsUnicode(false);
-
             modelBuilder.Entity<CHITIETTHUEPHONG>()
-                .Property(e => e.maktra)
+                .HasMany(e => e.SUDUNGDICHVUs)
+                .WithRequired(e => e.CHITIETTHUEPHONG)
+                .HasForeignKey(e => e.CHITIETTHUEPHONG_ID);
+
+            modelBuilder.Entity<CHUONGTRINHGIAMGIA>()
+                .Property(e => e.Ma)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<DATPHONG>()
-                .Property(e => e.ma)
-                .IsUnicode(false);
+            modelBuilder.Entity<CHUONGTRINHGIAMGIA>()
+                .HasMany(e => e.LOAIPHONGs)
+                .WithMany(e => e.CHUONGTRINHGIAMGIAs)
+                .Map(m => m.ToTable("APDUNGGIAMGIA"));
 
             modelBuilder.Entity<DATPHONG>()
-                .HasMany(e => e.CHITIETDATPHONGs)
-                .WithRequired(e => e.DATPHONG)
-                .HasForeignKey(e => e.DATPHONG_ID);
+                .Property(e => e.MaDatPhong)
+                .IsUnicode(false);
 
             modelBuilder.Entity<DICHVU>()
-                .Property(e => e.ma)
+                .Property(e => e.Ma)
                 .IsUnicode(false);
 
             modelBuilder.Entity<DICHVU>()
@@ -66,19 +58,19 @@ namespace QLKS.Domain
                 .HasForeignKey(e => e.DICHVU_ID);
 
             modelBuilder.Entity<KHACHHANG>()
-                .Property(e => e.ma)
+                .Property(e => e.Ma)
                 .IsUnicode(false);
 
             modelBuilder.Entity<KHACHHANG>()
-                .Property(e => e.socmt)
+                .Property(e => e.SoCMT)
                 .IsUnicode(false);
 
             modelBuilder.Entity<KHACHHANG>()
-                .Property(e => e.sodienthoai)
+                .Property(e => e.SoDienThoai)
                 .IsUnicode(false);
 
             modelBuilder.Entity<KHACHHANG>()
-                .Property(e => e.email)
+                .Property(e => e.Email)
                 .IsUnicode(false);
 
             modelBuilder.Entity<KHACHHANG>()
@@ -89,71 +81,80 @@ namespace QLKS.Domain
 
             modelBuilder.Entity<KHACHHANG>()
                 .HasMany(e => e.THUEPHONGs)
-                .WithOptional(e => e.KHACHHANG)
-                .HasForeignKey(e => e.KHACHHANG_ID)
-                .WillCascadeOnDelete();
+                .WithRequired(e => e.KHACHHANG)
+                .HasForeignKey(e => e.KHACHHANG_ID);
 
             modelBuilder.Entity<LOAIPHONG>()
-                .Property(e => e.ma)
+                .Property(e => e.Ma)
                 .IsUnicode(false);
 
             modelBuilder.Entity<LOAIPHONG>()
-                .Property(e => e.anh)
-                .IsFixedLength()
+                .Property(e => e.AnhDaiDien)
                 .IsUnicode(false);
 
             modelBuilder.Entity<LOAIPHONG>()
-                .HasMany(e => e.PHONGs)
+                .HasMany(e => e.DATPHONGs)
                 .WithOptional(e => e.LOAIPHONG)
                 .HasForeignKey(e => e.LOAIPHONG_ID)
                 .WillCascadeOnDelete();
 
+            modelBuilder.Entity<LOAIPHONG>()
+                .HasMany(e => e.PHONGs)
+                .WithRequired(e => e.LOAIPHONG)
+                .HasForeignKey(e => e.LOAIPHONG_ID);
+
             modelBuilder.Entity<LOAITINHTRANG>()
-                .Property(e => e.ma)
+                .Property(e => e.Ma)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<LOAITINHTRANG>()
+                .HasMany(e => e.DATPHONGs)
+                .WithOptional(e => e.LOAITINHTRANG)
+                .HasForeignKey(e => e.LOAITINHTRANG_ID);
 
             modelBuilder.Entity<LOAITINHTRANG>()
                 .HasMany(e => e.PHONGs)
                 .WithOptional(e => e.LOAITINHTRANG)
-                .HasForeignKey(e => e.LOAITINHTRANG_ID)
-                .WillCascadeOnDelete();
+                .HasForeignKey(e => e.LOAITINHTRANG_ID);
 
-            modelBuilder.Entity<NGUOIDUNG>()
-                .Property(e => e.tendangnhap)
+            modelBuilder.Entity<LOAITINHTRANG>()
+                .HasMany(e => e.THUEPHONGs)
+                .WithOptional(e => e.LOAITINHTRANG)
+                .HasForeignKey(e => e.LOAITINHTRANG_ID);
+
+            modelBuilder.Entity<LOG>()
+                .Property(e => e.IPChinhSua)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<LOG>()
+                .Property(e => e.DoiTuongChinhSua)
                 .IsUnicode(false);
 
             modelBuilder.Entity<NGUOIDUNG>()
-                .Property(e => e.hash)
+                .Property(e => e.TenDangNhap)
                 .IsUnicode(false);
 
             modelBuilder.Entity<NGUOIDUNG>()
-                .Property(e => e.sodienthoai)
+                .Property(e => e.Hash)
                 .IsUnicode(false);
 
             modelBuilder.Entity<NGUOIDUNG>()
-                .Property(e => e.malaymatkhau)
+                .Property(e => e.SoDienThoai)
                 .IsUnicode(false);
 
             modelBuilder.Entity<NGUOIDUNG>()
-                .HasMany(e => e.CHITIETTHUEPHONGs)
+                .Property(e => e.SoCMT)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<NGUOIDUNG>()
+                .HasMany(e => e.DATPHONGs)
                 .WithOptional(e => e.NGUOIDUNG)
                 .HasForeignKey(e => e.NGUOIDUNG_ID);
 
             modelBuilder.Entity<NGUOIDUNG>()
-                .HasMany(e => e.LUUTRUs)
+                .HasMany(e => e.LOGs)
                 .WithOptional(e => e.NGUOIDUNG)
                 .HasForeignKey(e => e.NGUOIDUNG_ID);
-
-            modelBuilder.Entity<NGUOIDUNG>()
-                .HasMany(e => e.QUYENs)
-                .WithOptional(e => e.NGUOIDUNG)
-                .HasForeignKey(e => e.nguoitao)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<NGUOIDUNG>()
-                .HasMany(e => e.QUYENs1)
-                .WithOptional(e => e.NGUOIDUNG1)
-                .HasForeignKey(e => e.nguoisua);
 
             modelBuilder.Entity<NGUOIDUNG>()
                 .HasMany(e => e.SUDUNGDICHVUs)
@@ -168,18 +169,16 @@ namespace QLKS.Domain
             modelBuilder.Entity<NGUOIDUNG>()
                 .HasMany(e => e.THUEPHONGs)
                 .WithOptional(e => e.NGUOIDUNG)
-                .HasForeignKey(e => e.NGUOIDUNG_ID)
-                .WillCascadeOnDelete();
+                .HasForeignKey(e => e.NGUOIDUNG_ID);
 
             modelBuilder.Entity<NHOMNGUOIDUNG>()
-                .Property(e => e.ma)
+                .Property(e => e.Ma)
                 .IsUnicode(false);
 
             modelBuilder.Entity<NHOMNGUOIDUNG>()
                 .HasMany(e => e.NGUOIDUNGs)
                 .WithOptional(e => e.NHOMNGUOIDUNG)
-                .HasForeignKey(e => e.NHOMNGUOIDUNG_ID)
-                .WillCascadeOnDelete();
+                .HasForeignKey(e => e.NHOMNGUOIDUNG_ID);
 
             modelBuilder.Entity<NHOMNGUOIDUNG>()
                 .HasMany(e => e.QUYENs)
@@ -187,48 +186,32 @@ namespace QLKS.Domain
                 .Map(m => m.ToTable("CHITIETPHANQUYEN"));
 
             modelBuilder.Entity<PHONG>()
-                .Property(e => e.ma)
+                .Property(e => e.SoPhong)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<PHONG>()
-                .HasMany(e => e.CHITIETDATPHONGs)
-                .WithRequired(e => e.PHONG)
-                .HasForeignKey(e => e.PHONG_ID);
 
             modelBuilder.Entity<PHONG>()
                 .HasMany(e => e.CHITIETTHUEPHONGs)
                 .WithRequired(e => e.PHONG)
                 .HasForeignKey(e => e.PHONG_ID);
 
-            modelBuilder.Entity<PHONG>()
-                .HasMany(e => e.VATTUs)
-                .WithOptional(e => e.PHONG)
-                .HasForeignKey(e => e.PHONG_ID)
-                .WillCascadeOnDelete();
-
             modelBuilder.Entity<QUYEN>()
-                .Property(e => e.ma)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<QUYEN>()
-                .Property(e => e.ipchinhsua)
+                .Property(e => e.Ma)
                 .IsUnicode(false);
 
             modelBuilder.Entity<THANHTOAN>()
-                .Property(e => e.maktra)
+                .Property(e => e.Ma)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<THANHTOAN>()
+                .Property(e => e.PhuongThucTra)
                 .IsUnicode(false);
 
             modelBuilder.Entity<THUEPHONG>()
-                .Property(e => e.ma)
+                .Property(e => e.Ma)
                 .IsUnicode(false);
 
             modelBuilder.Entity<THUEPHONG>()
                 .HasMany(e => e.CHITIETTHUEPHONGs)
-                .WithRequired(e => e.THUEPHONG)
-                .HasForeignKey(e => e.THUEPHONG_ID);
-
-            modelBuilder.Entity<THUEPHONG>()
-                .HasMany(e => e.SUDUNGDICHVUs)
                 .WithRequired(e => e.THUEPHONG)
                 .HasForeignKey(e => e.THUEPHONG_ID);
 

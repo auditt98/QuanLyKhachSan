@@ -96,6 +96,10 @@ body {
     content: " *"
 }
 
+.no-margin-bottom {
+    margin-bottom: 0px !important;
+}
+
 /*.toast {
     -webkit-backdrop-filter: blur(5px) !important;
     backdrop-filter: blur(5px) !important;

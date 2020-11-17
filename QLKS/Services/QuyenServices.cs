@@ -16,7 +16,7 @@ namespace QLKS.Services
         {
             var items = db.QUYENs.Select(c => new SelectListItem
             {
-                Text = c.ten,
+                Text = c.Ten,
                 Value = c.ID.ToString(),
                 Selected = selected.Contains(c.ID)
             }).ToList();

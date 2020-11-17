@@ -15,9 +15,9 @@ namespace QLKS.Models
 
         public int? ID { get; set; }
 
-        public string ten { get; set; }
+        public string Ten { get; set; }
 
-        public string ma { get; set; }
+        public string Ma { get; set; }
 
         public List<SelectListItem> DanhSachQuyen { get; set; }
 

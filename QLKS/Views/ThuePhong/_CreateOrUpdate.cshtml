@@ -1,37 +1,61 @@
 ﻿@model ThuePhongModel
 
 @Html.AntiForgeryToken()
-
-<div class="form-group row">
-    @Html.LabelFor(model => model.ma, "Mã phiếu thuê:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+<input name="fromCheckIn" value="@Model.fromCheckIn" hidden />
+<h5 style="display: inline-block">Tra cứu thông tin phòng</h5>
+<div class="dropdown-divider"></div>
+<div class="row">
+    <label for="traCuuNgayDen" class="control-label col-md-2 text-right">Từ ngày</label>
     <div class="col-md-3">
-        <input name="ma" hidden value="@Model.ma" />
-        <input id="ma" class="form-control disabled" disabled value="@Model.ma" />
-        @Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })
+        <input id="traCuuNgayDen" class="form-control datetimepicker-here" />
     </div>
+    <label for="traCuuNgayDi" class="control-label col-md-2 text-right">Tới ngày</label>
+    <div class="col-md-3">
+        <input id="traCuuNgayDi" class="form-control datetimepicker-here" />
+    </div>
+    @*<div class="col-md-4">*@
+    <div id="btnTraCuuNgay" class="btn btn-outline-info">Tra cứu</div>
+    <span>&nbsp;&nbsp;</span>
+    <div id="btnSaoChepNgay" class="btn btn-outline-warning">Sao chép</div>
+    @*</div>*@
+
 </div>
+<div id="table-wrapper" style="display: none;">
+    <table id="table_dataTable1" class="table table-striped table-bordered dt-responsive nowrap">
+        <thead>
+            <tr>
+                <th class="text-center">Tên loại phòng</th>
+                <th class="text-center">Giá thuê</th>
+                <th class="text-center">Tổng số phòng</th>
+                <th class="text-center">Số phòng đặt trước</th>
+                <th class="text-center">Số phòng đã thuê</th>
+                <th class="text-center">Số phòng còn trống</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
 <br class="dropdown-divider" />
 <div class="dropdown-divider"></div>
-<h5>Thông tin khách đặt phòng</h5>
+<h5>Thông tin khách thuê phòng</h5>
 <br />
 <input id="khachhang_id" type="hidden" value="@Model.KHACHHANG_ID" />
-
 
 <div class="form-group row">
     <label class="control-label col-md-2 text-right text-required">Tên khách hàng:</label>
     <div class="col-md-3">
-        @Html.EditorFor(model => model.tenkhachhang, new { htmlAttributes = new { @class = "form-control", @required = true, @title = "Tên khách hàng không được để trống" } })
+        @Html.EditorFor(model => model.tenkhachhang, new { htmlAttributes = new { @class = "form-control", @title = "Tên khách hàng không được để trống" } })
         @*<input class="form-control" name="tenkhachhang" id="tenkhachhang" required title="Tên khách hàng không được để trống" />*@
         @Html.ValidationMessageFor(model => model.tenkhachhang, "", new { @class = "text-danger" })
     </div>
-    <label class="control-label col-md-1 text-right text-required">Số CMT</label>
-    @Html.EditorFor(model => model.socmt, new { htmlAttributes = new { @class = "form-control col-md-3", @required = true, @title = "Số CMT không được để trống" } })
+    <label class="control-label col-md-2 text-right text-required">Số CMT</label>
+    @Html.EditorFor(model => model.socmt, new { htmlAttributes = new { @class = "form-control col-md-3", @title = "Số CMT không được để trống" } })
     @Html.ValidationMessageFor(model => model.socmt, "", new { @class = "text-danger" })
 </div>
 <div class="form-group row">
     <label class="control-label col-md-2 text-right text-required">Số điện thoại:</label>
     <div class="col-md-3">
-        @Html.EditorFor(model => model.sdt, new { htmlAttributes = new { @class = "form-control", @required = true, @title = "SDT không được để trống" } })
+        @Html.EditorFor(model => model.sdt, new { htmlAttributes = new { @class = "form-control", @title = "SDT không được để trống" } })
         @*<input class="form-control" name="sdt" id="sdt" required title="SDT không được để trống" />*@
         @Html.ValidationMessageFor(model => model.sdt, "", new { @class = "text-danger" })
     </div>
@@ -39,98 +63,172 @@
 </div>
 <br />
 <div class="dropdown-divider"></div>
-<h5 style="display: inline-block">Thông tin hệ thống</h5>
-<div id="updateStats" class="float-right btn"><i class="fas fa-sync-alt"></i></div>
+<h5 style="display: inline-block">Thông tin thuê phòng</h5>
 <br />
 <br />
-
 <div class="form-group row">
+    @Html.LabelFor(model => model.ma, "Mã phiếu thuê:", htmlAttributes: new { @class = "control-label col-md-1 text-right" })
     <div class="col-md-3">
-        <div class="card card-shadow-2 card-hover text-white bg-success">
-            <div class="card-header font-weight-bold">Số phòng trống <i class="far fa-check-circle"></i></div>
-            <div class="card-body">
-                <h2 id="phongtrong" class="card-title text-center"></h2>
-                <p class="card-text"></p>
-            </div>
-        </div>
+        <input name="ma" hidden value="@Model.ma" />
+        <input id="ma" class="form-control disabled" disabled value="@Model.ma" />
+        @Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })
     </div>
+    @Html.LabelFor(model => model.GiaThue, "Giá thuê phòng:", htmlAttributes: new { @class = "control-label col-md-1 text-right" })
     <div class="col-md-3">
-        <div class="card card-shadow-2 card-hover text-white bg-warning">
-            <div class="card-header font-weight-bold">Số phòng đã đặt trước <i class="far fa-calendar-alt"></i></div>
-            <div class="card-body">
-                <h2 id="phongdattruoc" class="card-title text-center"></h2>
-                <p class="card-text"></p>
-            </div>
-        </div>
+        <input id="giaPhong" class="form-control disabled" disabled />
+        @Html.ValidationMessageFor(model => model.ma, "", new { @class = "text-danger" })
     </div>
-    <div class="col-md-3">
-        <div class="card card-shadow-2 card-hover text-white bg-info">
-            <div class="card-header font-weight-bold">Số phòng bẩn <i class="fas fa-exclamation-circle"></i></div>
-            <div class="card-body">
-                <h2 id="phongban" class="card-title text-center"></h2>
-                <p class="card-text"></p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card card-shadow-2 card-hover text-white bg-danger">
-            <div class="card-header font-weight-bold">Số phòng đã thuê <i class="far fa-times-circle"></i></div>
-            <div class="card-body">
-                <h2 id="phongdangsudung" class="card-title text-center"></h2>
-                <p class="card-text"></p>
-            </div>
-        </div>
-    </div>
-
 </div>
-<br class="dropdown-divider" />
-<div class="dropdown-divider"></div>
-<h5 style="display: inline-block">Chi tiết thuê phòng</h5>
-<div id="addNewChiTiet" class="btn btn-outline-info float-right">Thêm mới</div>
-<br />
+<div class="form-group row">
+    <label class="text-right text-required col-md-1">Chọn phòng trống</label>
+    <div class="col-sm-3">
+        <select id="loaiphong" class="form-control" required title="Vui lòng chọn phòng" onchange="getDanhSachPhong();">
+            @foreach (var p in Model.DanhSachLoaiPhong)
+            {
+                if (p.Selected == true)
+                {
+                    <option value="@p.Value" selected>@p.Text</option>
+                }
+                else
+                {
+                    <option value="@p.Value">@p.Text</option>
+                }
+            }
+        </select>
+    </div>
 
-<div id="danhsachchitiet" style="padding-top: 10px;">
+    @Html.LabelFor(model => model.NgayDen, "Ngày đến :", htmlAttributes: new { @class = "control-label col-md-1 text-right text-required" })
+    <div class="col-md-3">
+        <input id="ngayden" name="NgayDen" class="form-control datetimepicker-here" type="datetime" title="Vui lòng chọn ngày" placeholder="Vui lòng chọn ngày.." />
+        @*@Html.EditorFor(model => model.ngaydukienden, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control datetimepicker-here ", @type = "date", @title = "Vui lòng chọn ngày", @placeholder = "Vui lòng chọn ngày.." } })*@
+        @Html.ValidationMessageFor(model => model.NgayDen, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.NgayDi, "Ngày đi :", htmlAttributes: new { @class = "control-label col-md-1 text-right text-required" })
+    <div class="col-md-3">
+        <input id="ngaydi" name="NgayDi" class="form-control datetimepicker-here" type="datetime" title="Vui lòng chọn ngày" placeholder="Vui lòng chọn ngày.." />
+        @*@Html.EditorFor(model => model.ngaydukiendi, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control datetimepicker-here ", @type = "date", @placeholder = "Vui lòng chọn ngày.." } })*@
+        @Html.ValidationMessageFor(model => model.NgayDi, "", new { @class = "text-danger" })
 
+    </div>
 </div>
 
-<br class="dropdown-divider" />
-<div class="dropdown-divider"></div>
-<h5 style="display: inline-block">Sử dụng dịch vụ</h5>
-<div id="addNewDichVu" class="btn btn-outline-info float-right">Thêm mới</div>
-<br />
+<table id="danhsachphong" class="table table-hover table-bordered table-striped col-md-12">
+    <thead>
+        <tr>
+            <th class="text-center">Số phòng</th>
+            <th class="text-center">Số tầng</th>
+            <th class="text-center">Chọn</th>
+        </tr>
+    </thead>
+    <tbody id="tbody_danhsachphong"></tbody>
+</table>
 
-<div id="danhsachsudungdichvu" style="padding-top: 10px;">
+@if (Model.fromEdit != "0")
+{
+    <div class="dropdown-divider"></div>
+    <h5 style="display: inline-block">Sử dụng dịch vụ</h5>
+    <div id="addNewDichVu" class="btn btn-outline-info float-right">Thêm mới</div>
+    <div id="saveDichVu" class="btn btn-outline-success float-right" style="margin-right: 5px;">Lưu dịch vụ</div>
+    <br />
 
-</div>
+    <div id="danhsachsudungdichvu" style="padding-top: 10px;"></div>
+    <script>
+        var a = toVND(@Model.GiaThue);
+        $("#giaPhong").val(a);
+    </script>
+}
+
+
+
+@if (Model.NgayDen != null && Model.NgayDi != null)
+{
+    <script>
+    const fp_ngayden = flatpickr("#ngayden", {
+        dateFormat: "m-d-Y H:i",
+        enableTime: true,
+        time_24hr: true,
+        allowInput: true,
+        locale: {
+            weekdays: {
+                shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                longhand: [
+                    "Chủ nhật",
+                    "Thứ hai",
+                    "Thứ ba",
+                    "Thứ tư",
+                    "Thứ năm",
+                    "Thứ sáu",
+                    "Thứ bảy",
+                ],
+            }, months: {
+                shorthand: [
+                    "Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12",
+                ],
+                longhand: [
+                    "Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu",
+                    "Tháng bảy",
+                    "Tháng tám",
+                    "Tháng chín",
+                    "Tháng mười",
+                    "Tháng mười một",
+                    "Tháng mười hai",
+                ],
+            },
+
+            firstDayOfWeek: 1,
+            rangeSeparator: " đến ",
+        }
+    });
+    const fp_ngaydi = flatpickr("#ngaydi", {
+        dateFormat: "m-d-Y H:i",
+        enableTime: true,
+        time_24hr: true,
+        allowInput: true,
+        locale: {
+            weekdays: {
+                shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                longhand: [
+                    "Chủ nhật",
+                    "Thứ hai",
+                    "Thứ ba",
+                    "Thứ tư",
+                    "Thứ năm",
+                    "Thứ sáu",
+                    "Thứ bảy",
+                ],
+            }, months: {
+                shorthand: [
+                    "Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12",
+                ],
+                longhand: [
+                    "Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu",
+                    "Tháng bảy",
+                    "Tháng tám",
+                    "Tháng chín",
+                    "Tháng mười",
+                    "Tháng mười một",
+                    "Tháng mười hai",
+                ],
+            },
+
+            firstDayOfWeek: 1,
+            rangeSeparator: " đến ",
+        }
+    });
+        var setNgayDen = flatpickr.parseDate("@Model.NgayDen.Value.ToString("MM/dd/yyyy HH:mm")", "m/d/Y H:i");
+    var setNgayDi = flatpickr.parseDate("@Model.NgayDi.Value.ToString("MM/dd/yyyy HH:mm")", "m/d/Y H:i");
+    fp_ngayden.setDate("@Model.NgayDen.Value.ToString("MM-dd-yyyy HH:mm")");
+    fp_ngaydi.setDate("@Model.NgayDi.Value.ToString("MM-dd-yyyy HH:mm")")
+    </script>
+
+}
 
 <script>
-    var soPhongTrong;
-    $.ajax({
-        type: "POST",
-        url: "/Phong/ThongKePhong",
-        success: function (data) {
-            $("#phongban").text(data.phongban);
-            $("#phongtrong").text(data.phongtrong);
-            $("#phongdangsudung").text(data.phongdangsudung);
-            $("#phongdattruoc").text(data.phongdattruoc);
-            soPhongTrong = data.phongtrong;
-        }
-    })
-    $("#updateStats").on("click", function () {
-        $.ajax({
-            type: "POST",
-            url: "/Phong/ThongKePhong",
-            success: function (data) {
-                $("#phongban").text(data.phongban);
-                $("#phongtrong").text(data.phongtrong);
-                $("#phongdangsudung").text(data.phongdangsudung);
-                $("#phongdattruoc").text(data.phongdattruoc);
-                soPhongTrong = data.phongtrong;
-            }
-        })
 
-    })
-
+    $("#btnSaoChepNgay").click(function () {
+        $("#ngayden").val($("#traCuuNgayDen").val());
+        $("#ngaydi").val($("#traCuuNgayDi").val());
+    });
     function xoaDivChiTiet(guid) {
         $("#chitiet_" + guid).remove();
     }
@@ -138,70 +236,98 @@
     function xoaDivDichVu(guid) {
         $("#chitietdichvu_" + guid).remove();
     }
-</script>
 
-<script>
-
-    $("#addNewChiTiet").on("click", function () {
-        if (soPhongTrong != null) {
-            var soDiv = $(".chitiet").length;
-            if (soPhongTrong != 0) {
-                $.ajax({
-                    type: "GET",
-                    url: "/ThuePhong/_AddNewChiTietThue",
-                    success: function (data) {
-                        $("#danhsachchitiet").append(data);
-                    }
-                });
-            } else {
-                $("#customToastMessage").text("Không còn phòng trống");
-                $('#customToast').toast('show')
-            }
+    function getDanhSachPhong() {
+        $("#danhsachphong tbody tr").remove();
+        var fromCheckIn = @Model.fromCheckIn;
+        var fromEdit = @Model.fromEdit;
+        var d = {
+            loaiphong_id: $("#loaiphong").val(),
+            fromCheckIn: fromCheckIn,
+            fromEdit: fromEdit
         }
-        $("#updateStats").click();
-    })
-
-    $("#addNewDichVu").on("click", function () {
         $.ajax({
-            type: "GET",
-            url: "/ThuePhong/_AddNewSuDungDichVu",
+            type: "POST",
+            url: "/ThuePhong/GetDanhSachPhong",
+            data: d,
             success: function (data) {
-                $("#danhsachsudungdichvu").append(data);
+                for (var i = 0; i < data.data.length; i++) {
+                    var newRow = "<tr><td class='text-center'></td></tr>"
+                    var soPhongdata = "<td class='text-center'>" + data.data[i].sophong + "</td>";
+                    var soTangdata = "<td class='text-center'>" + data.data[i].sotang + "</td>";
+                    var iddata = "";
+                    if (data.data[i].check == true) {
+                        if (fromEdit != 0) {
+                            iddata = "<td class='text-center '>" + "<div class='text-center'><input type='checkbox' name='SelectedPhongs' checked disabled value='" + data.data[i].id + "'></div>" + "</td>"
+                        } else {
+                            iddata = "<td class='text-center'>" + "<div class='text-center'><input type='checkbox' name='SelectedPhongs' checked value='" + data.data[i].id + "'></div>" + "</td>"
+                        }
+
+                    } else {
+                        iddata = "<td class='text-center'>" + "<div class='text-center'><input type='checkbox' name='SelectedPhongs' value='" + data.data[i].id + "'></div>" + "</td>"
+                    }
+                    var newRow = "<tr>" + soPhongdata + soTangdata + iddata + "</tr>"
+                    $("#danhsachphong tbody").append(newRow);
+                }
             }
         });
+    }
 
-    })
+    $("#btnTraCuuNgay").click(function () {
+        $("#table-wrapper").hide();
+        if ($("#traCuuNgayDen").val() == "" || $("#traCuuNgayDi").val() == "") {
+            return 0;
+        }
+        var _data = {
+            tungay: $("#traCuuNgayDen").val(),
+            denngay: $("#traCuuNgayDi").val()
+        }
 
+        var table = $('#table_dataTable1').DataTable({
+            ajax: {
+                "url": "/DatPhong/KiemTraTrangThai/",
+                data: _data,
+                method: "POST"
+            },
+            serverSide: true,
+            paging: false,
+            ordering: false,
+            destroy: true,
+            info: false,
+            responsive: true,
+            columns: [
+                { "data": "ten" },
+                {
+                    "data": "giathue",
+                    "render": function (data, type, row) {
+                        return toVND(data) + '/đêm';
+                    }
+                },
+                { "data": "tongsophong" },
+                { "data": "sophongdattruoc" },
+                { "data": "sophongdathue" },
+                { "data": "sophongtrong" },
+            ],
+            columnDefs: [
+                {
+                    targets: [1, 2, 3, 4, 5],
+                    className: "text-center"
+                }
+            ]
+        })
+        $("#table-wrapper").show();
+    });
 </script>
 
-@*remember to prepare chitietthuephong*@
-@if (Model.ChiTietThuePhong.Count == 0)
+@if (Model.fromCheckIn != "0" || Model.fromEdit != "0")
 {
     <script>
-        $(document).ready(function () {
-            if (soPhongTrong != null) {
-                if (soPhongTrong != 0) {
-                    $("#addNewChiTiet").click();
-                }
-            }
-        })
+        getDanhSachPhong();
     </script>
 }
-else
-{
-    foreach (var ct in Model.ChiTietThuePhong)
-    {
-        <script>
-            $.ajax({
-                type: "GET",
-                url: "/ThuePhong/_AddNewChiTietThue?phong=@ct.phong_id&thuephong=@ct.THUEPHONG_ID",
-                success: function (data) {
-                    $("#danhsachchitiet").append(data);
-                }
-            });
-        </script>
-    }
-}
+
+
+
 
 
 @if (Model.ChiTietDichVu.Count == 0)
@@ -217,17 +343,87 @@ else
     foreach (var ct in Model.ChiTietDichVu)
     {
         <script>
-            $.ajax({
-                type: "GET",
-                url: "/ThuePhong/_AddNewSuDungDichVu?dichvu=@ct.DICHVU_ID&thuephong=@ct.THUEPHONG_ID",
-                success: function (data) {
-                    $("#danhsachsudungdichvu").append(data);
-                }
-            });
+                $.ajax({
+                    type: "GET",
+                    url: "/ThuePhong/_AddNewSuDungDichVu?dichvu=@ct.DICHVU_ID&thuephong=@ct.THUEPHONG_ID&phong=@ct.PHONG_ID",
+                    success: function (data) {
+                        $("#danhsachsudungdichvu").append(data);
+                    }
+                });
         </script>
     }
 }
 
+<script>
 
+    $("#addNewDichVu").on("click", function () {
+        $.ajax({
+            type: "GET",
+            url: "/ThuePhong/_AddNewSuDungDichVu?thuephong=@Model.ID",
+            success: function (data) {
+                $("#danhsachsudungdichvu").append(data);
+            }
+        });
+
+    })
+
+</script>
+
+
+
+@*remember to prepare chitietthuephong
+    @if (Model.ChiTietThuePhong.Count == 0)
+    {
+        <script>
+            $(document).ready(function () {
+                if (soPhongTrong != null) {
+                    if (soPhongTrong != 0) {
+                        $("#addNewChiTiet").click();
+                    }
+                }
+            })
+        </script>
+    }
+    else
+    {
+        foreach (var ct in Model.ChiTietThuePhong)
+        {
+            <script>
+                $.ajax({
+                    type: "GET",
+                    url: "/ThuePhong/_AddNewChiTietThue?phong=@ct.phong_id&thuephong=@ct.THUEPHONG_ID",
+                    success: function (data) {
+                        $("#danhsachchitiet").append(data);
+                    }
+                });
+            </script>
+        }
+    }
+
+
+    @if (Model.ChiTietDichVu.Count == 0)
+    {
+        <script>
+            $(document).ready(function () {
+                $("#addNewDichVu").click();
+            })
+        </script>
+    }
+    else
+    {
+        foreach (var ct in Model.ChiTietDichVu)
+        {
+            <script>
+                $.ajax({
+                    type: "GET",
+                    url: "/ThuePhong/_AddNewSuDungDichVu?dichvu=@ct.DICHVU_ID&thuephong=@ct.THUEPHONG_ID",
+                    success: function (data) {
+                        $("#danhsachsudungdichvu").append(data);
+                    }
+                });
+            </script>
+        }
+    }
+*@
 
 

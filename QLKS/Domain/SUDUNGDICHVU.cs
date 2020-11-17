@@ -12,7 +12,7 @@ namespace QLKS.Domain
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int THUEPHONG_ID { get; set; }
+        public int CHITIETTHUEPHONG_ID { get; set; }
 
         [Key]
         [Column(Order = 1)]
@@ -20,18 +20,18 @@ namespace QLKS.Domain
         public int DICHVU_ID { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? ngaysudung { get; set; }
+        public DateTime ThoiGianSuDung { get; set; }
 
-        public int? soluong { get; set; }
+        public int SoLuong { get; set; }
 
-        public int? thanhtien { get; set; }
+        public int? DonGia { get; set; }
 
         public int? NGUOIDUNG_ID { get; set; }
+
+        public virtual CHITIETTHUEPHONG CHITIETTHUEPHONG { get; set; }
 
         public virtual DICHVU DICHVU { get; set; }
 
         public virtual NGUOIDUNG NGUOIDUNG { get; set; }
-
-        public virtual THUEPHONG THUEPHONG { get; set; }
     }
 }

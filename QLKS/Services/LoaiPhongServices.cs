@@ -15,11 +15,11 @@ namespace QLKS.Services
         public IEnumerable<SelectListItem> PrepareSelectListLoaiPhong(int? selected)
         {
             var items = db.LOAIPHONGs.Select(c => new SelectListItem {
-                Text = c.tenloaiphong,
+                Text = c.Ten,
                 Value = c.ID.ToString(),
                 Selected = c.ID == selected
             }).ToList();
-            if(selected == 0)
+            if (selected == 0)
             {
                 var firstRow = new SelectListItem { Value = null, Text = "--Chọn loại phòng--" };
                 items = items.Prepend(firstRow).ToList();

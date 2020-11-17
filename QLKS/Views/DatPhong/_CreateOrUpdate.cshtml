@@ -2,61 +2,242 @@
 
 
 @Html.AntiForgeryToken()
+@*<div class="dropdown-divider"></div>*@
+<h5 style="display: inline-block">Tra cứu thông tin phòng</h5>
+<div class="dropdown-divider"></div>
+<div class="row">
+    <label for="traCuuNgayDen" class="control-label col-md-2 text-right">Từ ngày</label>
+    <div class="col-md-3">
+        <input id="traCuuNgayDen" class="form-control datetimepicker-here" />
+    </div>
+    <label for="traCuuNgayDi" class="control-label col-md-2 text-right">Tới ngày</label>
+    <div class="col-md-3">
+        <input id="traCuuNgayDi" class="form-control datetimepicker-here" />
+    </div>
+    @*<div class="col-md-4">*@
+    <div id="btnTraCuuNgay" class="btn btn-outline-info">Tra cứu</div>
+    <span>&nbsp;&nbsp;</span>
+    <div id="btnSaoChepNgay" class="btn btn-outline-warning">Sao chép</div>
+    @*</div>*@
 
+</div>
+<div id="table-wrapper" style="display: none;">
+    <table id="table_dataTable1" class="table table-striped table-bordered dt-responsive nowrap">
+        <thead>
+            <tr>
+                <th class="text-center">Tên loại phòng</th>
+                <th class="text-center">Giá thuê</th>
+                <th class="text-center">Tổng số phòng</th>
+                <th class="text-center">Số phòng đặt trước</th>
+                <th class="text-center">Số phòng đã thuê</th>
+                <th class="text-center">Số phòng còn trống</th>
+            </tr>
+        </thead>
+    </table>
+</div>
 
+<h5 style="display: inline-block">Thông tin đặt phòng</h5>
+<div class="dropdown-divider"></div>
 <div class="form-group row">
-	@Html.LabelFor(model => model.DATPHONG_ID, "Mã đặt phòng :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-	<div class="col-md-3">
-		<input name="DATPHONG_ID" hidden value="@Model.DATPHONG_ID" />
-		<input id="DATPHONG_ID" class="form-control disabled" disabled value="@Model.DATPHONG_ID" />
-		@Html.ValidationMessageFor(model => model.DATPHONG_ID, "", new { @class = "text-danger" })
-	</div>
-	@Html.LabelFor(model => model.PHONG_ID, "Mã phòng :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-	<div class="col-md-3">
-		@Html.DropDownListFor(model => model.PHONG_ID, new SelectList(Model.DanhSachPhong, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
-		<input id="PHONG_ID" class="form-control disabled" disabled value="@Model.PHONG_ID" />
-		@Html.ValidationMessageFor(model => model.PHONG_ID, "", new { @class = "text-danger" })
-	</div>
+    @Html.LabelFor(model => model.MaDatPhong, "Mã đặt phòng :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        <input name="MaDatPhong" hidden value="@Model.MaDatPhong" />
+        <input id="MaDatPhong" class="form-control disabled" disabled value="@Model.MaDatPhong" />
+        @Html.ValidationMessageFor(model => model.MaDatPhong, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group row">
+    @Html.LabelFor(model => model.LOAIPHONG_ID, "Loại phòng:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.DropDownListFor(model => model.LOAIPHONG_ID, new SelectList(Model.DanhSachLoaiPhong, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.LOAIPHONG_ID, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.SoPhong, "Số lượng phòng:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.SoPhong, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SoPhong, "", new { @class = "text-danger" })
+    </div>
+
+</div>
+<br />
+<h5 style="display: inline-block">Thông tin khách hàng</h5>
+<div class="dropdown-divider"></div>
+<div class="form-group row">
+    @Html.LabelFor(model => model.tenkhachhang, "Tên khách hàng :", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.tenkhachhang, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.tenkhachhang, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.socmt, "Số CMND :", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.socmt, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.socmt, "", new { @class = "text-danger" })
+    </div>
+
+</div>
+<div class="form-group row">
+    @Html.LabelFor(model => model.sodienthoai, "SĐT:", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.sodienthoai, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.sodienthoai, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.email, "Email :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
+    <div class="col-md-3">
+        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+    </div>
 </div>
 
 
 <div class="form-group row">
-	@Html.LabelFor(model => model.tenkhachhang, "Tên khách hàng :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-	<div class="col-md-3">
-		@Html.EditorFor(model => model.tenkhachhang, new { htmlAttributes = new { @class = "form-control" } })
-		@Html.ValidationMessageFor(model => model.tenkhachhang, "", new { @class = "text-danger" })
-	</div>
-	@Html.LabelFor(model => model.socmt, "Số CMND :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-	<div class="col-md-3">
-		@Html.EditorFor(model => model.socmt, new { htmlAttributes = new { @class = "form-control" } })
-		@Html.ValidationMessageFor(model => model.socmt, "", new { @class = "text-danger" })
-	</div>
-</div>
+    @Html.LabelFor(model => model.ngaydukienden, "Ngày dự kiến đến :", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        <input id="ngaydukienden" name="ngaydukienden" class="form-control datetimepicker-here" type="datetime" title="Vui lòng chọn ngày" placeholder="Vui lòng chọn ngày.." />
+        @*@Html.EditorFor(model => model.ngaydukienden, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control datetimepicker-here ", @type = "date", @title = "Vui lòng chọn ngày", @placeholder = "Vui lòng chọn ngày.." } })*@
+        @Html.ValidationMessageFor(model => model.ngaydukienden, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ngaydukienden, "Ngày dự kiến đi :", htmlAttributes: new { @class = "control-label col-md-2 text-right text-required" })
+    <div class="col-md-3">
+        <input id="ngaydukiendi" name="ngaydukiendi" class="form-control datetimepicker-here" type="datetime" title="Vui lòng chọn ngày" placeholder="Vui lòng chọn ngày.." />
+        @*@Html.EditorFor(model => model.ngaydukiendi, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control datetimepicker-here ", @type = "date", @placeholder = "Vui lòng chọn ngày.." } })*@
+        @Html.ValidationMessageFor(model => model.ngaydukiendi, "", new { @class = "text-danger" })
 
-<div class="form-group row">
-	@Html.LabelFor(model => model.sodienthoai, "SĐT:", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-	<div class="col-md-3">
-		@Html.EditorFor(model => model.sodienthoai, new { htmlAttributes = new { @class = "form-control" } })
-		@Html.ValidationMessageFor(model => model.sodienthoai, "", new { @class = "text-danger" })
-	</div>
-	@Html.LabelFor(model => model.email, "Email :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-	<div class="col-md-3">
-		@Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
-		@Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
-	</div>
-</div>
-
-<div class="form-group row">
-	@Html.LabelFor(model => model.ngaydukienden, "Ngày dự kiến đến :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-	<div class="col-md-3">
-		@Html.EditorFor(model => model.ngaydukienden, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control ", @type = "date" } })
-		@Html.ValidationMessageFor(model => model.ngaydukienden, "", new { @class = "text-danger" })
-	</div>
-	@Html.LabelFor(model => model.ngaydukiendi, "Ngày dự kiến đi :", htmlAttributes: new { @class = "control-label col-md-2 text-right" })
-	<div class="col-md-3">
-		@Html.EditorFor(model => model.ngaydukiendi, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control ", @type = "date" } })
-		@Html.ValidationMessageFor(model => model.ngaydukiendi, "", new { @class = "text-danger" })
-	</div>
+    </div>
 
 </div>
 
+@if (Model.ngaydukienden != null && Model.ngaydukiendi != null)
+{
+    <script>
+    const fp_ngayden = flatpickr("#ngaydukienden", {
+        dateFormat: "m-d-Y H:i",
+        enableTime: true,
+        time_24hr: true,
+        allowInput: true,
+        locale: {
+            weekdays: {
+                shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                longhand: [
+                    "Chủ nhật",
+                    "Thứ hai",
+                    "Thứ ba",
+                    "Thứ tư",
+                    "Thứ năm",
+                    "Thứ sáu",
+                    "Thứ bảy",
+                ],
+            }, months: {
+                shorthand: [
+                    "Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12",
+                ],
+                longhand: [
+                    "Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu",
+                    "Tháng bảy",
+                    "Tháng tám",
+                    "Tháng chín",
+                    "Tháng mười",
+                    "Tháng mười một",
+                    "Tháng mười hai",
+                ],
+            },
+
+            firstDayOfWeek: 1,
+            rangeSeparator: " đến ",
+        }
+    });
+    const fp_ngaydi = flatpickr("#ngaydukiendi", {
+        dateFormat: "m-d-Y H:i",
+        enableTime: true,
+        time_24hr: true,
+        allowInput: true,
+        locale: {
+            weekdays: {
+                shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                longhand: [
+                    "Chủ nhật",
+                    "Thứ hai",
+                    "Thứ ba",
+                    "Thứ tư",
+                    "Thứ năm",
+                    "Thứ sáu",
+                    "Thứ bảy",
+                ],
+            }, months: {
+                shorthand: [
+                    "Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12",
+                ],
+                longhand: [
+                    "Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu",
+                    "Tháng bảy",
+                    "Tháng tám",
+                    "Tháng chín",
+                    "Tháng mười",
+                    "Tháng mười một",
+                    "Tháng mười hai",
+                ],
+            },
+
+            firstDayOfWeek: 1,
+            rangeSeparator: " đến ",
+        }
+    });
+        var setNgayDen = flatpickr.parseDate("@Model.ngaydukienden.Value.ToString("MM/dd/yyyy HH:mm")", "m/d/Y H:i");
+    var setNgayDi = flatpickr.parseDate("@Model.ngaydukiendi.Value.ToString("MM/dd/yyyy HH:mm")", "m/d/Y H:i");
+    fp_ngayden.setDate("@Model.ngaydukienden.Value.ToString("MM-dd-yyyy HH:mm")");
+    fp_ngaydi.setDate("@Model.ngaydukiendi.Value.ToString("MM-dd-yyyy HH:mm")")
+    </script>
+
+}
+
+<script>
+
+    $("#btnSaoChepNgay").click(function () {
+        $("#ngaydukienden").val($("#traCuuNgayDen").val());
+        $("#ngaydukiendi").val($("#traCuuNgayDi").val());
+    });
+
+    $("#btnTraCuuNgay").click(function () {
+        $("#table-wrapper").hide();
+        if ($("#traCuuNgayDen").val() == "" || $("#traCuuNgayDi").val() == "") {
+            return 0;
+        }
+        var _data = {
+            tungay: $("#traCuuNgayDen").val(),
+            denngay: $("#traCuuNgayDi").val()
+        }
+
+        var table = $('#table_dataTable1').DataTable({
+            ajax: {
+                "url": "/DatPhong/KiemTraTrangThai/",
+                data: _data,
+                method: "POST"
+            },
+            serverSide: true,
+            paging: false,
+            ordering: false,
+            destroy: true,
+            info: false,
+            responsive: true,
+            columns: [
+                { "data": "ten" },
+                {
+                    "data": "giathue",
+                    "render": function (data, type, row) {
+                        return toVND(data) + '/đêm';
+                    }
+                },
+                { "data": "tongsophong" },
+                { "data": "sophongdattruoc" },
+                { "data": "sophongdathue" },
+                { "data": "sophongtrong" },
+            ],
+            columnDefs: [
+                {
+                    targets: [1, 2, 3, 4, 5],
+                    className: "text-center"
+                }
+            ]
+        });
+        $("#table-wrapper").show();
+    });
+</script>

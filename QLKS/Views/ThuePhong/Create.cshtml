@@ -3,10 +3,10 @@
     ViewBag.Title = "Tạo mới thuê phòng";
 
 }
-<form method="post">
+<form method="post" action="/ThuePhong/Create">
     <div class="card mb-4">
         <h6 class="card-header">
-            Thêm mới đơn đặt phòng
+            Thuê phòng
             <small>
                 <i class="fa fa-arrow-circle-left"></i>
                 <a href="/ThuePhong/List">Quay lại danh sách</a>
@@ -14,10 +14,10 @@
             <div id="btnPrintInvoice" name="save" class="btn btn-warning" style="float:right;margin-right:5px; color: white;">
                 In phiếu thuê
             </div>
-            <div id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
+            <button id="btnSave" name="save" class="btn btn-success" style="float:right;margin-right:5px; ">
                 <i class="fas fa-save" style="margin-right:5px;"></i>
                 Lưu
-            </div>
+            </button>
         </h6>
         <div class="card-body">
             @{
@@ -26,7 +26,7 @@
         </div>
     </div>
 </form>
-@section scripts{
+@*@section scripts{
 
     <script>
         let hasPrinted = false; // cờ kiểm tra xem nhân viên đã in hóa đơn chưa, nếu chưa in thì khi save sẽ in 1 bản, in rồi thì khi ấn save sẽ k in thêm nữa
@@ -237,5 +237,5 @@
         }
     </script>
 
-}
+}*@
 

@@ -50,13 +50,13 @@ namespace QLKS.Controllers
                 select new
                 {
                     id = thuePhong.ID,
-                    maThue = thuePhong.ma,
-                    tenKhach = khachHang.tenkhachhang,
-                    sdt = khachHang.sodienthoai,
-                    cmt = khachHang.socmt,
+                    maThue = thuePhong.Ma,
+                    tenKhach = khachHang.Ten,
+                    sdt = khachHang.SoDienThoai,
+                    cmt = khachHang.SoCMT,
                     maPhong = chiTietThuePhong.PHONG_ID,
-                    ngayVao = chiTietThuePhong.ngayvao,
-                    ngayRa = chiTietThuePhong.ngayra
+                    ngayVao = chiTietThuePhong.THUEPHONG.NgayDen,
+                    ngayRa = chiTietThuePhong.THUEPHONG.NgayDi
                 };
             return Json(new { data = thongTinDatPhong });
         }
@@ -83,19 +83,18 @@ namespace QLKS.Controllers
             var thongTinDichVu =
                 from suDungDichVu in db.SUDUNGDICHVUs
                 join thuePhong in db.THUEPHONGs
-                on suDungDichVu.THUEPHONG_ID equals thuePhong.ID
+                on suDungDichVu.CHITIETTHUEPHONG.THUEPHONG_ID equals thuePhong.ID
                 join dichVu in db.DICHVUs
                 on suDungDichVu.DICHVU_ID equals dichVu.ID
-                where suDungDichVu.THUEPHONG_ID == id
+                where suDungDichVu.CHITIETTHUEPHONG.THUEPHONG_ID == id
                 select new
                 {
                     idDichVu = dichVu.ID,
-                    tenDichVu = dichVu.tendichvu,
-                    donGia = dichVu.dongia,
-                    maDichVu = dichVu.ma,
-                    ngaySD = suDungDichVu.ngaysudung,
-                    soLuong = suDungDichVu.soluong,
-                    thanhTien = suDungDichVu.thanhtien
+                    tenDichVu = dichVu.Ten,
+                    donGia = dichVu.DonGia,
+                    maDichVu = dichVu.Ma,
+                    ngaySD = suDungDichVu.ThoiGianSuDung,
+                    soLuong = suDungDichVu.SoLuong
                 };
             return Json(new { data = thongTinDichVu });
         }
@@ -113,11 +112,11 @@ namespace QLKS.Controllers
                 select new
                 {
                     id = phong.ID,
-                    maPhong = phong.ma,
-                    ngayVao = chiTietThuePhong.ngayvao,
-                    ngayRa = chiTietThuePhong.ngayra,
-                    giaThue = phong.giathue,
-                    soTang = phong.sotang,
+                    maPhong = phong.SoPhong,
+                    ngayVao = chiTietThuePhong.THUEPHONG.NgayDen,
+                    ngayRa = chiTietThuePhong.THUEPHONG.NgayDi,
+                    giaThue = phong.LOAIPHONG.GiaThue,
+                    soTang = phong.SoTang,
                 };
             var test = thongTinDatPhong.ToList();
             return Json(new { data = thongTinDatPhong });
@@ -129,9 +128,8 @@ namespace QLKS.Controllers
             DateTime now = DateTime.Now;
             THANHTOAN thanhToan = new THANHTOAN
             {
-                ngaytra = now,
-                tienphong = tienPhong,
-                maktra = maKiemTra,
+                NgayThanhToan = now,
+                ThanhTien = tienPhong,
                 THUEPHONG_ID = maThuePhong
             };
             foreach(var idPhong in danhSachPhongThue)

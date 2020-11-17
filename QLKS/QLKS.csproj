@@ -164,8 +164,24 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DoanhThuController.cs" />
     <Compile Include="Controllers\DatPhongController.cs" />
-    <Compile Include="Controllers\LichSuController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\TraPhongController.cs" />
+    <Compile Include="Domain\CHITIETTHUEPHONG.cs" />
+    <Compile Include="Domain\CHUONGTRINHGIAMGIA.cs" />
+    <Compile Include="Domain\DATPHONG.cs" />
+    <Compile Include="Domain\DICHVU.cs" />
+    <Compile Include="Domain\KHACHHANG.cs" />
+    <Compile Include="Domain\LOAIPHONG.cs" />
+    <Compile Include="Domain\LOAITINHTRANG.cs" />
+    <Compile Include="Domain\LOG.cs" />
+    <Compile Include="Domain\NGUOIDUNG.cs" />
+    <Compile Include="Domain\NHOMNGUOIDUNG.cs" />
+    <Compile Include="Domain\PHONG.cs" />
+    <Compile Include="Domain\QLKSContext.cs" />
+    <Compile Include="Domain\QUYEN.cs" />
+    <Compile Include="Domain\SUDUNGDICHVU.cs" />
+    <Compile Include="Domain\THANHTOAN.cs" />
+    <Compile Include="Domain\THUEPHONG.cs" />
     <Compile Include="Extensions\CommonConstants.cs" />
     <Compile Include="Controllers\LoaiTinhTrangController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
@@ -177,24 +193,6 @@
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\LoaiPhongController.cs" />
     <Compile Include="Controllers\PhongController.cs" />
-    <Compile Include="Controllers\VatTuController.cs" />
-    <Compile Include="Domain\CHITIETDATPHONG.cs" />
-    <Compile Include="Domain\CHITIETTHUEPHONG.cs" />
-    <Compile Include="Domain\DATPHONG.cs" />
-    <Compile Include="Domain\DICHVU.cs" />
-    <Compile Include="Domain\KHACHHANG.cs" />
-    <Compile Include="Domain\LOAIPHONG.cs" />
-    <Compile Include="Domain\LOAITINHTRANG.cs" />
-    <Compile Include="Domain\LUUTRU.cs" />
-    <Compile Include="Domain\NGUOIDUNG.cs" />
-    <Compile Include="Domain\NHOMNGUOIDUNG.cs" />
-    <Compile Include="Domain\PHONG.cs" />
-    <Compile Include="Domain\QLKSContext.cs" />
-    <Compile Include="Domain\QUYEN.cs" />
-    <Compile Include="Domain\SUDUNGDICHVU.cs" />
-    <Compile Include="Domain\THANHTOAN.cs" />
-    <Compile Include="Domain\THUEPHONG.cs" />
-    <Compile Include="Domain\VATTU.cs" />
     <Compile Include="Extensions\AutoMapperConfig.cs" />
     <Compile Include="Extensions\DatPhongItem.cs" />
     <Compile Include="Extensions\Enum.cs" />
@@ -203,8 +201,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChiTietThuePhongModel.cs" />
+    <Compile Include="Models\ChuongTrinhGiamGiaModel.cs" />
     <Compile Include="Models\DatPhongModel.cs" />
+    <Compile Include="Models\LogModel.cs" />
+    <Compile Include="Models\sp_Result_ThongKePhong.cs" />
     <Compile Include="Models\SuDungDichVuModel.cs" />
+    <Compile Include="Models\ThanhToanModel.cs" />
     <Compile Include="Models\ThuePhongModel.cs" />
     <Compile Include="Models\DichVuModel.cs" />
     <Compile Include="Models\KhachHangModel.cs" />
@@ -215,7 +217,6 @@
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\PhongModel.cs" />
     <Compile Include="Models\QuyenModel.cs" />
-    <Compile Include="Models\VatTuModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DichVuServices.cs" />
     <Compile Include="Services\KhachHangServices.cs" />
@@ -226,13 +227,13 @@
     <Compile Include="Services\NhomNguoiDungServices.cs" />
     <Compile Include="Services\PhongServices.cs" />
     <Compile Include="Services\QuyenServices.cs" />
+    <Compile Include="Validators\DatPhongValidator.cs" />
     <Compile Include="Validators\KhachHangValidator.cs" />
     <Compile Include="Validators\LoaiPhongValidator.cs" />
     <Compile Include="Validators\LoaiTinhTrangValidator.cs" />
     <Compile Include="Validators\NguoiDungValidator.cs" />
     <Compile Include="Validators\PhongValidator.cs" />
     <Compile Include="Validators\ThuePhongValidator.cs" />
-    <Compile Include="Validators\VatTuValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\User\wp-content\plugins\contact-form-7\images\ajax-loader.gif" />
@@ -374,7 +375,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DataTable.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
-    <Content Include="Content\datepicker.min.css" />
+    <Content Include="Content\flatpickr.min.css" />
     <Content Include="Content\hamburgers.css" />
     <Content Include="Content\imgLoaiPhong\1237-300x194.jpg" />
     <Content Include="Content\imgLoaiPhong\1237.jpg" />
@@ -408,13 +409,11 @@
     <Content Include="Scripts\controller\DatPhong.js" />
     <Content Include="Scripts\dataTables.bootstrap4.js" />
     <Content Include="Scripts\dataTables.responsive.min.js" />
-    <Content Include="Scripts\datepicker.en.js" />
-    <Content Include="Scripts\datepicker.min.js" />
-    <Content Include="Scripts\datepicker.vi.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
     <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\flatpickr.js" />
     <Content Include="Scripts\headroom.js" />
     <Content Include="Scripts\html2pdf.bundle.min.js" />
     <Content Include="Scripts\index.js.flow" />
@@ -466,6 +465,7 @@
     <Content Include="Assets\User\wp-json\oembed\1.0\embedd986.json" />
     <Content Include="Assets\User\wp-json\oembed\1.0\embede1af.json" />
     <Content Include="Assets\User\wp-json\oembed\1.0\embedf3b8.json" />
+    <Content Include=".editorconfig" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -555,15 +555,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
+    <Content Include="Scripts\vn.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -598,10 +590,6 @@
     <Content Include="Views\Phong\Create.cshtml" />
     <Content Include="Views\Phong\Edit.cshtml" />
     <Content Include="Views\Phong\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\VatTu\List.cshtml" />
-    <Content Include="Views\VatTu\Create.cshtml" />
-    <Content Include="Views\VatTu\Edit.cshtml" />
-    <Content Include="Views\VatTu\_CreateOrUpdate.cshtml" />
     <Content Include="Views\ThuePhong\_AddNewChiTietThue.cshtml" />
     <Content Include="Views\NhomNguoiDung\List.cshtml" />
     <Content Include="Views\NhomNguoiDung\Edit.cshtml" />
@@ -618,7 +606,7 @@
     <Content Include="Views\QLKS\Index.cshtml" />
     <Content Include="Views\QLKS\ViewDenied.cshtml" />
     <Content Include="Views\Home\DatPhong.cshtml" />
-    <Content Include="Views\LichSu\List.cshtml" />
+    <Content Include="Views\Log\List.cshtml" />
     <Content Include="Views\TraPhong\List.cshtml" />
     <Content Include="Views\TraPhong\traPhong.cshtml" />
     <Content Include="Views\DatPhong\List.cshtml" />
@@ -626,6 +614,14 @@
     <Content Include="Views\DatPhong\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Home\ThanhToan.cshtml" />
     <Content Include="Views\ThuePhong\_AddNewSuDungDichVu.cshtml" />
+    <Content Include="Web.Config" />
+    <Content Include="Views\DatPhong\Create.cshtml" />
+    <None Include="Web.Debug.Config">
+      <DependentUpon>Web.Config</DependentUpon>
+    </None>
+    <None Include="Web.Release.Config">
+      <DependentUpon>Web.Config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ThuePhong\Create.cshtml" />

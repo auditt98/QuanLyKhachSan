@@ -15,7 +15,7 @@ namespace QLKS.Services
         public IEnumerable<SelectListItem> PrepareLoaiTinhTrangPhong(int? selected)
         {
             var items = db.LOAITINHTRANGs.Where(c => c.ID <= 4).Select(c => new SelectListItem {
-                Text = c.ten,
+                Text = c.Ten,
                 Value = c.ID.ToString(),
                 Selected = c.ID == selected
             }).ToList();

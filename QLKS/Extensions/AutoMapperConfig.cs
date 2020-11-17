@@ -14,8 +14,6 @@ namespace QLKS.Extensions
     {
         public AutoMapperProfile()
         {
-            CreateMap<VATTU, VatTuModel>();
-            CreateMap<VatTuModel, VATTU>();
             CreateMap<PHONG, PhongModel>();
             CreateMap<PhongModel, PHONG>();
             CreateMap<KhachHangModel, KHACHHANG>();
@@ -38,22 +36,23 @@ namespace QLKS.Extensions
             CreateMap<QuyenModel, QUYEN>();
             CreateMap<SUDUNGDICHVU, SuDungDichVuModel>();
             CreateMap<SuDungDichVuModel, SUDUNGDICHVU>();
-
-            //Phần dưới này đang lỗiii đừng dùng map nhá :)
+            CreateMap<DatPhongModel, DATPHONG>();
+            CreateMap<DATPHONG, DatPhongModel>();
+            //Phần dưới này đang lỗiii 
             //ThuePhongModel -> KHACHHANG
-            var ThuePhongKHACHHANGMap = CreateMap<ThuePhongModel, KHACHHANG>();
-            ThuePhongKHACHHANGMap.ForAllMembers(opt => opt.Ignore());
-            // than map property as following
-            ThuePhongKHACHHANGMap.ForMember(dest => dest.sodienthoai, opt => opt.MapFrom(src => src.sdt));
-            ThuePhongKHACHHANGMap.ForMember(dest => dest.socmt, opt => opt.MapFrom(src => src.socmt));
-            ThuePhongKHACHHANGMap.ForMember(dest => dest.tenkhachhang, opt => opt.MapFrom(src => src.tenkhachhang));
+            //var ThuePhongKHACHHANGMap = CreateMap<ThuePhongModel, KHACHHANG>();
+            //ThuePhongKHACHHANGMap.ForAllMembers(opt => opt.Ignore());
+            //// than map property as following
+            //ThuePhongKHACHHANGMap.ForMember(dest => dest.sodienthoai, opt => opt.MapFrom(src => src.sdt));
+            //ThuePhongKHACHHANGMap.ForMember(dest => dest.socmt, opt => opt.MapFrom(src => src.socmt));
+            //ThuePhongKHACHHANGMap.ForMember(dest => dest.tenkhachhang, opt => opt.MapFrom(src => src.tenkhachhang));
 
-            //KHACHHANG -> ThuePhongModel
-            var KHACHHANGThuePhongMap = CreateMap<KHACHHANG, ThuePhongModel>();
-            KHACHHANGThuePhongMap.ForAllMembers(opt => opt.Ignore());
-            KHACHHANGThuePhongMap.ForMember(dest => dest.sdt, opt => opt.MapFrom(src => src.sodienthoai));
-            KHACHHANGThuePhongMap.ForMember(dest => dest.socmt, opt => opt.MapFrom(src => src.socmt));
-            KHACHHANGThuePhongMap.ForMember(dest => dest.tenkhachhang, opt => opt.MapFrom(src => src.tenkhachhang));
+            ////KHACHHANG -> ThuePhongModel
+            //var KHACHHANGThuePhongMap = CreateMap<KHACHHANG, ThuePhongModel>();
+            //KHACHHANGThuePhongMap.ForAllMembers(opt => opt.Ignore());
+            //KHACHHANGThuePhongMap.ForMember(dest => dest.sdt, opt => opt.MapFrom(src => src.sodienthoai));
+            //KHACHHANGThuePhongMap.ForMember(dest => dest.socmt, opt => opt.MapFrom(src => src.socmt));
+            //KHACHHANGThuePhongMap.ForMember(dest => dest.tenkhachhang, opt => opt.MapFrom(src => src.tenkhachhang));
         }
     }
 }

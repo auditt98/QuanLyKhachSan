@@ -12,17 +12,17 @@ namespace QLKS.Models
     {
         public int? ID { get; set; }
 
-        public string ma { get; set; }
+        public string Ma { get; set; }
 
-        public string tenkhachhang { get; set; }
+        public string Ten { get; set; }
 
-        public bool? gioitinh { get; set; }
+        public bool GioiTinh { get; set; }
 
-        public string socmt { get; set; }
+        public string SoCMT { get; set; }
 
-        public string sodienthoai { get; set; }
+        public string SoDienThoai { get; set; }
 
-        public string email { get; set; }
+        public string Email { get; set; }
 
     }
 

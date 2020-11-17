@@ -12,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
-    <link href="~/Content/datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/flatpickr.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
@@ -20,7 +20,9 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/moment.js"></script>
-    <script src="~/Scripts/datepicker.min.js"></script>
+    @*<script src="~/Scripts/datepicker.min.js"></script>*@
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+    <script src="~/Scripts/flatpickr.js"></script>
     <script src="~/Scripts/html2pdf.bundle.min.js"></script>
     <script src="https://www.amcharts.com/lib/4/core.js"></script>
     <script src="https://www.amcharts.com/lib/4/charts.js"></script>
@@ -28,21 +30,40 @@
     <script>
         var toastType;
         var toastMessage;
-        $.fn.datepicker.language['vi'] = {
-            days: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
-            daysShort: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
-            daysMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-            months: ["Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu", "Tháng bảy", "Tháng tám", "Tháng chín", "Tháng mười", "Tháng mười một", "Tháng mười hai"],
-            monthsShort: ["Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
-            today: 'Hôm nay',
-            clear: 'Xóa',
-            dateFormat: 'mm/dd/yyyy',
-            timeFormat: 'hh:ii aa',
-            firstDay: 1
-        };
-        $('.datepicker-here').datepicker({
-            language: 'vi'
-        })
+
+        //// creates multiple instances
+        //flatpickr.localize(flatpickr.l10ns.vn);
+        
+        //$('.datepicker-here').flatpickr({
+        //    dateFormat: 'm/d/Y',
+        //    enableTime: true,
+        //    defaultDate: new Date(),
+        //    onReady: function () {
+        //        var flatPickrInstance = this;
+        //        var $flatPickrInput = $(flatPickrInstance.element);
+        //        $flatPickrInput.siblings("span").click(function () {
+        //            flatPickrInstance.toggle();
+        //        });
+        //    }
+        //});
+
+        //$('.datepicker-here').flatpickr();
+
+        //$.fn.datepicker.language['vi'] = {
+        //    days: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
+        //    daysShort: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
+        //    daysMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+        //    months: ["Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu", "Tháng bảy", "Tháng tám", "Tháng chín", "Tháng mười", "Tháng mười một", "Tháng mười hai"],
+        //    monthsShort: ["Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
+        //    today: 'Hôm nay',
+        //    clear: 'Xóa',
+        //    dateFormat: 'mm/dd/yyyy',
+        //    timeFormat: 'hh:ii aa',
+        //    firstDay: 1
+        //};
+        //$('.datepicker-here').datepicker({
+        //    language: 'vi'
+        //})
         function toVND(data) {
             return data.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
         };
@@ -96,8 +117,12 @@
                             Thống kê doanh thu dịch vụ
                         </a>
                         <div class="sb-sidenav-menu-heading">Nghiệp vụ</div>
+                        <a class="nav-link checkperm" id="DanhSachPhongDatTruoc" href="/DatPhong/List">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Đặt phòng
+                        </a>
                         <a class="nav-link checkperm" id="NghiepVuThuePhong" href="/ThuePhong/List">
-                           
+
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-right"></i></div>
                             Thuê phòng
                         </a>
@@ -105,10 +130,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-arrow-circle-left"></i></div>
                             Trả phòng
                         </a>
-                        <a class="nav-link checkperm" id="DanhSachPhongDatTruoc" href="/DatPhong/List">
-                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
-                            Danh sách phòng đặt trước
-                        </a>
+
                         <div class="sb-sidenav-menu-heading">Danh mục</div>
                         <a class="nav-link checkperm" id="DanhMucLoaiPhong" href="/LoaiPhong/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-archway"></i></div>
@@ -121,10 +143,6 @@
                         <a class="nav-link checkperm" id="DanhMucDichVu" href="/DichVu/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-cocktail"></i></div>
                             Dịch vụ
-                        </a>
-                        <a class="nav-link checkperm" id="DanhMucVatTu" href="/VatTu/List">
-                            <div class="sb-nav-link-icon"><i class="fas fa-couch"></i></div>
-                            Vật tư
                         </a>
                         <a class="nav-link checkperm" id="DanhMucKhachHang" href="/KhachHang/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-id-card"></i></div>
@@ -141,7 +159,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Quản lý người dùng
                         </a>
-                        <a class="nav-link checkperm" id="HeThongLichSu" href="/LichSu/List">
+                        <a class="nav-link checkperm" id="HeThongLichSu" href="/Log/List">
                             <div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
                             Lịch sử hệ thống
                         </a>
@@ -151,14 +169,14 @@
                         </a>
                         <div class="sb-sidenav-footer">
                             <div>Phần mềm quản lý khách sạn</div>
-                            <div class="small">Trịnh Việt Anh - Hà Thị Kim Biên - Đỗ Đăng Khải</div>
+                            <div class="small">Trịnh Việt Anh</div>
                         </div>
                     </div>
                 </div>
             </nav>
         </div>
-        <div class="position-fixed" style="z-index: 1000; position: sticky; bottom: 20px; right: 20px; width: 300px;">
-            <div class="toast toast-default ml-auto" role="alert" data-delay="5000">
+        <div class="position-fixed" style="z-index: 1000; position: sticky; bottom: 20px; right: 20px; width: 500px;">
+            <div class="toast toast-default ml-auto hide d-hide" data-autohide="true" role="alert" data-delay="5000">
                 <div class="toast-header bg-@Html.Raw(TempData["NotiType"])">
                     <strong class="mr-auto font-weight-bold text-white">Thông báo</strong>
                     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -168,8 +186,8 @@
                 <div id="toast-body-text" class="toast-body"> @Html.Raw(TempData["Message"]) </div>
             </div>
         </div>
-        <div class="position-fixed" style="z-index: 1000; position: sticky; bottom: 130px; right: 20px; width: 300px;">
-            <div id="customToast" class="toast ml-auto" role="alert" data-delay="5000">
+        <div class="position-fixed" style="z-index: 1000; position: sticky; bottom: 130px; right: 20px; width: 500px;">
+            <div id="customToast" class="toast ml-auto d-hide hide" data-autohide="false" role="alert" data-delay="5000">
                 <div class="toast-header bg-danger">
                     <strong class="mr-auto font-weight-bold text-white">Thông báo</strong>
                     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -226,8 +244,121 @@
             $("body").toggleClass("sb-sidenav-toggled");
         });
     })(jQuery);
-    
 
+        flatpickr(".daterangepicker-here", {
+            dateFormat: "m-d-Y H:i",
+            enableTime: true,
+            time_24hr: true,
+            allowInput: true,
+            mode: "range",
+            //onChange: function (selectedDates, dateStr, instance) {
+            //    console.log(this.value);
+            //},
+            locale: {
+                weekdays: {
+                    shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                    longhand: [
+                        "Chủ nhật",
+                        "Thứ hai",
+                        "Thứ ba",
+                        "Thứ tư",
+                        "Thứ năm",
+                        "Thứ sáu",
+                        "Thứ bảy",
+                    ],
+                }, months: {
+                    shorthand: [
+                        "Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12",
+                    ],
+                    longhand: [
+                        "Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu",
+                        "Tháng bảy",
+                        "Tháng tám",
+                        "Tháng chín",
+                        "Tháng mười",
+                        "Tháng mười một",
+                        "Tháng mười hai",
+                    ],
+                },
+
+                firstDayOfWeek: 1,
+                rangeSeparator: " đến ",
+            }
+        });
+
+        flatpickr(".datetimepicker-here", {
+            dateFormat: "m-d-Y H:i",
+            enableTime: true,
+            time_24hr: true,
+            allowInput: true,
+            locale: {
+                weekdays: {
+                    shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                    longhand: [
+                        "Chủ nhật",
+                        "Thứ hai",
+                        "Thứ ba",
+                        "Thứ tư",
+                        "Thứ năm",
+                        "Thứ sáu",
+                        "Thứ bảy",
+                    ],
+                }, months: {
+                    shorthand: [
+                        "Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12",
+                    ],
+                    longhand: [
+                        "Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu",
+                        "Tháng bảy",
+                        "Tháng tám",
+                        "Tháng chín",
+                        "Tháng mười",
+                        "Tháng mười một",
+                        "Tháng mười hai",
+                    ],
+                },
+
+                firstDayOfWeek: 1,
+                rangeSeparator: " đến ",
+            }
+        });
+
+
+        flatpickr(".datepicker-here", {
+            dateFormat: "m-d-Y",
+            time_24hr: true,
+            allowInput: true,
+            locale: {
+                weekdays: {
+                    shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                    longhand: [
+                        "Chủ nhật",
+                        "Thứ hai",
+                        "Thứ ba",
+                        "Thứ tư",
+                        "Thứ năm",
+                        "Thứ sáu",
+                        "Thứ bảy",
+                    ],
+                }, months: {
+                    shorthand: [
+                        "Th1","Th2","Th3","Th4","Th5","Th6","Th7","Th8", "Th9","Th10","Th11","Th12",
+                    ],
+                    longhand: [
+                        "Tháng một","Tháng hai","Tháng ba","Tháng tư","Tháng năm","Tháng sáu",
+                        "Tháng bảy",
+                        "Tháng tám",
+                        "Tháng chín",
+                        "Tháng mười",
+                        "Tháng mười một",
+                        "Tháng mười hai",
+                    ],
+                },
+
+                firstDayOfWeek: 1,
+                rangeSeparator: " đến ",
+            } 
+        });
     </script>
 </body>
 </html>

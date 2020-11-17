@@ -4,6 +4,7 @@ using QLKS.Models;
 using QLKS.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -29,6 +30,8 @@ namespace QLKS.Controllers
             }
             if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_XEM))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
 
@@ -38,10 +41,10 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult PopulateNhomNguoiDung()
         {
-            var danhSachNhomNguoiDung = db.NHOMNGUOIDUNGs.Where(c=>c.ID != 1).Select(c => new
+            var danhSachNhomNguoiDung = db.NHOMNGUOIDUNGs.Select(c => new
             {
-                ma = c.ma,
-                ten = c.ten,
+                ma = c.Ma,
+                ten = c.Ten,
                 uid = c.ID
             }).ToList();
             var result = new { data = danhSachNhomNguoiDung };
@@ -59,12 +62,14 @@ namespace QLKS.Controllers
             }
             if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_THEM))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             var model = new NhomNguoiDungModel();
             var maxId = db.NHOMNGUOIDUNGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
-            var newId = (maxId + 1).ToString().PadLeft(7, '0');
-            model.ma = "NHOM" + "-" + newId;
+            var newId = (maxId + 1).ToString().PadLeft(4, '0');
+            model.Ma = "NHOM" + "-" + newId;
             var allQuyen = _quyenServices.GetAllQuyen(new List<int>()).ToList();
             model.DanhSachQuyen = allQuyen;
             return View(model);
@@ -81,18 +86,24 @@ namespace QLKS.Controllers
             }
             if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_THEM))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
-            var nhomNguoiDung = AutoMapper.Mapper.Map<NHOMNGUOIDUNG>(model);
-            db.NHOMNGUOIDUNGs.Add(nhomNguoiDung);
-            if(model.SelectedQuyens != null)
+            var item = AutoMapper.Mapper.Map<NHOMNGUOIDUNG>(model);
+            db.NHOMNGUOIDUNGs.Add(item);
+            //int a = 0;
+            //a = db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_NHOMNGUOIDUNG @Type, @ID, @Ten, @Ma, @UpdateID", new SqlParameter("@Type", int.Parse("0")), new SqlParameter("@ID", a), new SqlParameter("@Ten", item.Ten), new SqlParameter("@Ma", item.Ma), new SqlParameter("@UpdateID", int.Parse("0")));
+            //var nhomNguoiDung = db.NHOMNGUOIDUNGs.Find(a);
+
+            if (model.SelectedQuyens != null)
             {
                 if(model.SelectedQuyens.Count > 0)
                 {
                     foreach (var quyen in model.SelectedQuyens)
                     {
                         var i = db.QUYENs.Find(quyen);
-                        nhomNguoiDung.QUYENs.Add(i);
+                        item.QUYENs.Add(i);
                     }
                 }
             }
@@ -113,6 +124,8 @@ namespace QLKS.Controllers
 
             if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_SUA))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             if (id == null)
@@ -130,9 +143,9 @@ namespace QLKS.Controllers
             //prepare model
             var model = new NhomNguoiDungModel();
             model.ID = nhomNguoiDung.ID;
-            model.ma = nhomNguoiDung.ma;
+            model.Ma = nhomNguoiDung.Ma;
             model.SelectedQuyens = nhomNguoiDung.QUYENs.Select(c => c.ID).ToList();
-            model.ten = nhomNguoiDung.ten;
+            model.Ten = nhomNguoiDung.Ten;
             //var nhomNguoiDungModel = AutoMapper.Mapper.Map<NhomNguoiDungModel>(nhomNguoiDung);
             var allQuyen = _quyenServices.GetAllQuyen(listQuyen).ToList();
             model.DanhSachQuyen = allQuyen;
@@ -150,6 +163,8 @@ namespace QLKS.Controllers
             }
             if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_SUA))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             var item = db.NHOMNGUOIDUNGs.Where(c => c.ID == model.ID).FirstOrDefault();
@@ -159,7 +174,7 @@ namespace QLKS.Controllers
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
-            item.ten = model.ten;
+            item.Ten = model.Ten;
             item.QUYENs.Clear();
             if (model.SelectedQuyens != null)
             {
@@ -184,10 +199,14 @@ namespace QLKS.Controllers
         {
             if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_XOA))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             var nhomnguoidung = db.NHOMNGUOIDUNGs.Find(id);
-            db.NHOMNGUOIDUNGs.Remove(nhomnguoidung);
+            int a = 0;
+            a = db.Database.ExecuteSqlCommand("exec SP_Delete_NHOMNGUOIDUNG @ID", new SqlParameter("@ID", nhomnguoidung.ID));
+            //db.NHOMNGUOIDUNGs.Remove(nhomnguoidung);
             db.SaveChanges();
             //Thông báo
             TempData["Message"] = "Xóa thành công";
@@ -195,14 +214,14 @@ namespace QLKS.Controllers
             return Json("ok");
         }
 
-        [HttpPost]
-        public ActionResult CheckQuyen()
-        {
-            if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_XEM))
-            {
-                return Json("no");
-            }
-            return Json("yes");
-        }
+        //[HttpPost]
+        //public ActionResult CheckQuyen()
+        //{
+        //    if (!_quyenServices.Authorize((int)EnumQuyen.NHOMNGUOIDUNG_XEM))
+        //    {
+        //        return Json("no");
+        //    }
+        //    return Json("yes");
+        //}
     }
 }

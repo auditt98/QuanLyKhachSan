@@ -1,265 +1,133 @@
 ﻿@model ThuePhongModel
-    @{
-        ViewBag.Title = "Sửa thông tin phiếu thuê";
+@{
+    ViewBag.Title = "Sửa thông tin phiếu thuê";
 
-    }
-    <form method="post">
-        <div class="card mb-4">
-            <h6 class="card-header">
-                Sửa thông tin
-                <small>
-                    <i class="fa fa-arrow-circle-left"></i>
-                    <a href="/ThuePhong/List">Quay lại danh sách</a>
-                </small>
-                <div class="btn btn-danger" id="btnDelete" style="float:right;margin-right:5px; ">
-                    <i class="fas fa-trash" style="margin-right:5px;"></i>
-                    Xóa
-                </div>
-                <div id="btnSave" class="btn btn-success" style="float:right;margin-right:5px; ">
-                    <i class="fas fa-save" style="margin-right:5px;"></i>
-                    Lưu
-                </div>
-                <div id="btnPrintInvoice" name="save" class="btn btn-warning" style="float:right;margin-right:5px; color: white;">
-                    In phiếu thuê
-                </div>
-            </h6>
-            <div class="card-body">
-                @{
-                    @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control d-none" } })
-                    Html.RenderPartial("_CreateOrUpdate");
-                }
+}
+<form method="post" action="/ThuePhong/Edit">
+    <div class="card mb-4">
+        <h6 class="card-header">
+            Sửa thông tin
+            <small>
+                <i class="fa fa-arrow-circle-left"></i>
+                <a href="/ThuePhong/List">Quay lại danh sách</a>
+            </small>
+            <div class="btn btn-danger" id="btnDelete" style="float:right;margin-right:5px; ">
+                <i class="fas fa-trash" style="margin-right:5px;"></i>
+                Xóa
             </div>
+            <button id="btnSave" class="btn btn-success" style="float:right;margin-right:5px; ">
+                <i class="fas fa-save" style="margin-right:5px;"></i>
+                Lưu
+            </button>
+            <div id="btnPrintInvoice" name="save" class="btn btn-warning" style="float:right;margin-right:5px; color: white;">
+                In phiếu thuê
+            </div>
+        </h6>
+        <div class="card-body">
+            @{
+                @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control d-none" } })
+                Html.RenderPartial("_CreateOrUpdate");
+            }
         </div>
-    </form>
+    </div>
+</form>
 
-    @section scripts{
-        <script>
-            $("#btnSave").on("click", function () {
-                var listChiTiet = [];
-                var listChiTietDichVu = [];
-                var ID = $("#ID").val();
-                var ma = $("#ma").val();
-                var tenkhachhang = $("#tenkhachhang").val();
-                var khachhang_id = $("#khachhang_id").val();
-                var socmt = $("#socmt").val();
-                var sdt = $("#sdt").val();
-                $(".chitiet").each(function () {
-                    var gid = $(this).data("guid");
-                    loaiphong = $("#loaiphong_" + gid).val();
-                    phong = $("#phong_" + gid).val();
-                    ngayvao = $("#ngayvao_" + gid).val();
-                    ngayra = $("#ngayra_" + gid).val();
-                    //gia = $("#gia_" + gid).val();
-                    var ChiTiet = {
-                        loaiphong_id: loaiphong,
-                        phong_id: phong,
-                        ngayvao: ngayvao,
-                        ngayra: ngayra
-                        //gia: gia
-                    }
-                    listChiTiet.push(ChiTiet);
+
+<script>
+    $("#btnPrintInvoice").on("click", function () {
+        var d = {
+            //loaiphong_id: $("#loaiphong").val(),
+            //fromCheckIn: fromCheckIn,
+            fromEdit: "@Model.fromEdit"
+        }
+        $.ajax({
+            type: "POST",
+            url: "/ThuePhong/GetThongTinHoaDon",
+            data: d,
+            success: function (data) {
+                var giatien = data.giatien;
+                var tenkhachhang = data.tenkhachhang;
+                var emailkhachhang = data.emailkhachhang;
+                var sodienthoaikhachhang = data.sodienthoaikhachhang;
+                var mahoadon = data.mahoadon;
+
+                var res = `
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="row p-5">
+                        <div class="col-md-6">
+                            <h3>Viet Anh's Hotel</h3>
+                        </div>
+
+                        <div class="col-md-6 text-right">
+                            <p class="font-weight-bold mb-1">Hóa đơn số ${ mahoadon } </p>
+                        </div >
+                    </div >
+                    <div class="row pb-5 p-5">
+                        <div class="col-md-6">
+                            <p class="font-weight-bold mb-4">Thông tin khách hàng</p>
+                            <p class="mb-1">Ông/bà: ${tenkhachhang}</p>
+                            <p class="mb-1">Số điện thoại: ${sodienthoaikhachhang}</p>
+                            <p class="mb-1">Email: ${emailkhachhang}</p>
+                        </div>
+                    </div
+                    <div class="row p-5">
+                        <div class="col-md-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Số phòng</th>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Loại phòng</th>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Đơn giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+`
+                data.chitiet.forEach(x => {
+                    res = res + `<tr><td>` + x.sophong + `</td><td>` + x.loaiphong + `</td><td>` + toVND(x.dongia) + `</td></tr>`
                 })
-
-                $(".chitietdichvu").each(function () {
-                    var gid = $(this).data("guid");
-                    dichvu = $("#dichvu_" + gid).val();
-                    ngaysudung = $("#ngaysudung_" + gid).val();
-                    soluong = $("#soluong_" + gid).val();
-                    thanhtien = $("#thanhtienHidden_" + gid).val();
-
-                    var ChiTietDichVu = {
-                        DICHVU_ID: dichvu,
-                        ngaysudung: ngaysudung,
-                        soluong: soluong,
-                        thanhtien: thanhtien
-                    }
-                    listChiTietDichVu.push(ChiTietDichVu);
-                })
-                var _data = {
-                    ChiTietThuePhong: listChiTiet,
-                    ChiTietDichVu: listChiTietDichVu,
-                    ma: ma,
-                    tenkhachhang: tenkhachhang,
-                    socmt: socmt,
-                    sdt: sdt,
-                    KHACHHANG_ID: khachhang_id,
-                    ID: ID
-                }
-                $.ajax({
-                    data: _data,
-                    method: "POST",
-                    url: "/ThuePhong/Edit",
-                    success: function (data) {
-                        if (data == "ok") {
-                            window.location.href = "/ThuePhong/List"
-                        }
-                    }
-
-                })
-
-            })
-
-            $("#btnPrintInvoice").on("click", function () {
-                var tenkhachhang = $("#tenkhachhang").val();
-                var socmt = $("#socmt").val();
-                var sdt = $("#sdt").val();
-
-                hasPrinted = true
-                exportInvoice(tenkhachhang, socmt, sdt)
-            })
-
-            function formatCost(cost, currency = ' VND') {
-                return cost.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + currency;
+                res = res + `</tbody></table></div></div><div class="d-flex flex-row-reverse bg-dark text-white p-4">
+                        <div class="py-3 px-5 text-right">
+                            <div class="mb-2">Tổng tiền</div>
+                            <div class="h2 font-weight-light">${ toVND(giatien)} </div></div></div></div></div></div></div></div>`
+                html2pdf()
+                    .set({ filename: 'Thue_phong' })
+                    .from(res).toPdf().save();
             }
+        });
+    })
+</script>
 
-            function exportInvoice(tenkhachhang, socmt, sdt) {
-                // in hoa don thue phong
-                let date = new Date
-                let stt = 0;
-                let chitietThuePhong = []
-                let chiTietThuePhongHTML = ''
-                let tongTienThue = 0;
 
-                $(".chitiet").each(function () {
-                    let gid = $(this).data("guid");
-                    var nvao = moment($("#ngayvao_" + gid).val(), "MM-DD-YYYY");
-                    var nra = moment($("#ngayra_" + gid).val(), "MM-DD-YYYY");
-                    var days = Math.abs(nra.diff(nvao, 'days', true));
-                    chitietThuePhong.push({
-                        stt: stt++,
-                        loaiphong: $("#loaiphong_" + gid + " option:selected").text(),
-                        soLuong: 1,
-                        soNguoi: '',
-                        soDem: days,
-                        gia: $("#gia_" + gid).val()
-                    });
-                });
-                chitietThuePhong.forEach(p => {
-                    chiTietThuePhongHTML += `<tr>
-                    <td>${stt++}</td>
-                    <td>${p.loaiphong}</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>${p.soDem}</td>
-                    <td>${p.gia}</td>
-                </tr>`
-                    tongTienThue += p.soDem * parseInt(p.gia.match(/\d+/g).join(''))
-                })
-
-                let rentContract = `
-                <div style='color: red; margin: 40px 20px 0 20px'>
-	                <h4 style='text-align: center;'>SAO MAI HOTEL</h4>
-	                <div style='justify-content: space-between; display: flex;'>
-		                <div style='display: flex;'>
-			                <div style='width: 120px;'>
-				                <p>Địa chỉ</p>
-				                <p>Số điện thoại</p>
-				                <p>Email</p>
-				                <p>Website</p>
-			                </div>
-			                <div>
-				                <p>: 12 Đặng Thùy Trâm - Cầu Giấy Hà Nội</p>
-				                <p>: 123123123</p>
-				                <p>: saomailhotel@gmail.com</p>
-				                <p>: www.saomaihotel.com</p>
-			                </div>
-		                </div>
-		                <div style='width: 20%'>
-			                <p>Ngày: ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}</p>
-		                </div>
-	                </div>
-	                <h4 style='text-align: center'>PHIẾU THUÊ PHÒNG</h4>
-	                <p>Thông tin khách hàng</p>
-	                <div style='display: flex;'>
-		                <div style='width: 120px;'>
-			                <p>Ông/ Bà</p>
-			                <p>CMTND</p>
-			                <p>SĐT</p>
-			                <p>Email</p>
-			                <p>Thời gian đến</p>
-			                <p>Thời gian đi</p>
-		                </div>
-		                <div>
-			                <p>: ${tenkhachhang}</p>
-			                <p>: ${socmt}</p>
-			                <p>: ${sdt}</p>
-			                <p>: </p>
-			                <p>: </p>
-			                <p>: </p>
-		                </div>
-	                </div>
-	                <h4>Chi tiết thuê phòng</h4>
-                    <table style="width:100%">
-                        <tr>
-                            <th>Số thứ tự</th>
-                            <th>Loại phòng</th>
-                            <th>Số lượng</th>
-                            <th>Số người</th>
-                            <th>Số đêm</th>
-                            <th>Đơn giá</th>
-                        </tr>
-                        ${chiTietThuePhongHTML}
-                    </table>
-	                <br>
-	                <h4><b>Tổng thanh toán: ${formatCost(tongTienThue)}</b></h4>
-	                <br>
-	                <p>Hình thức thanh toán</p>
-	                <p>Tiền mặt/ Thẻ tín dụng:</p>
-	                <div style='display: flex; margin-bottom: 1rem;'>
-		                <p style='width: 50%; margin: 0'>Số thẻ:</p>
-		                <p style='width: 50%; margin: 0'> Hạn sử dụng:</p>
-	                </div>
-	                <p>Số tiền cọc:</p>
-	                <p>Bằng chữ:</p>
-	                <br><br>
-	                <div style='display: flex;'>
-		                <div style='width: 50%'>
-			                <p style='text-align: center;'><b>Khách hàng</b></p>
-			                <p style='text-align: center;'>(Ký và ghi rõ họ tên)</p>
-		                </div>
-		                <div style='width: 50%'>
-			                <p style='text-align: center;'><b>Nhân viên</b></p>
-			                <p style='text-align: center;'>(Ký, đóng dấu, ghi rõ họ tên)</p>
-		                </div>
-	                </div>
-                </div>`
-                if (chitietThuePhong.length) {
-                    html2pdf()
-                        .set({filename: 'Thue_phong'})
-                        .from(rentContract)
-                        .save();
-                } else {
-                    alert("Vui lòng chọn phòng thuê")
-                }
-            }
-        </script>
-        <script>
-            $("#btnDelete").on("click", function () {
-                swal({
-                    title: "Bạn có chắc chắn muốn xóa?",
-                    text: "Mọi dữ liệu liên quan sẽ bị mất!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            var _data = {
-                                id: $("#ID").val()
+<script>
+    $("#btnDelete").on("click", function () {
+        swal({
+            title: "Bạn có chắc chắn muốn xóa?",
+            text: "Mọi dữ liệu liên quan sẽ bị mất!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    var _data = {
+                        id: $("#ID").val()
+                    }
+                    $.ajax({
+                        url: "/ThuePhong/Delete",
+                        method: "POST",
+                        data: _data,
+                        success: function (data) {
+                            if (data == "ok") {
+                                window.location.href = "/ThuePhong/List"
                             }
-                            $.ajax({
-                                url: "/ThuePhong/Delete",
-                                method: "POST",
-                                data: _data,
-                                success: function (data) {
-                                    if (data == "ok") {
-                                        window.location.href = "/ThuePhong/List"
-                                    }
-                                }
-                            })
                         }
-                    });
-            })
-        </script>
-
-    }
+                    })
+                }
+            });
+    })
+</script>

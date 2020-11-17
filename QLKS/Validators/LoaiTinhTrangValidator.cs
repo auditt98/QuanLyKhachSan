@@ -6,8 +6,8 @@ namespace QLKS.Validators
     {
         public LoaiTinhTrangValidator()
         {
-            RuleFor(c => c.ma).NotEmpty().WithMessage("Mã không được để trống");
-            RuleFor(c => c.ten).NotEmpty().WithMessage("Tên không được để trống");
+            RuleFor(c => c.Ma).NotEmpty().WithMessage("Mã không được để trống");
+            RuleFor(c => c.Ten).NotEmpty().WithMessage("Tên không được để trống");
         }
     }
 }

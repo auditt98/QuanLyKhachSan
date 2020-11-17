@@ -9,19 +9,11 @@ namespace QLKS.Models
     {
         public int? ID { get; set; }
 
-        public string ten { get; set; }
+        public string Ten { get; set; }
 
-        public string ma { get; set; }
+        public string Ma { get; set; }
 
-        public DateTime? ngaytao { get; set; }
-
-        public int? nguoitao { get; set; }
-
-        public string ipchinhsua { get; set; }
-
-        public DateTime? ngaychinhsua { get; set; }
-
-        public string tentiengviet { get; set; }
+        public string MoTa { get; set; }
 
     }
 }

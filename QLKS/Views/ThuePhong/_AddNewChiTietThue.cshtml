@@ -8,7 +8,7 @@
     <div class="form-group row" style="padding-top: 2px">
         <div class="dropdown-divider" style="width:100%"></div>
         <div class="col-sm-3">
-            <label class="text-sm-left text-required">Chọn loại phòng</label>
+            @*<label class="text-sm-left text-required">Chọn loại phòng</label>
             <select id="loaiphong_@guid" name="loaiphong_id" class="form-control" required title="Vui lòng chọn loại phòng">
                 @foreach (var lp in Model.DanhSachLoaiPhong)
                 {
@@ -21,7 +21,7 @@
                         <option value="@lp.Value">@lp.Text</option>
                     }
                 }
-            </select>
+            </select>*@
         </div>
         <div class="col-sm-3">
             <label class="text-sm-left text-required">Chọn phòng trống</label>
@@ -128,22 +128,24 @@
                     $("#gia_@guid").val(toVND(g));
                 }
             });
-        })
-    $('.datepicker-here').datepicker({
-        onSelect: function (formattedDate, date, inst) {
-            $(inst.el).trigger('change');
-        }
-    });
-    $('.datepicker-here').datepicker({
-        language: 'vi'
     })
+    flatpickr.localize(flatpickr.l10ns.vn);
+    flatpickr(".datepicker-here");
+    //$('.datepicker-here').flatpickr({
+    //    onSelect: function (formattedDate, date, inst) {
+    //        $(inst.el).trigger('change');
+    //    }
+    //});
+    //$('.datepicker-here').flatpickr();
 </script>
 
 
 @if (Model.ngayra != null)
 {
 <script>
-    var ngayVao = $("#ngayvao_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayvao.Value.Year, @Model.ngayvao.Value.Month-1, @Model.ngayvao.Value.Day));
+    console.log(document.querySelector(".datepicker-here")._flatpickr.selectedDate);
+    //var ngayVao = document.querySelector("#myInput")._flatpickr;
+    @*var ngayVao = $("#ngayvao_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayvao.Value.Year, @Model.ngayvao.Value.Month-1, @Model.ngayvao.Value.Day));*@
     var ngayRa = $("#ngayra_@guid").datepicker().data('datepicker').selectDate(new Date(@Model.ngayra.Value.Year, @Model.ngayra.Value.Month-1, @Model.ngayra.Value.Day));
     var nv = new Date(@Model.ngayvao.Value.Year, @Model.ngayvao.Value.Month-1, @Model.ngayvao.Value.Day);
     var nr = new Date(@Model.ngayra.Value.Year, @Model.ngayra.Value.Month-1, @Model.ngayra.Value.Day)

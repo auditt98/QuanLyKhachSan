@@ -11,7 +11,7 @@ namespace QLKS.Validators
     {
         public PhongValidator()
         {
-            RuleFor(c => c.giathue).NotNull().WithMessage("Giá thuê không được để trống");
+            RuleFor(c => c.LOAIPHONG_ID).NotNull().WithMessage("Loại phòng không được để trống");
         }
     }
 }

@@ -16,7 +16,7 @@ namespace QLKS.Services
         {
             var items = db.PHONGs.Select(c => new SelectListItem
             {
-                Text = c.ma,
+                Text = c.SoPhong,
                 Value = c.ID.ToString(),
                 Selected = c.ID == selected
             }).ToList();
@@ -27,6 +27,29 @@ namespace QLKS.Services
             }
             return items;
         }
+
+        public IEnumerable<SelectListItem> PrepareSelectListPhongForThuePhong(int? thuephong = 0, int? phong = 0)
+        {
+            var itemThuePhong = db.THUEPHONGs.Find(thuephong);
+            var listPhong = new List<PHONG>();
+            foreach (var i in itemThuePhong.CHITIETTHUEPHONGs)
+            {
+                listPhong.Add(i.PHONG);
+            }
+            var items = listPhong.Select(c => new SelectListItem
+            {
+                Text = c.SoPhong,
+                Value = c.ID.ToString(),
+                Selected = c.ID == phong
+            }).ToList();
+            if(phong == 0)
+            {
+                var firstRow = new SelectListItem { Value = null, Text = "--Chọn phòng--" };
+                items = items.Prepend(firstRow).ToList();
+            }
+            return items;
+        }
+
 
         public List<PHONG> GetPhongTrongFromLoaiPhong(int? loaiphong)
         {

@@ -13,20 +13,14 @@ namespace QLKS.Models
     {
         public int? ID { get; set; }
 
-        public string ma { get; set; }
-
-        public int? giathue { get; set; }
-
-        public int? sotang { get; set; }
-
-        public string ghichu { get; set; }
-
-        public string tenloaiphong { get; set; }
+        public string SoPhong { get; set; }
 
         public int? LOAIPHONG_ID { get; set; }
 
-        public int? LOAITINHTRANG_ID { get; set; }
+        public int? SoTang { get; set; }
 
+        public int? LOAITINHTRANG_ID { get; set; }
+        
         public IEnumerable<SelectListItem> DanhSachLoaiPhong { get; set; }
 
         public IEnumerable<SelectListItem> DanhSachTinhTrang { get; set; }

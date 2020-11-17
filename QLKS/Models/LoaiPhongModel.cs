@@ -12,26 +12,23 @@ namespace QLKS.Models
     {
         public int? ID { get; set; }
 
-        public string tenloaiphong { get; set; }
+        public string Ten { get; set; }
 
-        public string ghichu { get; set; }
+        public string Ma { get; set; }
 
-        public string anh { get; set; }
+        public string AnhDaiDien { get; set; }
 
-        public string khungnhin { get; set; }
+        public string ThongTin { get; set; }
 
-        public int? dientich { get; set; }
+        public int? GiaThue { get; set; }
 
-        public string giuong { get; set; }
+        public int? SoNguoiLon { get; set; }
 
-        public int? nguoilon { get; set; }
+        public int? SoTreEm { get; set; }
 
-        public int? trecon { get; set; }
+        public int? SoGiuongDon { get; set; }
 
-        public string tiennghi { get; set; }
+        public int? SoGiuongDoi { get; set; }
 
-        public string thongtin { get; set; }
-
-        public string ma { get; set; }
     }
 }

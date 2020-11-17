@@ -18,25 +18,23 @@ namespace QLKS.Models
         }
         public int? ID { get; set; }
 
-        public string tendangnhap { get; set; }
+        public string TenDangNhap { get; set; }
 
-        public string hash { get; set; }
+        public string Hash { get; set; }
 
-        public string tennguoidung { get; set; }
+        public string TenNguoiDung { get; set; }
 
-        public string sodienthoai { get; set; }
+        public string SoDienThoai { get; set; }
 
-        public DateTime? ngaysinh { get; set; }
+        public DateTime? NgaySinh { get; set; }
 
-        public string diachi { get; set; }
+        public string DiaChi { get; set; }
 
-        public bool? gioitinh { get; set; }
+        public bool? GioiTinh { get; set; }
 
-        public string avatar { get; set; }
+        public string MatKhau { get; set; }
 
-        public string malaymatkhau { get; set; }
-
-        public string matkhau { get; set; }
+        public string SoCMT { get; set; }
 
         public List<SelectListItem> DanhSachNhomNguoiDung { get; set; }
 

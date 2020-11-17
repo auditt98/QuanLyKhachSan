@@ -4,6 +4,8 @@ using QLKS.Models;
 using QLKS.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,6 +21,8 @@ namespace QLKS.Controllers
         private LichSuServices _lichSuServices = new LichSuServices();
         private QuyenServices _quyenServices = new QuyenServices();
         private PhongServices _phongServices = new PhongServices();
+        private KhachHangServices _khachHangServices = new KhachHangServices();
+        private LoaiPhongServices _loaiPhongServices = new LoaiPhongServices();
         public ActionResult List()
         {
             if (!_nguoiDungServices.isLoggedIn())
@@ -34,30 +38,134 @@ namespace QLKS.Controllers
             return View();
         }
 
-        [HttpPost]
-        public JsonResult PopulateDatPhong()
+        public ActionResult Create()
         {
-            var danhSachDatPhong = db.CHITIETDATPHONGs.Select(c => new
+            if (!_nguoiDungServices.isLoggedIn())
             {
-                madatphong = c.DATPHONG_ID,
-                maphong = c.PHONG.ma,
-                idphong = c.PHONG_ID,
-                tenloaiphong = c.PHONG.LOAIPHONG.tenloaiphong,
-                tenkhachhang = c.tenkhachhang,
-                sdtkhachhang = c.sodienthoai,
-                emailkhachhang = c.email,
-                cmtkhachhang = c.socmt,
-                dukienden = c.ngaydukienden,
-                dukiendi = c.ngaydukiendi,
+                TempData["Message"] = "Bạn chưa đăng nhập, vui lòng đăng nhập";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("Login", "NguoiDung");
+            }
+            if (!_quyenServices.Authorize((int)EnumQuyen.DATPHONG_THEM))
+            {
+                TempData["Message"] = "Bạn không có quyền truy cập chức năng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
+            var datPhongModel = new DatPhongModel();
+            var maxId = db.DATPHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
+            var newId = (maxId + 1).ToString().PadLeft(7, '0');
+            datPhongModel.MaDatPhong = "DP" + "-" + newId;
+            datPhongModel.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
+            return View(datPhongModel);
+        }
 
+        [HttpPost]
+        public ActionResult Create(DatPhongModel model)
+        {
+            if (!_quyenServices.Authorize((int)EnumQuyen.DATPHONG_THEM))
+            {
+                TempData["Message"] = "Bạn không có quyền truy cập chức năng này";
+                TempData["NotiType"] = "error"; //success là class trong bootstrap
+                return RedirectToAction("ViewDenied", "QLKS");
+            }
+            if (!ModelState.IsValid)
+            {
+                TempData["Message"] = "Có lỗi xảy ra! Vui lòng kiểm tra lại thông tin.";
+                TempData["NotiType"] = "danger";
+                if(model.LOAIPHONG_ID == null)
+                { 
+                    model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
+                }
+                else
+                {    
+                    model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(model.LOAIPHONG_ID);
+                }
+                return View("Create", model);
+            }
 
-            }).OrderByDescending(c => c.madatphong).ToList();
+            var item = AutoMapper.Mapper.Map<DATPHONG>(model);
+            var results = db.Database.SqlQuery<sp_Result_ThongKePhong>("exec ThongKePhong @tungay, @denngay", new SqlParameter("@tungay", model.ngaydukienden), new SqlParameter("@denngay", model.ngaydukiendi)).ToList();
+            foreach (var i in results)
+            {
+                if (i.ID == model.LOAIPHONG_ID && i.SoPhongTrong < model.SoPhong)
+                {
+                    if (model.LOAIPHONG_ID == null)
+                    {
+                        model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
+                    }
+                    else
+                    {
+                        model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(model.LOAIPHONG_ID);
+                    }
+                    TempData["Message"] = "Không đủ đặt " + model.SoPhong + " phòng. Chỉ còn lại " + i.SoPhongTrong + " phòng.";
+                    TempData["NotiType"] = "danger";
+                    return View("Create", model);
+                }
+            }
+            var khachhang = new KhachHangModel();
+            khachhang.Ma = _khachHangServices.GenMaKhachHang();
+            khachhang.Ten = model.tenkhachhang;
+            khachhang.SoCMT = model.socmt;
+            khachhang.SoDienThoai = model.sodienthoai;
+            khachhang.Email = model.email;
+            var khachHangItem = AutoMapper.Mapper.Map<KHACHHANG>(khachhang);
+            db.KHACHHANGs.Add(khachHangItem);
+            db.SaveChanges();
+            item.KHACHHANG = khachHangItem;
+            var nguoidungItem = db.NGUOIDUNGs.Find((int)Session["ID"]);
+            item.NGUOIDUNG = nguoidungItem;
+            item.LOAITINHTRANG_ID = (int)EnumLoaiTinhTrang.CHUACHECKIN;
+            item.ThoiGianDat = DateTime.Now;
+            db.DATPHONGs.Add(item);
+            //
+
+            db.SaveChanges();
+            _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
+            TempData["Message"] = "Thêm mới thành công";
+            TempData["NotiType"] = "success";
+            return RedirectToAction("List");
+        }
+
+        [HttpPost]
+        public ActionResult KiemTraTrangThai(string tungay, string denngay)
+        {
+            var results = db.Database.SqlQuery<sp_Result_ThongKePhong>("exec ThongKePhong @tungay, @denngay", new SqlParameter("@tungay", tungay), new SqlParameter("@denngay", denngay)).ToList();
+            var ret = results.Select(c => new
+            {
+                ten = c.Ten,
+                giathue = c.GiaThue,
+                tongsophong = c.TongSoLuongPhong,
+                sophongdattruoc = c.SoPhongDatTruoc,
+                sophongdathue = c.SoPhongDaThue,
+                sophongtrong = c.SoPhongTrong
+            }).ToList();
+            var r = new { data = ret };
+            return Json(r);
+        }
+
+        [HttpPost]
+        public ActionResult PopulateDatPhong()
+        {
+            var danhSachDatPhong = db.DATPHONGs.Select(c => new
+            {
+                madatphong = c.MaDatPhong,
+                tenloaiphong = c.LOAIPHONG.Ten,
+                tenkhachhang = c.KHACHHANG.Ten,
+                emailkhachhang = c.KHACHHANG.Email,
+                dukienden = c.NgayDuKienDen,
+                dukiendi = c.NgayDuKienDi,
+                trangthai = c.LOAITINHTRANG.Ten,
+                sodienthoai = c.KHACHHANG.SoDienThoai,
+                id = c.ID
+            }).OrderBy(c => c.trangthai).ThenBy(c => c.id).ToList();
             var result = new { data = danhSachDatPhong };
-            return Json(result,JsonRequestBehavior.AllowGet);
+
+            return Json(result);
         }
 
         // GET: DatPhong/Edit/5
-        public ActionResult Edit(int? iddatphong ,int? idphong)
+        public ActionResult Edit(int? id)
         {
             if (!_nguoiDungServices.isLoggedIn())
             {
@@ -67,35 +175,33 @@ namespace QLKS.Controllers
             }
             if (!_quyenServices.Authorize((int)EnumQuyen.DATPHONG_SUA))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này.";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
-            if (iddatphong == null || idphong == null)
+            if (id == null)
             {
-                return RedirectToAction("List");
-            }
-            var chiTietDatPhong = db.CHITIETDATPHONGs.Where(p=>p.DATPHONG_ID==iddatphong && p.PHONG_ID == idphong).FirstOrDefault();
-            if (chiTietDatPhong == null)
-            {
-                TempData["Message"] = "Không tìm thấy phòng này";
+                TempData["Message"] = "Không tìm thấy phiếu đặt phòng này";
                 TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("List");
             }
-            //prepare model
-            var chiTietDatPhongModel = new DatPhongModel();
-            chiTietDatPhongModel.PHONG_ID = chiTietDatPhong.PHONG_ID;
-            chiTietDatPhongModel.DATPHONG_ID = chiTietDatPhong.DATPHONG_ID;
-            chiTietDatPhongModel.tenkhachhang = chiTietDatPhong.tenkhachhang;
-            chiTietDatPhongModel.socmt = chiTietDatPhong.socmt;
-            chiTietDatPhongModel.sodienthoai = chiTietDatPhong.sodienthoai;
-            chiTietDatPhongModel.email = chiTietDatPhong.email;
-            chiTietDatPhongModel.ngaydukienden = chiTietDatPhong.ngaydukienden;
-            chiTietDatPhongModel.ngaydukiendi = chiTietDatPhong.ngaydukiendi;
-            chiTietDatPhongModel.DanhSachPhong = _phongServices.PrepareSelectListPhong(chiTietDatPhong.PHONG_ID);
-
-
-            return View(chiTietDatPhongModel);
+            var item = db.DATPHONGs.Find(id);
+            if(item == null)
+            {
+                TempData["Message"] = "Không tìm thấy phiếu đặt phòng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("List");
+            }
+            var model = Mapper.Map<DatPhongModel>(item);
+            var khachhang = db.KHACHHANGs.Find(item.KHACHHANG.ID);
+            model.tenkhachhang = khachhang.Ten;
+            model.socmt = khachhang.SoCMT;
+            model.sodienthoai = khachhang.SoDienThoai;
+            model.email = khachhang.Email;
+            model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(model.LOAIPHONG_ID);
+            return View(model);
         }
-
+        ///
         // POST: DatPhong/Edit/5
         [HttpPost]
         public ActionResult Edit(DatPhongModel model)
@@ -106,21 +212,56 @@ namespace QLKS.Controllers
             }
             if (ModelState.IsValid)
             {
-               
-                var item = db.CHITIETDATPHONGs.Where(c => c.DATPHONG_ID == model.DATPHONG_ID && c.PHONG_ID==model.PHONG_ID).FirstOrDefault();
-                if (item == null)
+                var item = db.DATPHONGs.Find(model.DATPHONG_ID);
+                var khachhang = db.KHACHHANGs.Find(item.KHACHHANG.ID);
+                //item = Mapper.Map<DATPHONG>(model);
+                if(item == null)
                 {
-                    TempData["Message"] = "Có lỗi xảy ra";
+                    TempData["Message"] = "Không thấy đơn đặt phòng này";
                     TempData["NotiType"] = "danger"; //success là class trong bootstrap
                     return RedirectToAction("List");
                 }
+                if(khachhang == null)
+                {
+                    TempData["Message"] = "Không tìm thấy khách hàng này";
+                    TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                    return RedirectToAction("List");
+                }
+                khachhang.Ten = model.tenkhachhang;
+                khachhang.SoDienThoai = model.sodienthoai;
+                khachhang.SoCMT = model.socmt;
+                khachhang.Email = model.email;
+                
+                if(model.LOAIPHONG_ID != item.LOAIPHONG.ID || model.ngaydukienden != item.NgayDuKienDen || model.ngaydukiendi != item.NgayDuKienDi || model.SoPhong != item.SoPhong)
+                {
+                    var results = db.Database.SqlQuery<sp_Result_ThongKePhong>("exec ThongKePhong @tungay, @denngay", new SqlParameter("@tungay", model.ngaydukienden), new SqlParameter("@denngay", model.ngaydukiendi)).ToList();
+                    foreach (var r in results)
+                    {
+                        if (r.ID == model.LOAIPHONG_ID && r.SoPhongTrong < model.SoPhong)
+                        {
+                            if (model.LOAIPHONG_ID == null)
+                            {
+                                model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(0);
+                            }
+                            else
+                            {
+                                model.DanhSachLoaiPhong = _loaiPhongServices.PrepareSelectListLoaiPhong(model.LOAIPHONG_ID);
+                            }
+                            TempData["Message"] = "Không đủ đặt " + model.SoPhong + " phòng. Chỉ còn lại " + r.SoPhongTrong + " phòng.";
+                            TempData["NotiType"] = "danger";
 
-                item.tenkhachhang = model.tenkhachhang;
-                item.socmt = model.socmt;
-                item.sodienthoai = model.sodienthoai;
-                item.email = model.email;
-                item.ngaydukienden = model.ngaydukienden;
-                item.ngaydukiendi = model.ngaydukiendi;
+                            return View("Edit", model);
+                        }
+                        if(r.ID == model.LOAIPHONG_ID && r.SoPhongTrong >= model.SoPhong)
+                        {
+                            item.LOAIPHONG_ID = model.LOAIPHONG_ID;
+                            item.SoPhong = model.SoPhong;
+                            item.NgayDuKienDen = model.ngaydukienden.Value;
+                            item.NgayDuKienDi = model.ngaydukiendi.Value;
+                            item.SoPhong = model.SoPhong;
+                        }
+                    }
+                }
                 db.SaveChanges();
                 _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.ToString());
                 TempData["Message"] = "Cập nhật thành công";
@@ -136,37 +277,37 @@ namespace QLKS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(int iddatphong , int idphong)
+        public ActionResult Delete(int id)
         {
             if (!_quyenServices.Authorize((int)EnumQuyen.DATPHONG_XOA))
             {
+                TempData["Message"] = "Bạn không có quyền thực hiện chức năng này.";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
                 return RedirectToAction("ViewDenied", "QLKS");
             }
-            var item = db.CHITIETDATPHONGs.Where(c => c.DATPHONG_ID == iddatphong && c.PHONG_ID==idphong).FirstOrDefault();
-            if (item != null)
-            {
-                try
-                {
-                    db.CHITIETDATPHONGs.Remove(item);
-                    db.SaveChanges();
-                }
-                catch
-                {
-                    throw new Exception();
-                }
 
-                //Thông báo
+            var item = db.DATPHONGs.Find(id);
+            if (item == null)
+            {
+                TempData["Message"] = "Không tìm thấy phiếu đặt phòng này";
+                TempData["NotiType"] = "danger"; //success là class trong bootstrap
+                return RedirectToAction("List");
+            }
+            
+            try
+            {
+                db.DATPHONGs.Remove(item);
+                db.SaveChanges();
                 TempData["Message"] = "Xóa loại phòng thành công";
                 TempData["NotiType"] = "success";
                 _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.XOA, item.GetType().ToString());
                 return Json("ok");
             }
-            else
+            catch
             {
-                TempData["Message"] = "Đã có lỗi xảy ra";
-                TempData["NotiType"] = "danger";
-                return Json("error");
+                throw new Exception();
             }
+
         }
     }
 }

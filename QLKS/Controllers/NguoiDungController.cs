@@ -42,9 +42,9 @@ namespace QLKS.Controllers
         {
             var danhSachNguoiDung = db.NGUOIDUNGs.Select(c => new
             {
-                tendangnhap = c.tendangnhap,
-                ten = c.tennguoidung,
-                sdt = c.sodienthoai,
+                tendangnhap = c.TenDangNhap,
+                ten = c.TenNguoiDung,
+                sdt = c.SoDienThoai,
                 uid = c.ID
             }).OrderBy(c => c.uid).ToList();
             var result = new { data = danhSachNguoiDung };
@@ -84,13 +84,13 @@ namespace QLKS.Controllers
                 return RedirectToAction("ViewDenied", "QLKS");
             }
             var item = new NGUOIDUNG();
-            item.tendangnhap = model.tendangnhap;
-            item.tennguoidung = model.tennguoidung;
-            item.sodienthoai = model.sodienthoai;
-            item.gioitinh = model.gioitinh;
-            item.diachi = model.diachi;
-            item.ngaysinh = model.ngaysinh;
-            item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
+            item.TenDangNhap = model.TenDangNhap;
+            item.TenNguoiDung = model.TenNguoiDung;
+            item.SoDienThoai = model.SoDienThoai;
+            item.GioiTinh = model.GioiTinh;
+            item.DiaChi = model.DiaChi;
+            item.NgaySinh = model.NgaySinh;
+            item.Hash = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
             item.NHOMNGUOIDUNG_ID = model.selectedNhomNguoiDung;
             db.NGUOIDUNGs.Add(item);
             db.SaveChanges();
@@ -125,12 +125,12 @@ namespace QLKS.Controllers
             }
             //prepare model
             var model = new NguoiDungModel();
-            model.tendangnhap = item.tendangnhap;
-            model.tennguoidung = item.tennguoidung;
-            model.sodienthoai = item.sodienthoai;
-            model.gioitinh = item.gioitinh;
-            model.diachi = item.diachi;
-            model.ngaysinh = item.ngaysinh;
+            model.TenDangNhap = item.TenDangNhap;
+            model.TenNguoiDung = item.TenNguoiDung;
+            model.SoDienThoai = item.SoDienThoai;
+            model.GioiTinh = item.GioiTinh;
+            model.DiaChi = item.DiaChi;
+            model.NgaySinh = item.NgaySinh;
             var allNhomNguoiDung = _nhomNguoiDungServices.PrepareSelectListNhomNguoiDung(item.NHOMNGUOIDUNG_ID.Value);
             model.DanhSachNhomNguoiDung = allNhomNguoiDung;
             return View(model);
@@ -157,14 +157,14 @@ namespace QLKS.Controllers
                 return RedirectToAction("List");
             }
             //map from model to database object
-            item.tendangnhap = model.tendangnhap;
-            item.tennguoidung = model.tennguoidung;
-            item.sodienthoai = model.sodienthoai;
-            item.ngaysinh = model.ngaysinh;
-            item.gioitinh = model.gioitinh;
-            item.diachi = model.diachi;
+            item.TenDangNhap = model.TenDangNhap;
+            item.TenNguoiDung = model.TenNguoiDung;
+            item.SoDienThoai = model.SoDienThoai;
+            item.NgaySinh = model.NgaySinh;
+            item.GioiTinh = model.GioiTinh;
+            item.DiaChi = model.DiaChi;
             item.NHOMNGUOIDUNG_ID = model.selectedNhomNguoiDung;
-            item.hash = BCrypt.Net.BCrypt.HashPassword(model.matkhau);
+            item.Hash = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
             db.SaveChanges();
             _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
             TempData["Message"] = "Cập nhật thành công";
@@ -196,7 +196,7 @@ namespace QLKS.Controllers
         [HttpPost]
         public ActionResult Login(NguoiDungModel model)
         {
-            var item = db.NGUOIDUNGs.Where(c => c.tendangnhap == model.tendangnhap).FirstOrDefault();
+            var item = db.NGUOIDUNGs.Where(c => c.TenDangNhap == model.TenDangNhap).FirstOrDefault();
             if (item == null)
             {
                 TempData["Message"] = "Sai mật khẩu hoặc tên đăng nhập, vui lòng thử lại";
@@ -205,12 +205,12 @@ namespace QLKS.Controllers
             }
             else
             {
-                var dungMatKhau = BCrypt.Net.BCrypt.Verify(model.matkhau, item.hash);
+                var dungMatKhau = BCrypt.Net.BCrypt.Verify(model.MatKhau, item.Hash);
                 if (dungMatKhau)
                 {
                     Session["ID"] = item.ID;
-                    Session["tendangnhap"] = item.tendangnhap;
-                    Session["tennguoidung"] = item.tennguoidung;
+                    Session["tendangnhap"] = item.TenDangNhap;
+                    Session["tennguoidung"] = item.TenNguoiDung;
                     _lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.DANGNHAP, item.GetType().ToString());
                     Session["NguoiDung"] = item;
                     TempData["Message"] = "Đăng nhập thành công";

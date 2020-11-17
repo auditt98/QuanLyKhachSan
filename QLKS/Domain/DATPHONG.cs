@@ -9,22 +9,33 @@ namespace QLKS.Domain
     [Table("DATPHONG")]
     public partial class DATPHONG
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DATPHONG()
-        {
-            CHITIETDATPHONGs = new HashSet<CHITIETDATPHONG>();
-        }
-
         public int ID { get; set; }
 
         public int? KHACHHANG_ID { get; set; }
 
-        [StringLength(20)]
-        public string ma { get; set; }
+        public int? LOAIPHONG_ID { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CHITIETDATPHONG> CHITIETDATPHONGs { get; set; }
+        public int? SoPhong { get; set; }
+
+        //[StringLength(10)]
+        public string MaDatPhong { get; set; }
+
+        public DateTime NgayDuKienDi { get; set; }
+
+        public DateTime NgayDuKienDen { get; set; }
+
+        public int? LOAITINHTRANG_ID { get; set; }
+
+        public int? NGUOIDUNG_ID { get; set; }
+
+        public DateTime? ThoiGianDat { get; set; }
 
         public virtual KHACHHANG KHACHHANG { get; set; }
+
+        public virtual LOAIPHONG LOAIPHONG { get; set; }
+
+        public virtual LOAITINHTRANG LOAITINHTRANG { get; set; }
+
+        public virtual NGUOIDUNG NGUOIDUNG { get; set; }
     }
 }

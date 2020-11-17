@@ -9,10 +9,10 @@ namespace QLKS.Models
     {
         public int? ID { get; set; }
 
-        public string tendichvu { get; set; }
+        public string Ten { get; set; }
 
-        public int? dongia { get; set; }
+        public int? DonGia { get; set; }
 
-        public string ma { get; set; }
+        public string Ma { get; set; }
     }
 }

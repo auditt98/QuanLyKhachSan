@@ -17,14 +17,14 @@ namespace QLKS.Domain
 
         public int ID { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string tendichvu { get; set; }
+        //[Required]
+        //[StringLength(50)]
+        public string Ten { get; set; }
 
-        public int? dongia { get; set; }
+        public int? DonGia { get; set; }
 
-        [StringLength(10)]
-        public string ma { get; set; }
+        //[StringLength(10)]
+        public string Ma { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SUDUNGDICHVU> SUDUNGDICHVUs { get; set; }

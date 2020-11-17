@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using QLKS.Services;
 using static QLKS.Extensions.Enum;
 using Newtonsoft.Json;
+using System.Data.SqlClient;
 
 namespace QLKS.Controllers
 {
@@ -40,11 +41,14 @@ namespace QLKS.Controllers
 		{
 			var danhSachLoaiPhong = db.LOAIPHONGs.Select(c => new
 			{
-				ma = c.ma,
-				ten = c.tenloaiphong,
-				anh = c.anh,
-				giuong = c.giuong,
-				thongtin = c.thongtin,
+				ma = c.Ma,
+				ten = c.Ten,
+				//anh = c.AnhDaiDien, image broken, removed it
+				giuongdoi = c.SoGiuongDoi,
+				giuongdon = c.SoGiuongDon,
+				nguoilon = c.SoNguoiLon,
+				treem = c.SoTreEm,
+				//thongtin = c.ThongTin,
 				uid = c.ID
 			}).OrderBy(c => c.uid).ToList();
 			var result = new { data = danhSachLoaiPhong };
@@ -67,7 +71,7 @@ namespace QLKS.Controllers
 			var loaiPhongModel = new LoaiPhongModel();
 			var maxId = db.LOAIPHONGs.Select(c => c.ID).DefaultIfEmpty(0).Max();
 			var newId = (maxId + 1).ToString().PadLeft(7, '0');
-			loaiPhongModel.ma = "LP" + "-" + newId;
+			loaiPhongModel.Ma = "LP" + "-" + newId;
 			return View(loaiPhongModel);
 		}
 
@@ -92,7 +96,7 @@ namespace QLKS.Controllers
 					string path = Path.Combine(Server.MapPath("~/Content/imgLoaiPhong"), fileName);
 					UploadImage.SaveAs(path);
 					//UploadImage.SaveAs(Server.MapPath("/") + "/Content/imgLoaiPhong/" + DateTime.Now.ToString("ddMMyyyy_hhmmss_tt_") + UploadImage.FileName);
-					model.anh = fileName;
+					model.AnhDaiDien = fileName;
 				}
 				else
 				{
@@ -100,7 +104,13 @@ namespace QLKS.Controllers
 				}
 			}
 			var item = AutoMapper.Mapper.Map<LOAIPHONG>(model);
-			db.LOAIPHONGs.Add(item);
+			//db.LOAIPHONGs.Add(item);
+			int a = 0;
+			if(item.ThongTin == null)
+            {
+				item.ThongTin = "";
+            }
+			a = db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_LOAIPHONG @Type, @ID, @Ten, @Ma, @AnhDaiDien, @ThongTin, @GiaThue, @SoNguoiLon, @SoTreEm, @SoGiuongDon, @SoGiuongDoi, @UpdateID", new SqlParameter("@Type", int.Parse("0")), new SqlParameter("@ID", a), new SqlParameter("@Ten", item.Ten), new SqlParameter("@Ma", item.Ma), new SqlParameter("@AnhDaiDien", model.AnhDaiDien), new SqlParameter("@ThongTin", item.ThongTin), new SqlParameter("@GiaThue", item.GiaThue), new SqlParameter("@SoNguoiLon", item.SoNguoiLon), new SqlParameter("@SoTreEm", item.SoTreEm), new SqlParameter("@SoGiuongDoi", item.SoGiuongDoi), new SqlParameter("@SoGiuongDon", item.SoGiuongDon), new SqlParameter("@UpdateID", int.Parse("0")));
 			db.SaveChanges();
 			_lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.THEM, item.GetType().ToString());
 			TempData["Message"] = "Thêm mới thành công";
@@ -152,7 +162,7 @@ namespace QLKS.Controllers
 						string fileName = Path.GetFileName(DateTime.Now.ToString("ddMMyyyy_hhmmss_tt_") + "" + UploadImage.FileName);
 						string path = Path.Combine(Server.MapPath("~/Content/imgLoaiPhong"), fileName);
 						UploadImage.SaveAs(path);
-						model.anh = fileName;
+						model.AnhDaiDien = fileName;
 					}
 					else
 					{
@@ -166,8 +176,33 @@ namespace QLKS.Controllers
 					TempData["NotiType"] = "danger"; //success là class trong bootstrap
 					return RedirectToAction("List");
 				}
-				item = Mapper.Map(model, item);
-				db.SaveChanges();
+				var tempImage = item.AnhDaiDien;
+                item = Mapper.Map(model, item);
+				item.AnhDaiDien = tempImage;
+                int a = 0;
+				if (item.ThongTin == null)
+				{
+					item.ThongTin = "";
+				}
+				if(item.AnhDaiDien != null)
+                {
+					if(model.AnhDaiDien != null)
+                    {
+						a = db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_LOAIPHONG @Type, @ID, @Ten, @Ma, @AnhDaiDien, @ThongTin, @GiaThue, @SoNguoiLon, @SoTreEm, @SoGiuongDon, @SoGiuongDoi, @UpdateID", new SqlParameter("@Type", int.Parse("1")), new SqlParameter("@ID", a), new SqlParameter("@Ten", item.Ten), new SqlParameter("@Ma", item.Ma), new SqlParameter("@AnhDaiDien", model.AnhDaiDien), new SqlParameter("@ThongTin", item.ThongTin), new SqlParameter("@GiaThue", item.GiaThue), new SqlParameter("@SoNguoiLon", item.SoNguoiLon), new SqlParameter("@SoTreEm", item.SoTreEm), new SqlParameter("@SoGiuongDoi", item.SoGiuongDoi), new SqlParameter("@SoGiuongDon", item.SoGiuongDon), new SqlParameter("@UpdateID", item.ID));
+					}
+                    else
+                    {
+						a = db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_LOAIPHONG @Type, @ID, @Ten, @Ma, @AnhDaiDien, @ThongTin, @GiaThue, @SoNguoiLon, @SoTreEm, @SoGiuongDon, @SoGiuongDoi, @UpdateID", new SqlParameter("@Type", int.Parse("1")), new SqlParameter("@ID", a), new SqlParameter("@Ten", item.Ten), new SqlParameter("@Ma", item.Ma), new SqlParameter("@AnhDaiDien", item.AnhDaiDien), new SqlParameter("@ThongTin", item.ThongTin), new SqlParameter("@GiaThue", item.GiaThue), new SqlParameter("@SoNguoiLon", item.SoNguoiLon), new SqlParameter("@SoTreEm", item.SoTreEm), new SqlParameter("@SoGiuongDoi", item.SoGiuongDoi), new SqlParameter("@SoGiuongDon", item.SoGiuongDon), new SqlParameter("@UpdateID", item.ID));
+					}
+                }
+                else
+                {
+					if (model.AnhDaiDien == null)
+					{
+						model.AnhDaiDien = "";
+					}
+					a = db.Database.ExecuteSqlCommand("exec SP_CreateOrUpdate_LOAIPHONG @Type, @ID, @Ten, @Ma, @AnhDaiDien, @ThongTin, @GiaThue, @SoNguoiLon, @SoTreEm, @SoGiuongDon, @SoGiuongDoi, @UpdateID", new SqlParameter("@Type", int.Parse("1")), new SqlParameter("@ID", a), new SqlParameter("@Ten", item.Ten), new SqlParameter("@Ma", item.Ma), new SqlParameter("@AnhDaiDien", model.AnhDaiDien), new SqlParameter("@ThongTin", item.ThongTin), new SqlParameter("@GiaThue", item.GiaThue), new SqlParameter("@SoNguoiLon", item.SoNguoiLon), new SqlParameter("@SoTreEm", item.SoTreEm), new SqlParameter("@SoGiuongDoi", item.SoGiuongDoi), new SqlParameter("@SoGiuongDon", item.SoGiuongDon), new SqlParameter("@UpdateID", item.ID));
+				}
 				_lichSuServices.LuuLichSu((int)Session["ID"], (int)EnumLoaiHanhDong.SUA, item.GetType().ToString());
 				TempData["Message"] = "Cập nhật thành công";
 				TempData["NotiType"] = "success"; //success là class trong bootstrap
@@ -193,7 +228,9 @@ namespace QLKS.Controllers
 			{
 				try
 				{
-					db.LOAIPHONGs.Remove(item);
+					int a = 0;
+					a = db.Database.ExecuteSqlCommand("exec SP_Delete_LOAIPHONG @ID", new SqlParameter("@ID", item.ID));
+					//db.LOAIPHONGs.Remove(item);
 					db.SaveChanges();
 				}
 				catch

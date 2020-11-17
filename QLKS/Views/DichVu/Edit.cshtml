@@ -22,12 +22,10 @@
             </button>
 
         </h6>
-        <div class="card-body">
             @{
                 @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control d-none" } })
                 Html.RenderPartial("_CreateOrUpdate");
             }
-        </div>
     </div>
 </form>
 

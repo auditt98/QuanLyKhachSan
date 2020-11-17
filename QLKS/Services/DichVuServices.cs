@@ -15,7 +15,7 @@ namespace QLKS.Services
         {
             var items = db.DICHVUs.Select(c => new SelectListItem
             {
-                Text = c.tendichvu,
+                Text = c.Ten,
                 Value = c.ID.ToString(),
                 Selected = c.ID == selected
             }).ToList();
